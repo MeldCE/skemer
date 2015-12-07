@@ -1,0 +1,33 @@
+{
+  "name": "skemer",
+  "version": "0.1.0",
+  "description": "An object validation tool to check an object against a scheme",
+  "main": "lib/skema.js",
+  "scripts": {
+    "test": "node_modules/jasmine-node/bin/jasmine-node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theelectricwiz/skema.git"
+  },
+  "keywords": [
+    "schema",
+    "validation",
+    "oject"
+  ],
+  "author": "The Electric Wiz",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/theelectricwiz/skema/issues"
+  },
+  "homepage": "https://github.com/theelectricwiz/skema#readme",
+  "devDependencies": {
+    "concat": "^1.0.0",
+    "gulp": "^3.9.0",
+    "gulp-jasmine": "^2.2.1",
+    "gulp-jsdoc-to-markdown": "^1.1.2",
+    "gulp-jshint": "^2.0.0",
+    "jshint": "^2.8.0",
+    "rename": "^1.0.3"
+  }
+}
