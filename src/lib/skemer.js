@@ -9,18 +9,17 @@ var merge = require('merge');
  * Validates a value against a schema and returns the result
  *
  * @param {Object} context Context of the validation
- * @param context.object The current value
+ * @param context.object The current value - used to determine if a default
+ *        value should be returned (when there is currently no value)
  * @param context.data The schema to validate the data against
  * @param {Object} context.schema The type to validate the value against
  * @param {boolean} context.add If true and value can contain multiple values
  *        add the value to the existing values
  * @param {Object} context.baseSchema The original schema, so that it can be
  *        used in recursive schema
- * @param {boolean} inMultiple Used to determine if have called itself to
- *        validate a value that can have multiple values
- * @param {boolean} noThrow If true, if a value that doesn't match the schema
- *        is encountered, null will be returned instead of an error being
- *        thrown
+ * @param {boolean} context.noThrow If true, if a value that doesn't match the
+ *        schema is encountered, null will be returned instead of an error
+ *        being thrown
  *
  * @throws {ValueError} When the value does not much the schema
  *
@@ -114,10 +113,6 @@ function setValueToType(context) {
 		console.log('after null diving, value is', context.object);
 		return context.object;
 	} else {
-		if (context.schema.multiple) {
-			
-		}
-
 		if (typeof context.schema.type === 'string') { // A simple type or instance of a certain prototype
 			console.log('type given as string', context.schema.type);
 			switch (context.schema.type) {
@@ -171,21 +166,30 @@ function setValueToType(context) {
 					break;
 			}
 		} else if (context.schema.type instanceof Object) {
-			// Do our darndest to stop bad objectValue
-			//if (
-			if (context.object) {
-				addData(merge({}, context, {
-					schema: context.schema.type
-				}));
-				return context.object;
-			} else {
-				var newData = {};
-				if (addData(merge({}, context, {
-					object: newData,
-					schema: context.schema.type
-				}))) {
-					return newData;
+			if (context.data === undefined) {
+				if (context.object === undefined
+						&& context.schema.default !== undefined) {
+					context.object = context.schema.default;
+					return true;
+				} else {
+					return false;
 				}
+			}
+
+			if (context.object === undefined) {
+				context.object = {};
+			}
+
+			var t;
+			for (t in context.schema.type) {
+				addObjecTypetData(merge({}, context, {
+					schema:context.schema.type[t],
+					data: context.data[t],
+				}));
+			}
+
+			if (Object.keys(context.object).length === 0) {
+				context.object = undefined;
 			}
 		}
 	}
@@ -211,47 +215,81 @@ function setValueToType(context) {
  *
  * @returns {boolean} True if any data was added to the object
  */
-function addData(context) {
+function addObjectTypeData(context, inMultiple) {
 	//console.log('\n\n\naddData called', context);
 	var s, valueAdded = false;
 
-	if (context.baseSchema === undefined) {
-		context.baseSchema = context.schema;
-	}
-
 	if (context.data === undefined) {
 		// Return if schema is a array
-		if (context.schema instanceof Array) { // || context.schema.multiple) {
+		if (context.schema instanceof Array) {
 			return;
 		}
 
 		context.data = {};
 	}
 
-	if (context.schema instanceof Array) { // || context.schema.multiple
+	if (!inMultiple && context.schema.multiple) {
 		console.log('\nhave multiple value schema');
-		var d, subObject = {};
-		/* @TODO Need to detect if context.data is a object or an array - only
-		 * important if ignore bad values
-		 */
+		var d, newObject;
+
+		if (context.schema.object) {
+			if (context.object && !replace) {
+				newObject = context.object;
+			} else {
+				newObject = {};
+			}
+		} else {
+			if (context.object && add) {
+				newObject = context.object;
+			} else {
+				newObject = [];
+			}
+		}
+
+		if (!(context.data instanceof Object)) {
+			throw skemerError.ValueError('Multiple value ' + context.parameter
+				+ ' must be given in an '
+				+ (context.schema.object ? 'object' : 'array') + ' ('
+				typeof context.data + ' given)');
+		}
+
 		for (d in context.data) {
 			console.log('\n\n\nchecking  data[%s] against schema', d);
-			if (addData(merge({}, context, {
-				object: subObject,
-				schema: context.schema[0],
+			if ((value = setValueToSchema(merge({}, context, {
 				data: context.data[d],
 				parameterName: (context.parameterName ? context.parameterName
 						+ '.' : '') + d
-			}))) {
+			}), true)) !== undefined) {
 				//console.log('success', context, 'subObject', subObject);
-				if (context.object === undefined) {
-					context.object = {};
+
+				if (context.schema.object) {
+					newObject[d] = value
+				} else {
+					newObject.push(value);
 				}
-				context.object[d] = subObject;
-				subObject = {};
 			}
 		}
+
+		// Set object
+		if (context.schema.object) {
+			if (Object.keys(newObject).length) {
+				context.object = newObject;
+			}
+		} else if (newObject.length) {
+			context.object = newObject;
+		}
 	} else {
+		if ((value = setValueToSchema(merge({}, context, {
+			data: context.data[d],
+			parameterName: (context.parameterName ? context.parameterName
+					+ '.' : '') + d
+		}), true)) !== undefined) {
+			context.object = value;
+		}
+	}
+}
+
+/* XXX
 		// Go through parameters
 		for (s in context.schema) {
 			console.log('\nchecking item.%s against schema for %s, value is %s', s, s, context.data[s]);
@@ -272,7 +310,7 @@ function addData(context) {
 
 	return valueAdded;
 	/// @TODO Handle parameters not included in the schema
-}
+}*/
 
 
 
@@ -324,7 +362,7 @@ module.exports = {
 	 *
 	 * @returns {boolean} True if any data was added to the object
 	 */
-	addData: function(schema, data, object, options) {
+	validateAddData: function(schema, data, object, options) {
 		if (!object) {
 			object = {};
 		}
@@ -335,12 +373,16 @@ module.exports = {
 			data: data
 		};
 
-		// Check options
-		//if (options) {
-		//	context = merge(options, context);
-		//}
+		// @TODO Validate options
+		if (options) {
+			context = merge(options, context);
+		}
 
-		addData(context);
+		if (context.baseSchema === undefined) {
+			context.baseSchema = context.schema;
+		}
+
+		addObjectTypeData(context);
 
 		return object;
 	}

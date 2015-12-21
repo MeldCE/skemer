@@ -16,8 +16,10 @@ module.exports = {
 	/**
 	 * Schema detailing the requirements for Skemer Schema
 	 */
-	schema: [
-		{
+	schema: {
+		multiple: true,
+		object: true,
+		type: {
 			doc: {
 				doc: "A String giving information on the parameter",
 				type: 'string'
@@ -56,6 +58,13 @@ module.exports = {
 					}
 				]
 			},
+			object: {
+				doc: "If multiple is true object is true, will force values to be "
+						+ "stored in an object - appending will not work. If multiple is "
+						+ "true and object is false, the key will be ignored and the "
+						+ "values will be stored in an array",
+				type: 'boolean'
+			},
 			regex: {
 				doc: "A regular expression to validate a String value",
 				type: 'RegExp'
@@ -90,7 +99,7 @@ module.exports = {
 				type: 'Function'
 			}
 		}
-	],
+	},
 
 	/** Options that can be passed when creating a Skemer Schema */
 	schemaOptions: {
