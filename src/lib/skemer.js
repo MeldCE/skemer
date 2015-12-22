@@ -330,7 +330,7 @@ function addObjectTypeData(context, inMultiple) {
  * Used to create a SkemedObject - an object that has been generated using a
  * Skemer schema.
  *
- * The created object should not be edited manually, but through its 
+ * The created object should not be edited manually, but through its
  * {@link merge} and {@link set} functions.
  *
  * @param {Skemer} schema A schema to use for the creation of the new object
@@ -355,40 +355,33 @@ module.exports = {
 	/**
 	 * Add data to an object based on a schema from the data given.
 	 *
-	 * @param {Object} schema An Object containing a valid schema
+	 * @param {Object} options An object containing options
+	 * @param {Object} options.schema An Object containing a valid schema
 	 *        should contain
-	 * @param {Object} data An Object containing data to put into the new object
-	 * @param {Object} object The Object that will be built
+	 * @param {} data Data to validate and return. If no data is given,
+	 *           data containing any default values will be returned
+	 * @param {} ... Data to validate and merge into data
 	 *
-	 * @returns {boolean} True if any data was added to the object
+	 * @returns {} Validated and merged data
 	 */
-	validateAddData: function(schema, data, object, options) {
-		if (!object) {
-			object = {};
+	validateAddData: function(options, data) {
+		// @TODO Properly validate options
+		if (!options.schema) {
+			throw new Error('Need a schema');
 		}
 
-		var context = {
-			object: object,
-			schema: schema,
-			data: data
-		};
-
-		// @TODO Validate options
-		if (options) {
-			context = merge(options, context);
+		data = validateAddData(options, data);
+		if (arguments.length > 2) {
+			for (i = 2; i < arguments.length; i++) {
+				data = validateAddData(options, data, arguments[i]);
+			}
 		}
-
-		if (context.baseSchema === undefined) {
-			context.baseSchema = context.schema;
-		}
-
-		addObjectTypeData(context);
-
-		return object;
+		
+		return data;
 	}
 
 	//verify:
-	
+
 	//SkemedObject:
 };
 
@@ -537,7 +530,7 @@ function buildDocLines(schema, pre) {
 
 		// Add parameter to lines
 		lines.push(line);
-		
+
 		// Add sub parameters to lines
 		if (subLines) {
 			lines = lines.concat(subLines);
@@ -580,12 +573,12 @@ var otype = {
 	 *        value instead of replacing the existing values
 	 * @TODO Do we want options to be set with the schema?
 	 *
-	 * @returns {true|Array.Object} Returns true if all 
+	 * @returns {true|Array.Object} Returns true if all
 	 */
 	merge: function(object, newValues, options) {
 		//return Skemer.merge(this.schema, object, newValues, options);
 	},
-	
+
 	/**
 	 * Set a new value to a parameter in an object shaped by a Schema
 	 *
@@ -596,7 +589,7 @@ var otype = {
 	 * @param value New value for the parameter
 	 * @param {boolean} [add] If the parameter is an Array, add the new
 	 *        value instead of replacing the existing values
-	 * 
+	 *
 	 * @returns {boolean|number} Returns false if the value failed validation or
 	 *          the parameter did not exist. Returns try if the set was
 	 *          successful. Returns the index of the new value if the parameter
@@ -629,4 +622,3 @@ var otype = {
 };
 
 //module.exports = Skemer;
-
