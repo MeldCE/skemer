@@ -1,9 +1,12 @@
-var skemerErrors = require('../src/lib/errors.js')
+var skemerErrors = require('../src/lib/errors.js');
+var skemer = require('../src/lib/skemer.js')
 
 var options = [
 	{},
 	{
-		add: true
+		replace: {
+			'someVar': true
+		}
 	},
 	{
 		replace: true // So leave if no value in data, could do delete if empty value in data
@@ -62,12 +65,12 @@ var tests = [
 			}
 		},
 		object: [
-			undefined.
-			{}.
+			undefined. // 1
+			{}. // 2
 			{ // Pretty lame with main level default values removed, what if this was sub-level?
 				doThis: false
 			}.
-			{
+			{ // 4
 				someVar: ['test'],
 				otherVar: {
 					two: {
@@ -75,42 +78,46 @@ var tests = [
 					}
 				}
 			}.
-			{
+			{ // 5
 				someVar: ['test'],
 				otherVar: {
 					one: {
 						varUnknown: [1]
 					},
 					two: {
-						another: false
+						another: false,
+						varUknown: [2]
 					}
 				}
 			}
 		],
 		data: [
-			undefined,
-			{},
-			{
+			undefined, // 1
+			{}, // 2
+			{ // 3
 				doThis: true,
 				someVar: ['string']
 			},
-			{ // Should end up throwing as values of otherVar don't match type schema
+			{ // 4 Should end up throwing as values of otherVar don't match type schema
 				doThat: true,
 				otherVar : {
 					another: true,
 					vari: 'blah'
 				}
 			},
-			{
+			{ // 5
 				doThat: true,
 				otherVar : {
 					one: {
 						another: true,
 						vari: 'blah'
+					},
+					two:{
+						varUknown: [7]
 					}
 				}
 			},
-			{
+			{ // 6 Should throw
 				doThis: 'bad string'
 			}
 		],
@@ -211,139 +218,175 @@ var tests = [
 					}
 				}
 			},
+			{
+				input: [4,3,1],
+				comment: [
+					'Current data and new data',
+					'Should append new value of someVar to current value'
+				],
+				result: {
+					doThat: true,
+					someVar: ['test', 'string'],
+					otherVar: {
+						two: {
+							another: false
+						}
+					}
+				}
+			},
+			{
+				input: [[4,3,2],[4,3,3]],
+				comment: [
+					'Current data and new data',
+					'Should replace value of someVar with value in data'
+				],
+				result: {
+					doThat: true,
+					someVar: ['string'],
+					otherVar: {
+						two: {
+							another: false,
+							varUnknown: [3, 5]
+						}
+					}
+				}
+			},
+			{
+				input: [[4,5,1],[4,5,2]],
+				comment: [
+					'Should merge values for otherVar',
+					'As there is not current value for otherVar.two.varUknown, should just '
+							+ 'use value from data',
+					'Should merge otherVar.two values'
+				],
+				result: {
+					doThat: true,
+					someVar: ['test'],
+					otherVar: {
+						one: {
+							another: true,
+							varUnknown: [3, 5],
+							vari: 'blah'
+						},
+						two: {
+							another: false,
+							varUknown: [7]
+						}
+					}
+				}
+			},
+			{
+				input: [4,5,3],
+				comment: [
+					'Should replace the otherVar object with the new one'
+				],
+				result: {
+					doThat: true,
+					someVar: ['test'],
+					otherVar: {
+						one: {
+							another: true,
+							varUknown: [3, 5],
+							vari: 'blah'
+						},
+						two: {
+							varUnknown: [7]
+						}
+					}
+				}
+			},
+			{
+				input: [[5,1,false],[5,2,false]],
+				comment: 'No new data',
+				result: {
+					someVar: ['test'],
+					otherVar: {
+						one: {
+							varUnknown: [1]
+						},
+						two: {
+							another: false,
+							varUknown: [2]
+						}
+					}
+				}
+			},
+			{
+				input: [5,3,1],
+				comments[
+					'should append values for someVar'
+				],
+				result: {
+					doThis: true,
+					someVar: ['test','string'],
+					otherVar: {
+						one: {
+							varUnknown: [1]
+						},
+						two: {
+							another: false,
+							varUknown: [2]
+						}
+					}
+				}
+			}
 		]
 	},
 ];
 
-// resultObject should be returned. If object is not undefined, object should be modified
+// Run the tests
+describe('Skemer functionality checks', function() {
+	var t, testLabel;
+	for (t in tests) {
+		var o;
 
-data1,object1,options1/2/3
-
-// otherVar multiple = true, therefore default values only happen in a value
-resultObject = undefined
-
-data1,object2,options1/2/3
-
-// otherVar multiple = true, therefore default values only happen in a value
-resultObject = {}
-
-data1, object3, options1/2/3
-
-
-resultObject = {
-	doThis: false,
-	doThat: true
-}
-
-data1, object4, options1/2/3
-
-resultObject = {
-	someVar: ['test'],
-	otherVar: {
-		two: {
-			another: false,
-			var: 'mycool' // Should the default value for doThat be set? - sort of validates current object against schema, could make an option
-			varUnknown: [3, 5] // Ditto
+		if (tests[t].label) {
+			testLabel = tests[t].label;
+		} else {
+			testLabel = 'Test ' + t;
 		}
-	}
-}
 
-data2, object1/2, options1/2/3
-
-resultObject = {
-	doThis: true,
-	someVar: ['string']
-}
-
-data2, object3, options1/2/3
-
-resultObject = {
-	doThis: true,
-	someVar: ['string']
- }
-
-data2, object4, options1/3
-
-resultObject = {
-	doThis: true,
-	someVar: ['string'],
-	otherVar: {
-		two: {
-			another: false
-			var: 'mycool', // Default logic in Line 15
-			varUnknown: [3, 5] // Ditto
+		// Add the schema to each test option
+		for (o in tests[t].options) {
+			tests[t].options.schema = tests[t].schema;
 		}
+
+		describe(testLabel, function() {
+			var r;
+
+			for (r in this.results) {
+				var i;
+				var test = this.results[r];
+				var comment;
+
+				// Build comment
+				comment = 'should return the expected result';
+				if (test.comment) {
+					if (test.comment instanceof Array && test.comment.length) {
+						if (test.comment.length > 1) {
+							comment = test.comment.pop();
+						} else {
+							comment = '';
+						}
+
+						comment = test.comment.join(', ') + comment;
+					}
+				}
+
+				// Make input an array of arrays if it isn't
+				if (!(test.input[0] instanceof Array)) {
+					test.input = [test.input];
+				}
+
+				for (i in test.input) {
+					it(comment + ' ' + i, function() {
+						var result = skemer.validateAddData(test.options[this[2]],
+									test.object[this[0]], test.data[this[1]]);
+
+						expect(result).toEqual(test.result);
+					}.bind(this.input[i]))
+				}
+			}
+		}.bind(test[t]));
 	}
-}
-
-data2, object4, options2
-
-resultObject = {
-	doThis: true,
-	someVar: ['test', 'string'],
-	otherVar: {
-		two: {
-			another: false,
-			var: 'mycool', // Default logic in Line 28
-			varUnknown: [3, 5] // Default logic in Line 28
-		}
-	}
-}
-
-data3, object1/2, options1/2/3
-
-resultObject = {
-	doThat: true,
-	otherVar : {
-		one: {
-			another: true,
-			var: 'blah',
-			varUnknown: [3, 5] // Default logic in Line 28
-		}
-	}
-}
-
-data3, object3, options1/2/3
-
-resultObject = {
-	doThat: true,
-	doThis: false,
-	otherVar : {
-		one: {
-			another: true,
-			var: 'blah',
-			varUnknown: [3, 5] // Default logic in Line 28
-		}
-	}
-}
-
-data3, object4, options1/2
-
-resultObject = {
-	someVar: ['test'],
-	otherVar: {
-		two: {
-			another: false,
-			var: 'mycool', // Default logic in Line 28
-			varUnknown: [3, 5] // Default logic in Line 28
-		},
-		one: {
-			another: true,
-			var: 'blah',
-			varUnknown: [3, 5] // Default logic in Line 28
-		}
-	}
-}
-
-data3, object4, option3
-
-resultObject = {
-	someVar: ['test'],
-	otherVar: {
-		one: {
-			another: true,
-			var: 'blah',
-			varUnknown: [3, 5] // Default logic in Line 28
-		}
-	}
-}
+});
