@@ -1,5 +1,5 @@
 var skemerErrors = require('../src/lib/errors.js');
-var skemer = require('../src/lib/skemer.js')
+var skemer = require('../src/lib/skemer.js');
 
 var options = [
 	{},
@@ -49,7 +49,7 @@ var tests = [
 				notDoneVar: { // TODO
 					type: {
 						boring: {
-							type: 'string', // NOTE using 'string' instead of 'text'
+							type: 'string' // NOTE using 'string' instead of 'text'
 						}
 					}
 				},
@@ -65,11 +65,11 @@ var tests = [
 			}
 		},
 		object: [
-			undefined. // 1
-			{}. // 2
+			undefined, // 1
+			{}, // 2
 			{ // Pretty lame with main level default values removed, what if this was sub-level?
 				doThis: false
-			}.
+			},
 			{ // 4
 				someVar: ['test'],
 				otherVar: {
@@ -77,7 +77,7 @@ var tests = [
 						another: false
 					}
 				}
-			}.
+			},
 			{ // 5
 				someVar: ['test'],
 				otherVar: {
@@ -129,13 +129,13 @@ var tests = [
 				result: undefined
 			},
 			{
-				input: [[1,2,false],[2,1,false],[2,2,false]]
+				input: [[1,2,false],[2,1,false],[2,2,false]],
 				comment: 'Currently undfined with empty object - should return an empty '
 						+ 'object',
 				result: {}
 			},
 			{
-				input: [[1,3,false],[2.3.false]
+				input: [[1,3,false],[2.3.false]],
 				comment: 'Currently undefined/empty with some new data - should return new data',
 				result: {
 					doThis: true,
@@ -172,7 +172,7 @@ var tests = [
 			},
 			{
 				input: [[3,1,false],[3,2,false]],
-				comment, 'Current value, no new data - should return current data',
+				comment: 'Current value, no new data - should return current data',
 				result: {
 					doThis: false
 				}
@@ -186,7 +186,7 @@ var tests = [
 				}
 			},
 			{
-				input: [3,5,*],
+				input: [3,5,false],
 				comment: [
 					'Current value, new data - should return merged data',
 					'Should get default value for otherVar.*.varUnknown'
@@ -203,7 +203,8 @@ var tests = [
 					}
 				}
 			},
-				input: [[4,1,*],[4,2,*]],
+			{
+				input: [[4,1,false],[4,2,false]],
 				comment: [
 						'Current data, no new data',
 						'Should get default value for otherVar.*.varUnknown'
@@ -313,7 +314,7 @@ var tests = [
 			},
 			{
 				input: [5,3,1],
-				comments[
+				comments: [
 					'should append values for someVar'
 				],
 				result: {
@@ -331,7 +332,7 @@ var tests = [
 				}
 			}
 		]
-	},
+	}
 ];
 
 // Run the tests
@@ -384,9 +385,9 @@ describe('Skemer functionality checks', function() {
 									test.object[this[0]], test.data[this[1]]);
 
 						expect(result).toEqual(test.result);
-					}.bind(this.input[i]))
+					}.bind(this.input[i]));
 				}
 			}
-		}.bind(test[t]));
+		}.bind(tests[t]));
 	}
 });
