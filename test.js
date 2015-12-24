@@ -3,8 +3,6 @@ let skemer = require('./src/lib/skemer.js');
 let skemerSchemas = require('./src/lib/schema.js');
 
 let schema = {
-	multiple: true,
-	object: true,
 	type: {
 		doc: {
 			type: 'string'
