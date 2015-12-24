@@ -5,7 +5,6 @@ var packageInfo = require('./package.json');
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var jshint = require('gulp-jshint');
 var eslint = require('gulp-eslint');
 var jasmine = require('gulp-jasmine');
 var documentation = require('gulp-documentation');

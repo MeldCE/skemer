@@ -27,22 +27,22 @@ var skemerErrors = require('./errors.js');
  *          value or a default value. Otherwise, the new value
  */
 function setValueToType(context) {
-	console.log('\nsetValueToType', context);
+	//console.log('\nsetValueToType', context);
 	// If type is null start again the original schema for the value
 	if (context.schema.type === null) { // magical value to represent the schema (schema within the schema)
 		// Restart with base schema
-		console.log('!!!!!!!restarting with base schema', merge({}, context, {
-			schema: context.baseSchema
-		}));
+		//console.log('!!!!!!!restarting with base schema', merge({}, context, {
+		//	schema: context.baseSchema
+		//}));
 
 		validateAddData(merge({}, context, {
 			schema: context.baseSchema
 		}));
-		console.log('after null diving, value is', context.data);
+		//console.log('after null diving, value is', context.data);
 		return context.data;
 	} else {
 		if (typeof context.schema.type === 'string') { // A simple type or instance of a certain prototype
-			console.log('type given as string', context.schema.type);
+			//console.log('type given as string', context.schema.type);
 			switch (context.schema.type) {
 				case 'number':
 				case 'string':
@@ -97,7 +97,7 @@ function setValueToType(context) {
 					break;
 			}
 		} else if (context.schema.type instanceof Object) {
-			console.log('have a sub schema');
+			//console.log('have a sub schema');
 			if (context.newData === undefined) {
 				if (context.data === undefined
 						&& context.schema.default !== undefined) {
@@ -117,7 +117,7 @@ function setValueToType(context) {
 
 			var t, newValue;
 			for (t in context.schema.type) {
-				console.log('checking newData value of ' + t);
+				//console.log('checking newData value of ' + t);
 				if ((newValue = validateAddData(merge({}, context, {
 					schema:context.schema.type[t],
 					newData: context.newData[t],
@@ -161,19 +161,19 @@ function setValueToType(context) {
  * @returns {boolean} True if any data was added to the object
  */
 function validateAddData(context, inMultiple) {
-	console.log('validateAddData', context, inMultiple);
-	
+	//console.log('validateAddData', context, inMultiple);
+
 	var dataUndefined = (context.data === undefined);
 
 	if (!inMultiple && context.schema.multiple) {
-		console.log('should have multiple values');
-		
+		//console.log('should have multiple values');
+
 		if (context.newData === undefined) {
 			return undefined;
 		}
-		
+
 		if (context.schema.object) {
-			console.log('store in object');
+			//console.log('store in object');
 			if (context.newData) {
 				// Throw if we don't have an Object
 				if (!(context.newData instanceof Object)) {
@@ -190,7 +190,7 @@ function validateAddData(context, inMultiple) {
 				var o, newDataPart;
 
 				for (o in context.newData) {
-					console.log('looking at ' + o + ' in newData');
+					//console.log('looking at ' + o + ' in newData');
 					if ((newDataPart = validateAddData(merge({}, context, {
 								newData: context.newData[o],
 								data: newData[o],
@@ -206,7 +206,7 @@ function validateAddData(context, inMultiple) {
 				}
 			}
 		} else {
-			console.log('store in array');
+			//console.log('store in array');
 			// Throw if we don't have an Array
 			if (!(context.newData instanceof Array)) {
 				throw new skemerErrors.DataTypeError(context.parameter + 'must be '
@@ -214,12 +214,12 @@ function validateAddData(context, inMultiple) {
 			}
 
 			//let newData;
-			console.log(context.data);
+			//console.log(context.data);
 			if (context.data === undefined || context.schema.replace) {
-				console.log('currently undefined, creating array');
+				//console.log('currently undefined, creating array');
 				newData = [];
 			} else {
-				console.log('have a value already');
+				//console.log('have a value already');
 				newData = context.data;
 			}
 
@@ -242,40 +242,40 @@ function validateAddData(context, inMultiple) {
 		}
 	} else {
 		if (context.schema.types) {
-			console.log('have types, checking for value', context.schema, context.newData);
+			//console.log('have types, checking for value', context.schema, context.newData);
 			// Return default value if we don't have a value
 			if (context.newData === undefined) {
 				if (context.schema.default) {
 					/// @TODO Deep copy
-					console.log('no value, returning default');
+					//console.log('no value, returning default');
 					return context.schema.default;
 				} else {
-					console.log('no value, ignoring');
+					//console.log('no value, ignoring');
 					return undefined;
 				}
 			}
 
-			console.log('have types and a value', context.schema, context.newData);
+			//console.log('have types and a value', context.schema, context.newData);
 			//if (schema.type && schema.type instanceof Array) {
 			//}
 
 			// Go through possible types and return first one that returns a value
 			var t, value, validData = false;
 			for (t in context.schema.types) {
-				console.log('checking type ' + t + ' for ' + context.parameterName);
+				//console.log('checking type ' + t + ' for ' + context.parameterName);
 				try {
 					if ((value = setValueToType(merge({}, context, {
 								data: undefined,
 								schema: context.schema.types[t]
 							}))) !== undefined) {
-						console.log('success', value);
+						//console.log('success', value);
 						return context.data = value;
 					}
 				} catch(err) {
 					if (!(err instanceof skemerErrors.DataTypeError)) {
 						throw err;
 					}
-					console.log('Caught a type error - not that type');
+					//console.log('Caught a type error - not that type');
 				}
 			}
 
@@ -308,7 +308,9 @@ module.exports = {
 			throw new Error('Need a schema');
 		}
 
-		var context = options;
+		//console.log('validateAddData called with ', arguments.length, 'arguments\n', options);
+
+		var context = merge({}, options);
 
 		context.newData = data;
 
@@ -318,16 +320,19 @@ module.exports = {
 
 		data = validateAddData(context);
 		var i;
-		
+
+		//console.log('after initial data load, data is: ', context.data, '\n', context);
+
 		if (arguments.length > 2) {
 			for (i = 2; i < arguments.length; i++) {
 				//build context
 				context.newData = arguments[i];
 				data = validateAddData(context);
+				//console.log('after handling data', i, 'data is', context.data);
 			}
 		}
 
-		console.log('validateAdd complete', context);
+		//console.log('validateAdd complete', context);
 
 		return data;
 	}
