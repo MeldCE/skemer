@@ -107,26 +107,37 @@ function setValueToType(context) {
 				}
 			}
 
+
+			var newData;
 			if (context.data === undefined) {
-				context.data = {};
+				newData = {};
+			} else {
+				newData = context.data;
 			}
 
-			var t;
+			var t, newValue;
 			for (t in context.schema.type) {
 				console.log('checking newData value of ' + t);
-				validateAddData(merge({}, context, {
-					schema:context.schema.type,
+				if ((newValue = validateAddData(merge({}, context, {
+					schema:context.schema.type[t],
 					newData: context.newData[t],
+					data: newData[t],
 					parameterName: (context.parameterName ? context.parameterName + '.'
 							: '') + t
-				}));
+				}))) !== undefined) {
+					newData[t] = newValue;
+				}
 			}
 
-			if (Object.keys(context.data).length === 0) {
-				return (context.data = undefined);
+			if (Object.keys(newData).length !== 0) {
+				return (context.data = newData);
+			} else {
+				return context.data;
 			}
 		}
 	}
+
+	return context.data;
 }
 
 /** @internal
@@ -203,9 +214,12 @@ function validateAddData(context, inMultiple) {
 			}
 
 			//let newData;
+			console.log(context.data);
 			if (context.data === undefined || context.schema.replace) {
+				console.log('currently undefined, creating array');
 				newData = [];
 			} else {
+				console.log('have a value already');
 				newData = context.data;
 			}
 
@@ -215,10 +229,10 @@ function validateAddData(context, inMultiple) {
 				if ((newDataPart = validateAddData(merge({}, context, {
 							newData: context.newData[o],
 							data: undefined,
-							parameter: (context.parameter ? context.parameter + '.' : '')
-									+ o
+							parameterName: (context.parameterName ? context.parameterName
+									+ '.' : '') + o
 						}), true)) !== undefined) {
-					newData.push(newData);
+					newData.push(newDataPart);
 				}
 			}
 
@@ -228,7 +242,7 @@ function validateAddData(context, inMultiple) {
 		}
 	} else {
 		if (context.schema.types) {
-			console.log('have types, checking for value', context.schema, context.data);
+			console.log('have types, checking for value', context.schema, context.newData);
 			// Return default value if we don't have a value
 			if (context.newData === undefined) {
 				if (context.schema.default) {
@@ -241,7 +255,7 @@ function validateAddData(context, inMultiple) {
 				}
 			}
 
-			console.log('have types and a value', context.schema, context.data);
+			console.log('have types and a value', context.schema, context.newData);
 			//if (schema.type && schema.type instanceof Array) {
 			//}
 
@@ -249,12 +263,19 @@ function validateAddData(context, inMultiple) {
 			var t, value, validData = false;
 			for (t in context.schema.types) {
 				console.log('checking type ' + t + ' for ' + context.parameterName);
-				if ((value = setValueToType(merge({}, context, {
-							data: undefined,
-							schema: context.schema.types[t]
-						}))) !== undefined) {
-					console.log('success', value);
-					return context.data = value;
+				try {
+					if ((value = setValueToType(merge({}, context, {
+								data: undefined,
+								schema: context.schema.types[t]
+							}))) !== undefined) {
+						console.log('success', value);
+						return context.data = value;
+					}
+				} catch(err) {
+					if (!(err instanceof skemerErrors.DataTypeError)) {
+						throw err;
+					}
+					console.log('Caught a type error - not that type');
 				}
 			}
 
@@ -291,6 +312,9 @@ module.exports = {
 
 		context.newData = data;
 
+		if (context.baseSchema === undefined) {
+			context.baseSchema = context.schema;
+		}
 
 		data = validateAddData(context);
 		var i;
@@ -302,6 +326,8 @@ module.exports = {
 				data = validateAddData(context);
 			}
 		}
+
+		console.log('validateAdd complete', context);
 
 		return data;
 	}

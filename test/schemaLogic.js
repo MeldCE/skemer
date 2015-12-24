@@ -14,7 +14,7 @@ var options = [
 ];
 
 // Test Data
-var tests = [
+var suites = [
 	{
 		schema: {
 			type: {
@@ -335,30 +335,83 @@ var tests = [
 	}
 ];
 
+var map = ['output', 'data', 'options'];
+
+/**
+ * Function
+ */
+function mapFalseInputs(suite, input, p) {
+	if (p === undefined) {
+		p = 0;
+	}
+
+	for (p; p < input.length; p++) {
+		if (input[p] === false) {
+			var i, newInput = [];
+		
+			console.log('found false for', map[p]);
+			for (i in suite[map[p]]) {
+				var cloned = input.slice(0);
+				cloned[p] = i;
+				newInput.push(mapFalseInputs(suite, cloned));
+			}
+
+			return newInput;
+		}
+	}
+
+	return input;
+}
+
+
+// Fix false inputs
+var x;
+for (x in suites) {
+	var y;
+	for (y in suites[x].results) {
+		var res = suites[x].results[y];
+		// Make input an array of arrays if it isn't
+		if (!(res.input[0] instanceof Array)) {
+			res.input = [res.input];
+		}
+
+		var z;
+		for (z in res.input) {
+			console.log('expanding', res.input[z]);
+			res.input[z] = mapFalseInputs(suites[x], res.input[z]);
+			console.log('result', res.input[z]);
+		}
+	}
+}
+
+		
+
 // Run the tests
 describe('Skemer functionality checks', function() {
-	var t, testLabel;
-	for (t in tests) {
+	var s, testLabel;
+	for (s in suites) {
 		var o;
 
-		if (tests[t].label) {
-			testLabel = tests[t].label;
+		if (suites[s].label) {
+			testLabel = suites[s].label;
 		} else {
-			testLabel = 'Test ' + t;
+			testLabel = 'Test Suite ' + s;
 		}
 
 		// Add the schema to each test option
-		for (o in tests[t].options) {
-			tests[t].options.schema = tests[t].schema;
+		for (o in suites[s].options) {
+			suites[s].options.schema = suites[s].schema;
 		}
 
 		describe(testLabel, function() {
+			console.log('describe', this);
 			var r;
 
 			for (r in this.results) {
 				var i;
 				var test = this.results[r];
 				var comment;
+				console.log('result', r, test);
 
 				// Build comment
 				comment = 'should return the expected result';
@@ -374,20 +427,19 @@ describe('Skemer functionality checks', function() {
 					}
 				}
 
-				// Make input an array of arrays if it isn't
-				if (!(test.input[0] instanceof Array)) {
-					test.input = [test.input];
-				}
+				it(comment + ' ' + i, function(testSuite, mytest) {
 
-				for (i in test.input) {
-					it(comment + ' ' + i, function() {
-						var result = skemer.validateAddData(test.options[this[2]],
-									test.object[this[0]], test.data[this[1]]);
+					for (i in this.input) {
+						console.log('here?');
+							console.log('it', test, this.input[i]);
+							var result = skemer.validateAddData({schema: testSuite.options[this.input[i][2] - 1]},
+										testSuite.object[this.input[i][0] - 1], testSuite.data[this.input[i][1] - 1]);
 
-						expect(result).toEqual(test.result);
-					}.bind(this.input[i]));
-				}
+							expect(result).toEqual(mytest.result);
+					}
+					//break;
+				}.bind(test, this, test));
 			}
-		}.bind(tests[t]));
+		}.bind(suites[s]));
 	}
 });
