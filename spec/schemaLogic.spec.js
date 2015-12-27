@@ -1,5 +1,6 @@
 var skemerErrors = require('../src/lib/errors.js');
 var skemer = require('../src/lib/skemer.js');
+var clone = require('clone');
 
 var options = {
 	empty: {},
@@ -64,7 +65,7 @@ var suites = [
 				}
 			}
 		},
-		object: {
+		data: {
 			undef: undefined, // 1
 			empty: {}, // 2
 			XXX: { // Pretty lame with main level default values removed, what if this was sub-level?
@@ -86,14 +87,14 @@ var suites = [
 					},
 					two: {
 						another: false,
-						varUknown: [2]
+						varUnknown: [2]
 					}
 				}
 			}
 		},
-		data: {
+		newData: {
 			undef: undefined, // 1
-			emptyObj: {}, // 2
+			empty: {}, // 2
 			singleSomeVar: { // 3
 				doThis: true,
 				someVar: ['string']
@@ -113,7 +114,7 @@ var suites = [
 						vari: 'blah'
 					},
 					two:{
-						varUknown: [7]
+						varUnknown: [7]
 					}
 				}
 			},
@@ -121,9 +122,9 @@ var suites = [
 				doThis: 'bad string'
 			}
 		},
-		options: options,
+		options: clone(options),
 		results: [
-			/*{
+			{
 				input: [['undef','undef','empty'], ['undef','undef','replaceSomeVar']],
 				comment: 'currently undefined with undefined data - should return undefined',
 				result: undefined
@@ -133,8 +134,8 @@ var suites = [
 				comment: 'Currently undfined with empty object - should return an empty '
 						+ 'object',
 				result: {}
-			},*/
-			/*{
+			},
+			{
 				input: [['undef','singleSomeVar',false],['empty','singleSomeVar',false]],
 				comment: 'Currently undefined/empty with some new data - should return new data',
 				result: {
@@ -146,8 +147,8 @@ var suites = [
 				input: [false,'invalidOtherVar',false],
 				comment: 'Value for otherVar is not in an object - should throw because '
 						+ 'the value otherVar.another is not an object',
-				throws: skemerErrors.DataTypeError /// @TODO Change to schema error
-			},*/
+				throws: new skemerErrors.DataTypeError('Value of otherVar.another should be an Object')
+			},
 			{
 				input: [['undef','twoOtherVar',false],['empty','twoOtherVar',false]],
 				comment: [
@@ -161,14 +162,18 @@ var suites = [
 							another: true,
 							vari: 'blah',
 							varUnknown: [3,5]
+						},
+						two: {
+							varUnknown: [7],
+							vari: 'mycool'
 						}
 					}
 				}
 			},
-			/*{
+			{
 				input: [false,'invalidDoThis',false],
 				comment: 'Value for doThis is string instead of boolean, should throw error',
-				throws: skemerErrors.DataTypeError
+				throws: new skemerErrors.DataTypeError('Value of doThis should be a boolean')
 			},
 			{
 				input: [['XXX','undef',false],['XXX','empty',false]],
@@ -199,22 +204,41 @@ var suites = [
 							another: true,
 							vari: 'blah',
 							varUnknown: [3, 5]
+						},
+						two: {
+							vari: 'mycool',
+							varUnknown: [7]
 						}
 					}
 				}
 			},
 			{
-				input: [['singleOtherVar','undef',false],['singleOtherVar','empty',false]],
+				input: [['singleOtherVar','undef',false]],
 				comment: [
-						'Current data, no new data',
-						'Should get default value for otherVar.*.varUnknown'
+						'Current data, no newData, data will be validated',
+						'Should get default value for otherVar.*.varUnknown and otherVar.*.vari'
 				],
 				result: {
 					someVar: ['test'],
 					otherVar: {
 						two: {
 							another: false,
+							vari: 'mycool',
 							varUnknown: [3, 5]
+						}
+					}
+				}
+			},
+			{
+				input: [['singleOtherVar','empty',false]],
+				comment: [
+						'As have newData, data will be considered existing and not validated'
+				],
+				result: {
+					someVar: ['test'],
+					otherVar: {
+						two: {
+							another: false
 						}
 					}
 				}
@@ -223,10 +247,11 @@ var suites = [
 				input: ['singleOtherVar','singleSomeVar','empty'],
 				comment: [
 					'Current data and new data',
+					'should not use default value for varUnknown and vari as have current value',
 					'Should append new value of someVar to current value'
 				],
 				result: {
-					doThat: true,
+					doThis: true,
 					someVar: ['test', 'string'],
 					otherVar: {
 						two: {
@@ -242,12 +267,11 @@ var suites = [
 					'Should replace value of someVar with value in data'
 				],
 				result: {
-					doThat: true,
+					doThis: true,
 					someVar: ['string'],
 					otherVar: {
 						two: {
-							another: false,
-							varUnknown: [3, 5]
+							another: false
 						}
 					}
 				}
@@ -271,7 +295,8 @@ var suites = [
 						},
 						two: {
 							another: false,
-							varUknown: [7]
+							vari: 'mycool',
+							varUnknown: [7]
 						}
 					}
 				}
@@ -287,18 +312,41 @@ var suites = [
 					otherVar: {
 						one: {
 							another: true,
-							varUknown: [3, 5],
+							varUnknown: [3, 5],
 							vari: 'blah'
 						},
 						two: {
-							varUnknown: [7]
+							varUnknown: [7],
+							vari: 'mycool'
 						}
 					}
 				}
 			},
 			{
-				input: [['twoOtherVar','undef',false],['twoOtherVar','empty',false]],
-				comment: 'No new data',
+				input: [['twoOtherVar','undef',false]],
+				comment: [
+					'no new data so existing data will be validated'
+				],
+				result: {
+					someVar: ['test'],
+					otherVar: {
+						one: {
+							vari: 'mycool',
+							varUnknown: [1]
+						},
+						two: {
+							another: false,
+							vari: 'mycool',
+							varUnknown: [2]
+						}
+					}
+				}
+			},
+			{
+				input: [['twoOtherVar','empty',false]],
+				comment: [
+					'current data will not be verified as have new (empty) data'
+				],
 				result: {
 					someVar: ['test'],
 					otherVar: {
@@ -307,7 +355,7 @@ var suites = [
 						},
 						two: {
 							another: false,
-							varUknown: [2]
+							varUnknown: [2]
 						}
 					}
 				}
@@ -326,16 +374,74 @@ var suites = [
 						},
 						two: {
 							another: false,
-							varUknown: [2]
+							varUnknown: [2]
 						}
 					}
 				}
-			}*/
+			}
 		]
-	}
+	},
+	{
+		label: 'String schema',
+		schema: {
+			type: 'string'
+		},
+		data: {
+			undef: undefined,
+			string: 'test'
+		},
+		newData: {
+			undef: undefined,
+			empty: '',
+			string: 'newString'
+		},
+		options: clone(options),
+		results: [
+			{
+				input: ['undef', 'undef', false],
+				result: undefined
+			},
+			{
+				input: ['string', 'undef', false],
+				result: 'test'
+			},
+			{
+				input: [false, 'empty', false],
+				result: ''
+			},
+			{
+				input: [false, 'string', false],
+				result: 'newString'
+			}
+		]
+	}/*,
+	{
+		label: 'Required fields',
+		schema: {
+			type: {
+				string: {
+					type: 'string',
+					required: true
+				},
+				object: {
+					type: {
+						bool: {
+							type: 'boolean',
+							required: true
+						},
+						number: {
+							type: 'number',
+							required: true
+						}
+					},
+					required: true
+				}
+			}
+		}
+	}*/
 ];
 
-var map = ['output', 'data', 'options'];
+var map = ['data', 'newData', 'options'];
 
 /**
  * Function
@@ -352,8 +458,8 @@ function mapFalseInputs(suite, input, p) {
 			for (i in suite[map[p]]) {
 				var mapped, cloned = input.slice(0);
 				cloned[p] = i;
-				if ((mapped = mapFalseInputs(suite, cloned)) !== true) {
-					newInput.concat(mapped);
+				if ((mapped = mapFalseInputs(suite, cloned, p + 1)) !== true) {
+					newInput = newInput.concat(mapped);
 				} else {
 					newInput.push(cloned);
 				}
@@ -381,7 +487,6 @@ for (x in suites) {
 		for (z = res.input.length - 1; z >= 0; z--) {
 			var mapped;
 			if ((mapped = mapFalseInputs(suites[x], res.input[z])) !== true) {
-				console.log('\nmapping resulti\ninput:', res.input, '\nmapped:', mapped);
 				if (z + 1 < res.input.length) {
 					res.input = res.input.slice(0, z).concat(mapped, res.input.slice(z + 1));
 				} else {
@@ -395,7 +500,7 @@ for (x in suites) {
 
 
 // Run the tests
-describe('Skemer functionality checks', function() {
+describe('Skemer result checks', function() {
 	var s, testLabel;
 	for (s in suites) {
 		var o;
@@ -416,16 +521,15 @@ describe('Skemer functionality checks', function() {
 			var r;
 
 			for (r in this.results) {
-				var i;
 				var test = this.results[r];
 				var comment;
 
 				// Build comment
-				comment = 'should return the expected result';
+				comment = 'result';
 				if (test.comment) {
 					if (test.comment instanceof Array && test.comment.length) {
 						if (test.comment.length > 1) {
-							comment = test.comment.pop();
+							comment = ', and ' + test.comment.pop();
 						} else {
 							comment = '';
 						}
@@ -436,20 +540,41 @@ describe('Skemer functionality checks', function() {
 
 				//console.log('it', comment, r, test);
 
-				it(comment + ' ' + i, function(testSuite, mytest) {
+				describe(comment + ' ' + r, function(testSuite) {
+					var i, message;
 					//console.log('\n\nstart of it:', '\noptions: ', testSuite.options,
-					//			'\nobject: ', testSuite.object, '\ndata: ', testSuite.data);
+					//			'\ndata: ', testSuite.data, '\nnewData: ', testSuite.newData);
 
 					for (i in this.input) {
-							console.log('\n\nit:', test, '\ninputs:', this.input[i], '\noptions: ', testSuite.options[this.input[i][2]],
-										'\nobject: ', testSuite.object[this.input[i][0]], '\ndata: ', testSuite.data[this.input[i][1]]);
-							var result = skemer.validateAddData(testSuite.options[this.input[i][2]],
-										testSuite.object[this.input[i][0]], testSuite.data[this.input[i][1]]);
-							console.log('for', this.input[i], 'got', result, 'expected', mytest.result, '\n\n\n');
-							expect(result).toEqual(mytest.result);
+						//console.log('input is', this.input[i]);
+						if (this.throws) {
+							message = 'should throw';
+						} else {
+							message = 'should return expected value';
+						}
+
+						message += ' (' + this.input[i] + ')';
+						
+						it(message, function(input) {
+							//console.log('it:', testSuite, this);
+							//console.log('it in', this);
+							//console.log('\n\nit:', this, '\ninputs:', this, '\noptions: ', testSuite.options[this[2]],
+							//			'\ndata: ', testSuite.object[this[0]], '\nnewData: ', testSuite.data[this[1]]);
+							if (this.throws) {
+								expect(function () {skemer.validateAddData(testSuite.options[input[2]],
+										clone(testSuite.data[input[0]]), 
+										clone(testSuite.newData[input[1]]));}).toThrow(this.throws);
+							} else {
+								var result = skemer.validateAddData(testSuite.options[input[2]],
+											clone(testSuite.data[input[0]]),
+											clone(testSuite.newData[input[1]]));
+							
+								expect(result).toEqual(this.result);
+							}
+						}.bind(this, this.input[i]));
 					}
 					//break;
-				}.bind(test, this, test));
+				}.bind(test, this));
 			}
 		}.bind(suites[s]));
 	}

@@ -9,9 +9,9 @@ var eslint = require('gulp-eslint');
 var jasmine = require('gulp-jasmine');
 var documentation = require('gulp-documentation');
 var concat = require('gulp-concat');
-var cover = require('gulp-coverage');
 var checkDeps = require('gulp-check-deps');
 var replace = require('gulp-replace');
+var istanbul = require('gulp-istanbul');
 
 var eslintRules = {
 	'comma-dangle': 2,
@@ -26,7 +26,7 @@ var eslintRules = {
 	'no-shadow': 2,
 	'no-unused-vars': 1,
 	'no-undef': 2,
-	'no-var': 1,
+	'no-var': 0, // TODO 1,
 	"require-jsdoc": [2, {
 		"require": {
 			"FunctionDeclaration": true,
@@ -48,7 +48,7 @@ var paths = {
 	docs: 'docs/',
 	mainSrc: 'src/lib/skemer.js',
 	src: 'src/**/*.js',
-	tests: 'test/**/*.js',
+	tests: 'spec/**/*.spec.js',
 	mddoc: 'doc.md'
 };
 
@@ -97,22 +97,22 @@ gulp.task('test-lint', function() {
 			.pipe(eslint.failAfterError());
 });
 
-gulp.task('jasmine', ['lint', 'test-lint'], function() {
-	return gulp.src(paths.tests)
-			.pipe(jasmine());
+gulp.task('pre-test', ['lint', 'test-lint'], function() {
+	return gulp.src(paths.src)
+    // Covering files
+    .pipe(istanbul())
+    // Force `require` to return covered files
+    .pipe(istanbul.hookRequire())
+    // Write the covered files to a temporary directory
+    .pipe(gulp.dest('test-tmp/'));
 });
 
-gulp.task('coverage', ['lint', 'test-lint'], function() {
-	return gulp.src(paths.tests, { read: false})
-			.pipe(cover.instrument({
-				pattern: paths.src,
-				debugDirectory: 'debug'
-			}))
+gulp.task('jasmine', ['lint', 'test-lint', 'pre-test'], function() {
+	return gulp.src(paths.tests)
 			.pipe(jasmine())
-			.pipe(cover.gather())
-			.pipe(cover.format())
-			.pipe(gulp.dest(paths.reports));
+			.pipe(istanbul.writeReports());
 });
+
 
 gulp.task('docs', ['htmldocs', 'mddocs']);
 
@@ -125,7 +125,7 @@ gulp.task('htmldocs', ['lint'], function() {
 gulp.task('mddocs', ['lint'], function() {
 	return gulp.src(paths.src)
 			.pipe(documentation({ format: 'md' }))
-			.pipe(concat(paths.mddoc))
+			//.pipe(concat(paths.mddoc))
 			.pipe(gulp.dest(paths.build));
 });
 

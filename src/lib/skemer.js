@@ -1,7 +1,32 @@
 var merge = require('merge');
+var clone = require('clone');
 var skemerErrors = require('./errors.js');
 
-/** @internal
+/** @private
+ * Returns whether a certain variable should be replaced
+ *
+ * @param {Object} context Context of parameter to check
+ * @param {string} parameterName Name of parameter to check
+ *
+ * @returns {boolean}
+ */
+function shouldReplace(context) {
+	if (context.replace instanceof Object
+			&& typeof context.parameterName === 'string') {
+		if (typeof context.replace[context.parameterName] === 'boolean') {
+			return context.replace[context.parameterName];
+		}
+	}
+	if (typeof context.replace === 'boolean') {
+		return context.replace;
+	}
+	if (typeof context.schema.replace === 'boolean') {
+		return context.schema.replace;
+	}
+	return false;
+}
+
+/** @private
  * Validates a value against a certain type and returns the result. It is
  * different to (@link setValueToSchema) in that is does not handle a schema
  * with mulitple possible types instead a single type.
@@ -16,9 +41,6 @@ var skemerErrors = require('./errors.js');
  *        used in recursive schema
  * @param {boolean} context.inMultiple Used to determine if have called itself
  *        to validate a value that can have multiple values
- * @param {boolean} context.noThrow If true, if a value that doesn't match the
- *        schema is encountered, null will be returned instead of an error
- *        being thrown
  *
  * @throws {ValueError} When the new value (given in context.data) is not of
  *         the given type
@@ -28,6 +50,7 @@ var skemerErrors = require('./errors.js');
  */
 function setValueToType(context) {
 	//console.log('\nsetValueToType', context);
+	
 	// If type is null start again the original schema for the value
 	if (context.schema.type === null) { // magical value to represent the schema (schema within the schema)
 		// Restart with base schema
@@ -50,7 +73,7 @@ function setValueToType(context) {
 					if (context.newData !== undefined) {
 						if (typeof context.newData === context.schema.type) {
 							return context.newData;
-						} else if (!context.noThrow) {
+						} else {
 							throw new skemerErrors.DataTypeError('Value of '
 									+ context.parameterName + ' should be a '
 									+ context.schema.type);
@@ -65,7 +88,7 @@ function setValueToType(context) {
 					if (context.newData !== undefined) {
 						if (context.newData === null) {
 							return null;
-						} else if (!context.noThrow) {
+						} else {
 							throw new skemerErrors.DataTypeError('Value of '
 									+ context.parameterName + ' should be a '
 									+ context.schema.type);
@@ -80,7 +103,7 @@ function setValueToType(context) {
 						if (context.newData !== undefined) {
 							if (context.newData instanceof eval(context.schema.type)) {
 								return context.newData;
-							} else if (!context.noThrow) {
+							} else {
 								throw new skemerErrors.DataTypeError('Value of '
 										+ context.parameterName + ' should be a '
 										+ context.schema.type);
@@ -97,14 +120,21 @@ function setValueToType(context) {
 					break;
 			}
 		} else if (context.schema.type instanceof Object) {
-			//console.log('have a sub schema');
+
 			if (context.newData === undefined) {
-				if (context.data === undefined
-						&& context.schema.default !== undefined) {
-					return (context.data = context.schema.default);
+				if (context.data === undefined) {
+					if (context.schema.default !== undefined) {
+						return (context.data = context.schema.default);
+					}
 				} else {
-					return undefined;
+					return context.data;
 				}
+				return undefined;
+			}
+
+			if (!(context.newData instanceof Object)) {
+				throw new skemerErrors.DataTypeError('Value of '
+						+ context.parameterName + ' should be an Object');
 			}
 
 
@@ -129,7 +159,8 @@ function setValueToType(context) {
 				}
 			}
 
-			if (Object.keys(newData).length !== 0) {
+			if (Object.keys(newData).length !== 0
+					|| (context.data === undefined && context.newData !== undefined)) {
 				return (context.data = newData);
 			} else {
 				return context.data;
@@ -140,7 +171,7 @@ function setValueToType(context) {
 	return context.data;
 }
 
-/** @internal
+/** @private
  *
  * Add data to an object based on a schema from the data given.
  *
@@ -154,22 +185,23 @@ function setValueToType(context) {
  *        used in recursive schema
  * @param {boolean} context.inMultiple Used to determine if have called itself
  *        to validate a value that can have multiple values
- * @param {boolean} context.noThrow If true, if a value that doesn't match the
- *        schema is encountered, null will be returned instead of an error
- *        being thrown
  *
  * @returns {boolean} True if any data was added to the object
  */
 function validateAddData(context, inMultiple) {
 	//console.log('validateAddData', context, inMultiple);
 
-	var dataUndefined = (context.data === undefined);
-
 	if (!inMultiple && context.schema.multiple) {
 		//console.log('should have multiple values');
 
 		if (context.newData === undefined) {
-			return undefined;
+			if (context.data) {
+				return context.data;
+			} else if (context.schema.default) {
+				return (context.data = clone(context.schema.default));
+			} else {
+				return undefined;
+			}
 		}
 
 		if (context.schema.object) {
@@ -181,7 +213,7 @@ function validateAddData(context, inMultiple) {
 							+ 'object of values (' + typeof context.newData + ' given)');
 				}
 				var newData;
-				if (context.data === undefined || context.schema.replace) {
+				if (context.data === undefined || shouldReplace(context)) {
 					newData = {};
 				} else {
 					newData = context.data;
@@ -209,13 +241,14 @@ function validateAddData(context, inMultiple) {
 			//console.log('store in array');
 			// Throw if we don't have an Array
 			if (!(context.newData instanceof Array)) {
+				//console.log(context);
 				throw new skemerErrors.DataTypeError(context.parameter + 'must be '
 						+ 'an array of values (' + typeof context.newData + ' given)');
 			}
 
 			//let newData;
 			//console.log(context.data);
-			if (context.data === undefined || context.schema.replace) {
+			if (context.data === undefined || shouldReplace(context)) {
 				//console.log('currently undefined, creating array');
 				newData = [];
 			} else {
@@ -245,12 +278,11 @@ function validateAddData(context, inMultiple) {
 			//console.log('have types, checking for value', context.schema, context.newData);
 			// Return default value if we don't have a value
 			if (context.newData === undefined) {
-				if (context.schema.default) {
-					/// @TODO Deep copy
-					//console.log('no value, returning default');
-					return context.schema.default;
+				if (context.data) {
+					return context.data;
+				} else if (context.schema.default) {
+					context.data = merge(true, context.schema.default);
 				} else {
-					//console.log('no value, ignoring');
 					return undefined;
 				}
 			}
@@ -297,12 +329,13 @@ module.exports = {
 	 * @param {Object} options.schema An Object containing a valid schema
 	 *        should contain
 	 * @param {} data Data to validate and return. If no data is given,
-	 *           data containing any default values will be returned
-	 * @param {} ... Data to validate and merge into data
+	 *           data containing any default values will be returned. If newData
+	 *           is given, newData will be validated and merged into data.
+	 * @param {} newData, ... Data to validate and merge into data
 	 *
 	 * @returns {} Validated and merged data
 	 */
-	validateAddData: function(options, data) {
+	validateAddData: function(options, data, newData) {
 		// @TODO Properly validate options
 		if (!options.schema) {
 			throw new Error('Need a schema');
@@ -312,19 +345,26 @@ module.exports = {
 
 		var context = merge({}, options);
 
-		context.newData = data;
-
 		if (context.baseSchema === undefined) {
 			context.baseSchema = context.schema;
 		}
 
+		if (newData !== undefined) {
+			context.newData = newData;
+			context.data = data;
+		} else {
+			context.newData = data;
+		}
+
+		//console.log('about to start', context);
 		data = validateAddData(context);
 		var i;
 
 		//console.log('after initial data load, data is: ', context.data, '\n', context);
 
-		if (arguments.length > 2) {
-			for (i = 2; i < arguments.length; i++) {
+		if (arguments.length > 3) {
+			//console.log('have more than two datas');
+			for (i = 3; i < arguments.length; i++) {
 				//build context
 				context.newData = arguments[i];
 				data = validateAddData(context);
@@ -332,7 +372,7 @@ module.exports = {
 			}
 		}
 
-		//console.log('validateAdd complete', context);
+		//console.log('validateAdd complete', context, data);
 
 		return data;
 	}

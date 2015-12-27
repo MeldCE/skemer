@@ -8,12 +8,12 @@ var buildDocOptions = {
 };
 
 module.exports = {
-	/**
+	/** @private
 	 * Options that can be passed to the {@link buildDocs} functions
 	 */
 	buildDocOptions: buildDocOptions,
 
-	/**
+	/** @private
 	 * Schema detailing the requirements for Skemer Schema
 	 */
 	schema: {
@@ -101,7 +101,9 @@ module.exports = {
 		}
 	},
 
-	/** Options that can be passed when creating a Skemer Schema */
+	/** @private
+	 * Options that can be passed when creating a Skemer Schema
+	 */
 	schemaOptions: {
 		buildDocOptions: {
 			type: buildDocOptions

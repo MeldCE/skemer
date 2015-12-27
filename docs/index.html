@@ -23,59 +23,19 @@
             type='text' />
           <div id='toc'>
               <a
-                href='#Skemer'
+                href='#DataRangeError'
                 class='block bold'>
-                Skemer
-              </a>
-                <a
-                  href='#Skemer.addData'
-                  class='regular block'>
-                  .addData
-                </a>
-                <a
-                  href='#Skemer.buildDocOptions'
-                  class='regular block'>
-                  .buildDocOptions
-                </a>
-                <a
-                  href='#Skemer.schema'
-                  class='regular block'>
-                  .schema
-                </a>
-                <a
-                  href='#Skemer.schemaOptions'
-                  class='regular block'>
-                  .schemaOptions
-                </a>
-              <a
-                href='#addData'
-                class='block bold'>
-                addData
+                DataRangeError
               </a>
               <a
-                href='#build'
+                href='#DataRequiredError'
                 class='block bold'>
-                build
+                DataRequiredError
               </a>
               <a
-                href='#buildDocs'
+                href='#DataTypeError'
                 class='block bold'>
-                buildDocs
-              </a>
-              <a
-                href='#merge'
-                class='block bold'>
-                merge
-              </a>
-              <a
-                href='#set'
-                class='block bold'>
-                set
-              </a>
-              <a
-                href='#buildDocLines'
-                class='block bold'>
-                buildDocLines
+                DataTypeError
               </a>
               <a
                 href='#regexps'
@@ -133,24 +93,9 @@
                 regex
               </a>
               <a
-                href='#setValueToSchema'
+                href='#validateAddData'
                 class='block bold'>
-                setValueToSchema
-              </a>
-              <a
-                href='#setValueToType'
-                class='block bold'>
-                setValueToType
-              </a>
-              <a
-                href='#SkemedObject'
-                class='block bold'>
-                SkemedObject
-              </a>
-              <a
-                href='#Skemerd'
-                class='block bold'>
-                Skemerd
+                validateAddData
               </a>
           </div>
         </div>
@@ -158,382 +103,67 @@
       <div class='fix-margin-3'>
         <div class='px2'>
 <div class='py1'><section class='py2 clearfix'>
-  <h2 id='Skemer' class='mt0'>
-    Skemer<span class='gray'></span>
-  </h2>
-  
-      <h4>Static members</h4>
-        <div class='collapsible' id='Skemer.addData'>
-          <a href='#Skemer.addData'>
-            <code>
-              .addData<span class='gray'>(schema, data, object, options)</span>
-            </code>
-            <div class='force-inline'>
-              <p>Add data to an object based on a schema from the data given.</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='Skemer.addData' class='mt0'>
-                addData<span class='gray'>(schema, data, object, options)</span>
-              </h2>
-              <p>Add data to an object based on a schema from the data given.</p>
-            
-                <h4>Parameters</h4>
-                <ul class='suppress-p-margin'>
-                    <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>schema</strong>
-                      :
-                      <div class='force-inline'>
-                        <p>An Object containing a valid schema
-            should contain</p>
-            
-                      </div>
-                    </li>
-                    <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>data</strong>
-                      :
-                      <div class='force-inline'>
-                        <p>An Object containing data to put into the new object</p>
-            
-                      </div>
-                    </li>
-                    <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>object</strong>
-                      :
-                      <div class='force-inline'>
-                        <p>The Object that will be built</p>
-            
-                      </div>
-                    </li>
-                    <li> <strong>options</strong>
-                      :
-                      <div class='force-inline'>
-                        
-                      </div>
-                    </li>
-                </ul>
-                  <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-                  :
-                  <div class='force-inline'>
-                    <p>True if any data was added to the object</p>
-            
-                  </div>
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='Skemer.buildDocOptions'>
-          <a href='#Skemer.buildDocOptions'>
-            <code>
-              .buildDocOptions<span class='gray'></span>
-            </code>
-            <div class='force-inline'>
-              <p>Options that can be passed to the <a href="buildDocs"><code>buildDocs</code></a> functions</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='Skemer.buildDocOptions' class='mt0'>
-                buildDocOptions<span class='gray'></span>
-              </h2>
-              <p>Options that can be passed to the <a href="buildDocs"><code>buildDocs</code></a> functions</p>
-            
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='Skemer.schema'>
-          <a href='#Skemer.schema'>
-            <code>
-              .schema<span class='gray'></span>
-            </code>
-            <div class='force-inline'>
-              <p>Schema detailing the requirements for Skemer Schema</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='Skemer.schema' class='mt0'>
-                schema<span class='gray'></span>
-              </h2>
-              <p>Schema detailing the requirements for Skemer Schema</p>
-            
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='Skemer.schemaOptions'>
-          <a href='#Skemer.schemaOptions'>
-            <code>
-              .schemaOptions<span class='gray'></span>
-            </code>
-            <div class='force-inline'>
-              <p>Options that can be passed when creating a Skemer Schema</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='Skemer.schemaOptions' class='mt0'>
-                schemaOptions<span class='gray'></span>
-              </h2>
-              <p>Options that can be passed when creating a Skemer Schema</p>
-            
-            </section>
-          </div>
-        </div>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='addData' class='mt0'>
-    addData<span class='gray'>(context)</span>
+  <h2 id='DataRangeError' class='mt0'>
+    DataRangeError<span class='gray'>(message, extra)</span>
   </h2>
   
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>context</strong>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
           :
           <div class='force-inline'>
-            <p>An Object containing the context of the call.</p>
-
-          </div>
-            <ul>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> context.type
-                  <p>The type to validate the value against</p>
-</li>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> context.add
-                  <p>If true and value can contain multiple values
-add the value to the existing values</p>
-</li>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> context.baseSchema
-                  <p>The original schema, so that it can be
-used in recursive schema</p>
-</li>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> context.inMultiple
-                  <p>Used to determine if have called itself
-to validate a value that can have multiple values</p>
-</li>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> context.noThrow
-                  <p>If true, if a value that doesn&apos;t match the
-schema is encountered, null will be returned instead of an error
-being thrown</p>
-</li>
-            </ul>
-        </li>
-    </ul>
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      :
-      <div class='force-inline'>
-        <p>True if any data was added to the object</p>
-
-      </div>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='build' class='mt0'>
-    build<span class='gray'>(object, [silent])</span>
-  </h2>
-  <p>Merge object values into the existing object verifying each before
-merging</p>
-
-    <h4>Parameters</h4>
-    <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>object</strong>
-          :
-          <div class='force-inline'>
-            <p>Object to merge into existing object</p>
+            <p>Error message</p>
 
           </div>
         </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>silent</strong>
-          :
-          <div class='force-inline'>
-            <p>If true, if a parameter is invalid, it will
-be ignored rather than raising an Error</p>
-
-          </div>
-        </li>
-    </ul>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='buildDocs' class='mt0'>
-    buildDocs<span class='gray'>([options])</span>
-  </h2>
-  <p>Generates a JSDoc comment for the given schema.</p>
-
-    <h4>Parameters</h4>
-    <ul class='suppress-p-margin'>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code>]</code> <strong>options</strong>
-          :
-          <div class='force-inline'>
-            <p>Generation options</p>
-
-          </div>
-            <ul>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>]</code> options.scope
-                  <p>The string to prepend to the start of
-each parameter</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>]</code> options.preLine
-                  <p>String to include before each line</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> options.wrap
-                  <p>Wrap the lines at the given number of
-characters</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> options.tabWidth
-                  <p>Your favourite tab width used to
-calculate 80 characters</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> options.lineup
-                  <p>Line up broken lines with the start of
-the parameter details</p>
-</li>
-            </ul>
-        </li>
-    </ul>
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      :
-      <div class='force-inline'>
-        <p>JSDoc Formatted string containing the parameters of the
-scheme</p>
-
-      </div>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='merge' class='mt0'>
-    merge<span class='gray'>(object, newValues, [silent], [options])</span>
-  </h2>
-  <p>Merge object values into the existing object verifying each before
-merging</p>
-
-    <h4>Parameters</h4>
-    <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>object</strong>
-          :
-          <div class='force-inline'>
-            <p>Schema-shaped object</p>
-
-          </div>
-        </li>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>newValues</strong>
-          :
-          <div class='force-inline'>
-            <p>Object containing the values to merge into the
-object</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>silent</strong>
-          :
-          <div class='force-inline'>
-            <p>If true, if a parameter is invalid, it will
-be ignored rather than raising an Error</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code>]</code> <strong>options</strong>
-          :
-          <div class='force-inline'>
-            <p>Options</p>
-
-          </div>
-            <ul>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> options.addUnknown
-                  <p>Add unknown parameters to the
-object. If, not the parameters will be returned as errors</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> options.add
-                  <p>If the parameter is an Array, add the new
-value instead of replacing the existing values</p>
-</li>
-            </ul>
-        </li>
-    </ul>
-      <h4>Returns</h4>
-      <code><code>true</code> or <code>Array.Object</code></code>
-      :
-      <div class='force-inline'>
-        <p>Returns true if all</p>
-
-      </div>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='set' class='mt0'>
-    set<span class='gray'>(object, key, value, [add])</span>
-  </h2>
-  <p>Set a new value to a parameter in an object shaped by a Schema</p>
-
-    <h4>Parameters</h4>
-    <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>object</strong>
-          :
-          <div class='force-inline'>
-            <p>Schema-shaped object</p>
-
-          </div>
-        </li>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> or <code>Array.string</code> <strong>key</strong>
-          :
-          <div class='force-inline'>
-            <p>Parameter key of parameter to set if
-new value is validated. Use an Array of strings to set a nested
-parameter</p>
-
-          </div>
-        </li>
-        <li> <strong>value</strong>
-          :
-          <div class='force-inline'>
-            <p>New value for the parameter</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>add</strong>
-          :
-          <div class='force-inline'>
-            <p>If the parameter is an Array, add the new
-value instead of replacing the existing values</p>
-
-          </div>
-        </li>
-    </ul>
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> or <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code></code>
-      :
-      <div class='force-inline'>
-        <p>Returns false if the value failed validation or
-the parameter did not exist. Returns try if the set was
-successful. Returns the index of the new value if the parameter
-was an Array and the value was added to it</p>
-
-      </div>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='buildDocLines' class='mt0'>
-    buildDocLines<span class='gray'>(scheme, schema, pre)</span>
-  </h2>
-  
-    <h4>Parameters</h4>
-    <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>scheme</strong>
-          :
-          <div class='force-inline'>
-            <p>Object containing the scheme to build the
-documentation for</p>
-
-          </div>
-        </li>
-        <li> <strong>schema</strong>
+        <li> <strong>extra</strong>
           :
           <div class='force-inline'>
             
           </div>
         </li>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>pre</strong>
+    </ul>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='DataRequiredError' class='mt0'>
+    DataRequiredError<span class='gray'>(message, extra)</span>
+  </h2>
+  
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
           :
           <div class='force-inline'>
-            <p>String to prepend to the start of each parameter</p>
+            <p>Error message</p>
 
+          </div>
+        </li>
+        <li> <strong>extra</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='DataTypeError' class='mt0'>
+    DataTypeError<span class='gray'>(message, extra)</span>
+  </h2>
+  
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
+          :
+          <div class='force-inline'>
+            <p>Error message</p>
+
+          </div>
+        </li>
+        <li> <strong>extra</strong>
+          :
+          <div class='force-inline'>
+            
           </div>
         </li>
     </ul>
@@ -720,159 +350,33 @@ documentation for</p>
   
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='setValueToSchema' class='mt0'>
-    setValueToSchema<span class='gray'>(context, inMultiple, noThrow)</span>
+  <h2 id='validateAddData' class='mt0'>
+    validateAddData<span class='gray'>(options, data, newData)</span>
   </h2>
-  
+  <p>Add data to an object based on a schema from the data given.</p>
+
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>context</strong>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
           :
           <div class='force-inline'>
-            <p>Context of the validation</p>
+            <p>An object containing options</p>
 
           </div>
             <ul>
-                <li> context.object
-                  <p>The current value</p>
-</li>
-                <li> context.data
-                  <p>The schema to validate the data against</p>
-</li>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> context.schema
-                  <p>The type to validate the value against</p>
-</li>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> context.add
-                  <p>If true and value can contain multiple values
-add the value to the existing values</p>
-</li>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> context.baseSchema
-                  <p>The original schema, so that it can be
-used in recursive schema</p>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> options.schema
+                  <p>An Object containing a valid schema
+should contain</p>
 </li>
             </ul>
         </li>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> <strong>inMultiple</strong>
+        <li> <strong>data</strong>
           :
           <div class='force-inline'>
-            <p>Used to determine if have called itself to
-validate a value that can have multiple values</p>
-
+            
           </div>
         </li>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> <strong>noThrow</strong>
-          :
-          <div class='force-inline'>
-            <p>If true, if a value that doesn&apos;t match the schema
-is encountered, null will be returned instead of an error being
-thrown</p>
-
-          </div>
-        </li>
-    </ul>
-    <h4>Throws</h4>
-    <ul>
-        <li><code>ValueError</code>: <div class='force-inline'><p>When the value does not much the schema</p>
-</div></li>
-    </ul>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='setValueToType' class='mt0'>
-    setValueToType<span class='gray'>(context)</span>
-  </h2>
-  
-    <h4>Parameters</h4>
-    <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>context</strong>
-          :
-          <div class='force-inline'>
-            <p>Context of the validation</p>
-
-          </div>
-            <ul>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> context.schema
-                  <p>The schema to validate the value against</p>
-</li>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> context.add
-                  <p>If true and value can contain multiple values
-add the value to the existing values</p>
-</li>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> context.baseSchema
-                  <p>The original schema, so that it can be
-used in recursive schema</p>
-</li>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> context.inMultiple
-                  <p>Used to determine if have called itself
-to validate a value that can have multiple values</p>
-</li>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> context.noThrow
-                  <p>If true, if a value that doesn&apos;t match the
-schema is encountered, null will be returned instead of an error
-being thrown</p>
-</li>
-            </ul>
-        </li>
-    </ul>
-      <h4>Returns</h4>
-      <code></code>
-      :
-      <div class='force-inline'>
-        <p>undefined if no value set, either by the existing value, the new
-value or a default value. Otherwise, the new value</p>
-
-      </div>
-    <h4>Throws</h4>
-    <ul>
-        <li><code>ValueError</code>: <div class='force-inline'><p>When the new value (given in context.data) is not of
-the given type</p>
-</div></li>
-    </ul>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='SkemedObject' class='mt0'>
-    SkemedObject<span class='gray'>(schema, data)</span>
-  </h2>
-  
-    <h4>Parameters</h4>
-    <ul class='suppress-p-margin'>
-        <li><code><a href="#Skemer">Skemer</a></code> <strong>schema</strong>
-          :
-          <div class='force-inline'>
-            <p>A schema to use for the creation of the new object</p>
-
-          </div>
-        </li>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>data</strong>
-          :
-          <div class='force-inline'>
-            <p>Data to put into the new object</p>
-
-          </div>
-        </li>
-    </ul>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='Skemerd' class='mt0'>
-    Skemerd<span class='gray'>(schema, [options], Object)</span>
-  </h2>
-  
-    <h4>Parameters</h4>
-    <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>schema</strong>
-          :
-          <div class='force-inline'>
-            <p>Schema @see SkemerSchema</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code>]</code> <strong>options</strong>
-          :
-          <div class='force-inline'>
-            <p>Skemer options @see SkemerOptions</p>
-
-          </div>
-        </li>
-        <li> <strong>Object</strong>
+        <li> <strong>newData</strong>
           :
           <div class='force-inline'>
             
