@@ -12,6 +12,8 @@ var concat = require('gulp-concat');
 var checkDeps = require('gulp-check-deps');
 var replace = require('gulp-replace');
 var istanbul = require('gulp-istanbul');
+var stripDebug = require('gulp-strip-debug');
+var coveralls = require('gulp-coveralls');
 
 var eslintRules = {
 	'comma-dangle': 2,
@@ -42,13 +44,15 @@ var eslintRules = {
 };
 
 var paths = {
-	dist: 'dist/',
+	dist: './',
 	build: 'build/',
 	reports: 'reports/',
 	docs: 'docs/',
-	mainSrc: 'src/lib/skemer.js',
-	src: 'src/**/*.js',
+	src: 'src/lib/**/*.js',
+	srcTests: 'src/spec/**/*.spec.js',
+	srcJasmineJson: 'src/spec/support/jasmine.json',
 	tests: 'spec/**/*.spec.js',
+	lcov: 'coverage/lcov.info',
 	mddoc: 'doc.md'
 };
 
@@ -108,11 +112,22 @@ gulp.task('pre-test', ['lint', 'test-lint'], function() {
 });
 
 gulp.task('jasmine', ['lint', 'test-lint', 'pre-test'], function() {
-	return gulp.src(paths.tests)
+	return gulp.src(paths.srcTests)
 			.pipe(jasmine())
 			.pipe(istanbul.writeReports());
 });
 
+gulp.task('jasmine:production', ['copy', 'jasmine'], function() {
+	return gulp.src(paths.tests)
+			.pipe(jasmine())
+			.pipe(istanbul.writeReports())
+			.pipe(istanbul.enforceThresholds({ thresholds: { global: 100 } }));
+});
+
+gulp.task('coveralls', ['jasmine:production'], function() {
+	return gulp.src(paths.lcov)
+  			.pipe(coveralls());
+});
 
 gulp.task('docs', ['htmldocs', 'mddocs']);
 
@@ -142,10 +157,21 @@ gulp.task('readme', ['mddocs'], function() {
 			.pipe(gulp.dest('./'));
 });
 
+gulp.task('copy', ['jasmine', 'copy:jasmine.json'], function() {
+	return gulp.src([paths.src, paths.srcTests], { base: 'src' })
+		.pipe(stripDebug())
+		.pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('copy:jasmine.json', ['jasmine'], function() {
+	return gulp.src(paths.srcJasmineJson, { base: 'src' })
+		.pipe(gulp.dest(paths.dist));
+});
+
 gulp.task('watch', function() {
-	gulp.watch([paths.src, paths.tests], ['jasmine']);
+	gulp.watch([paths.src, paths.srcTests], ['jasmine']);
 	gulp.watch(paths.src, ['lint']);
-	gulp.watch(paths.tests, ['test-lint']);
+	gulp.watch(paths.srcTests, ['test-lint']);
 	gulp.watch(['src/README.md', paths.src], ['readme']);
 	gulp.watch(paths.src, ['docs']);
 	gulp.watch('package.json', ['check:deps']);
@@ -157,3 +183,4 @@ gulp.task('one', defaultTasks);
 
 gulp.task('default', defaultTasks.concat(['watch']));
 
+gulp.task('production', defaultTasks.concat(['copy', 'jasmine:production', 'coveralls']));

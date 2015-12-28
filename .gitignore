@@ -5,4 +5,8 @@ build
 reports
 debug
 out
-npm-debug-log*
+npm-debug.log*
+.coveralls.yml
+.coverdata
+.coverrun
+coverage
