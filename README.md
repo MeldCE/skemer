@@ -4,72 +4,22 @@
 [![Dependency Status](https://david-dm.org/MeldCE/skemer.svg)](https://david-dm.org/MeldCE/skemer)
 [![devDependency Status](https://david-dm.org/MeldCE/skemer/dev-status.svg)](https://david-dm.org/MeldCE/skemer#info=devDependencies)
 [![Coverage Status](https://coveralls.io/repos/MeldCE/skemer/badge.svg)](https://coveralls.io/github/MeldCE/skemer)
+[![Donate](https://img.shields.io/badge/donate-%20%E2%9D%A4%20-blue.svg)](https://www.paypal.me/theelectricwiz)
 
-An object validation tool to check an object against a scheme
+A Javascript variable validation and merge tool
 
+This library can be used to ensure a variable and any additions to that
+variable adhere to a certain schema. The schema can be as simple as allowing
+a string value, to as complex as a nested Object.
 
-# DataRangeError
+The library contains the `validateAddData` function for doing single
+validations / merges, a `Skemer` prototype for doing multiple validations /
+merges against the same schema, and a `makeJSDoc` function for creating
+a JSDoc comment from the schema and its `doc` parameters.
 
-**Parameters**
+# Skemer API
 
--   `message` **string** Error message
--   `extra`  
-
-# DataRequiredError
-
-**Parameters**
-
--   `message` **string** Error message
--   `extra`  
-
-# DataTypeError
-
-**Parameters**
-
--   `message` **string** Error message
--   `extra`  
-
-# regexps
-
-Common regular expressions that can be used the regex Schema parameter
-
-## GIT_REF_NAME
-
-Git reference (branches etc) name
-
-## HOSTNAME
-
-Hostname or domain name
-
-## IPV4
-
-IPv4 address
-
-## IPV6
-
-IPv6 address
-
-# regexps
-
-## GIT_REF_NAME
-
-Git reference (branches etc) name
-
-## HOSTNAME
-
-Hostname or domain name
-
-## IPV4
-
-IPv4 address
-
-## IPV6
-
-IPv6 address
-
-# regex
-
-# validateAddData
+## validateAddData
 
 Add data to an object based on a schema from the data given.
 
@@ -80,3 +30,31 @@ Add data to an object based on a schema from the data given.
                should contain
 -   `data`  
 -   `newData`  
+
+
+# Skemer Errors
+
+The Skemer library will throw the following Errors if any errors in the Schema
+or the variables are found
+
+## DataRangeError
+
+**Parameters**
+
+-   `message` **string** Error message
+-   `extra`  
+
+## DataRequiredError
+
+**Parameters**
+
+-   `message` **string** Error message
+-   `extra`  
+
+## DataTypeError
+
+**Parameters**
+
+-   `message` **string** Error message
+-   `extra`  
+

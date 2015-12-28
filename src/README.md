@@ -4,6 +4,26 @@
 [![Dependency Status](https://david-dm.org/MeldCE/skemer.svg)](https://david-dm.org/MeldCE/skemer)
 [![devDependency Status](https://david-dm.org/MeldCE/skemer/dev-status.svg)](https://david-dm.org/MeldCE/skemer#info=devDependencies)
 [![Coverage Status](https://coveralls.io/repos/MeldCE/skemer/badge.svg)](https://coveralls.io/github/MeldCE/skemer)
+[![Donate](https://img.shields.io/badge/donate-%20%E2%9D%A4%20-blue.svg)](https://www.paypal.me/theelectricwiz)
 
 %%description%%
 
+This library can be used to ensure a variable and any additions to that
+variable adhere to a certain schema. The schema can be as simple as allowing
+a string value, to as complex as a nested Object.
+
+The library contains the `validateAddData` function for doing single
+validations / merges, a `Skemer` prototype for doing multiple validations /
+merges against the same schema, and a `makeJSDoc` function for creating
+a JSDoc comment from the schema and its `doc` parameters.
+
+# Skemer API
+
+<!--=include ../build/skemer.js.md -->
+
+# Skemer Errors
+
+The Skemer library will throw the following Errors if any errors in the Schema
+or the variables are found
+
+<!--=include ../build/errors.js.md -->

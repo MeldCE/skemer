@@ -14,6 +14,9 @@ var replace = require('gulp-replace');
 var istanbul = require('gulp-istanbul');
 var stripDebug = require('gulp-strip-debug');
 var coveralls = require('gulp-coveralls');
+var foreach = require('gulp-foreach');
+var rename = require('gulp-rename');
+var include = require('gulp-include');
 
 var eslintRules = {
 	'comma-dangle': 2,
@@ -139,10 +142,26 @@ gulp.task('htmldocs', ['lint'], function() {
 
 gulp.task('mddocs', ['lint'], function() {
 	return gulp.src(paths.src)
-			.pipe(documentation({ format: 'md' }))
+			.pipe(foreach(function(stream, file) {
+				return stream
+						.pipe(documentation({ format: 'md', shallow: true }))
+						.pipe(replace(/^#/gm, '##'))
+						.pipe(concat(file.relative + '.md'));
+						//.pipe(rename({
+						//	basename: file.name,
+						//	extname: '.md'
+						//}));
+			}))
 			//.pipe(concat(paths.mddoc))
 			.pipe(gulp.dest(paths.build));
 });
+
+/*gulp.task('mddocs', ['lint'], function() {
+	return gulp.src(paths.src)
+			.pipe(documentation({ format: 'md' }))
+			//.pipe(concat(paths.mddoc))
+			.pipe(gulp.dest(paths.build));
+});*/
 
 gulp.task('readme', ['mddocs'], function() {
 	return gulp.src(['src/README.md', path.join(paths.build, paths.mddoc)])
@@ -154,6 +173,7 @@ gulp.task('readme', ['mddocs'], function() {
 					return match;
 				}
 			}))
+			.pipe(include())
 			.pipe(gulp.dest('./'));
 });
 

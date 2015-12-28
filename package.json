@@ -1,7 +1,7 @@
 {
   "name": "skemer",
   "version": "0.0.1",
-  "description": "An object validation tool to check an object against a scheme",
+  "description": "A Javascript variable validation and merge tool",
   "main": "lib/skemer.js",
   "scripts": {
     "test": "node_modules/jasmine/bin/jasmine.js"
@@ -30,8 +30,11 @@
     "gulp-coveralls": "^0.1.4",
     "gulp-documentation": "^2.1.0",
     "gulp-eslint": "^1.1.1",
+    "gulp-foreach": "^0.1.0",
+    "gulp-include": "^2.1.0",
     "gulp-istanbul": "^0.10.3",
     "gulp-jasmine": "^2.2.1",
+    "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-strip-debug": "^1.1.0",
     "gulp-util": "^3.0.7",
