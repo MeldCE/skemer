@@ -12,7 +12,7 @@ This library can be used to ensure a variable and any additions to that
 variable adhere to a certain schema. The schema can be as simple as allowing
 a string value, to as complex as a nested Object.
 
-The library contains the `validateAddData` function for doing single
+The library contains the `validateAdd` function for doing single
 validations / merges, a `Skemer` prototype for doing multiple validations /
 merges against the same schema, and a `makeJSDoc` function for creating
 a JSDoc comment from the schema and its `doc` parameters.
