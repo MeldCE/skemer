@@ -20,7 +20,9 @@ var schema = {
 					type: 'string'
 				},
 				{
-					type: null
+					type: null,
+					multiple: true,
+					object: true
 				}
 			]
 		},
@@ -103,7 +105,10 @@ module.exports = {
 
 	options: {
 		type: {
-			schema: schema,
+			schema: {
+				require: true,
+				type: schema.type
+			},
 			baseSchema: schema
 		}
 	},
@@ -117,8 +122,4 @@ module.exports = {
 		}
 	}
 };
-
-
-// Make schema required
-module.exports.options.type.schema.required = true;
 
