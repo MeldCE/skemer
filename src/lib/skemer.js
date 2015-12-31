@@ -77,10 +77,50 @@ function setValueToType(context) {
 				case 'boolean':
 					if (context.newData !== undefined) {
 						if (typeof context.newData === context.schema.type) {
+							var parts = [];
+							// TODO Add min/max checks for string?
+							if (context.schema.type === 'number') {
+								if ((context.schema.min !== undefined
+										&& context.newData < context.schema.min)
+										|| (context.schema.max !== undefined
+										&& context.newData >= context.schema.max)) {
+									if (context.schema.min !== undefined) {
+										parts.push('greater than or equal to '
+												+ context.schema.min);
+									}
+									if (context.schema.max !== undefined) {
+										parts.push('less than ' + context.schema.max);
+									}
+									throw new errors.DataRangeError('Value'
+									+ (context.parameterName ? ' for ' + context.parameterName
+									: '') + ' must be '
+											+ parts.join(' and '));
+								}
+							} else if (context.schema.type === 'string') {
+								if ((context.schema.min !== undefined
+										&& context.newData.length < context.schema.min)
+										|| (context.schema.max !== undefined
+										&& context.newData.length > context.schema.max)) {
+									if (context.schema.min !== undefined) {
+										parts.push('atleast ' + context.schema.min
+												+ ' characters');
+									}
+									if (context.schema.max !== undefined) {
+										parts.push('no more than ' + context.schema.max
+												+ ' characters');
+									}
+									throw new errors.DataRangeError('Value'
+									+ (context.parameterName ? ' for ' + context.parameterName
+									: '') + ' must be '
+											+ parts.join(' and '));
+								}
+							}
+
 							context.data = context.newData;
 						} else {
-							throw new errors.DataTypeError('Value of '
-									+ context.parameterName + ' should be a '
+							throw new errors.DataTypeError('Value'
+									+ (context.parameterName ? ' for ' + context.parameterName
+									: '') + ' must be a '
 									+ context.schema.type);
 						}
 					}
@@ -91,8 +131,9 @@ function setValueToType(context) {
 						if (context.newData === null) {
 							context.data = null;
 						} else {
-							throw new errors.DataTypeError('Value of '
-									+ context.parameterName + ' should be a '
+							throw new errors.DataTypeError('Value'
+									+ (context.parameterName ? ' for ' + context.parameterName
+									: '') + ' must be a '
 									+ context.schema.type);
 						}
 					}
@@ -104,14 +145,17 @@ function setValueToType(context) {
 							type = eval(context.schema.type);
 						} catch(error) {
 							throw new errors.SchemaError('Error determining type to test ' 
-									+ 'against for ' + context.parameterNameerror + ': '
-									+ error.toString());
+									+ 'against'
+									+ (context.parameterName ? ' for ' + context.parameterName
+									: '')
+									+ ': ' + error.toString());
 						}
 						if (context.newData instanceof type) {
 							context.data = context.newData;
 						} else {
-							throw new errors.DataTypeError('Value of '
-									+ context.parameterName + ' should be a '
+							throw new errors.DataTypeError('Value'
+									+ (context.parameterName ? ' for ' + context.parameterName
+									: '') + ' should be a '
 									+ context.schema.type);
 						}
 					}
@@ -120,8 +164,9 @@ function setValueToType(context) {
 		} else if (context.schema.type instanceof Object) {
 			if (context.newData !== undefined) {
 				if (!(context.newData instanceof Object)) {
-					throw new errors.DataTypeError('Value of '
-							+ context.parameterName + ' should be an Object');
+					throw new errors.DataTypeError('Value'
+							+ (context.parameterName ? ' for ' + context.parameterName : '')
+							+ ' should be an Object');
 				}
 
 
@@ -161,7 +206,8 @@ function setValueToType(context) {
 	}
 
 	if (context.data === undefined && context.schema.required) {
-		throw new errors.DataRequiredError('Value for ' + context.parameterName
+		throw new errors.DataRequiredError('Value'
+				+ (context.parameterName ? ' for ' + context.parameterName : '')
 				+ ' required', context);
 	}
 
