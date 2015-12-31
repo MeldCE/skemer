@@ -1,11 +1,10 @@
 var errors = require('../../lib/errors.js');
 var buildTests = require('../helpers/builder.js');
-var clone = require('clone');
 
 // Test Data
 var suites = [
 	{
-		label: 'Number type',
+		label: 'simple number variable',
 		schema: {
 			type: 'number'
 		},
@@ -44,7 +43,7 @@ var suites = [
 		]
 	},
 	{
-		label: 'Number type required',
+		label: 'Simple required number variable',
 		schema: {
 			type: 'number',
 			required: true
@@ -79,7 +78,7 @@ var suites = [
 		]
 	},
 	{
-		label: 'Number type required min/max',
+		label: 'Simple required number variable with min/max requirements',
 		schema: {
 			type: 'number',
 			required: true,
@@ -132,7 +131,7 @@ var suites = [
 						+ 'equal to 4 and less than 9')
 			},
 		]
-	},
+	}
 ];
 
-buildTests(suites);
+buildTests('Number type tests', suites);

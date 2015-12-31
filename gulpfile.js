@@ -17,6 +17,7 @@ var coveralls = require('gulp-coveralls');
 var foreach = require('gulp-foreach');
 var rename = require('gulp-rename');
 var include = require('gulp-include');
+var coolReporter = require('jasmine2-reporter').Jasmine2Reporter;
 
 var eslintRules = {
 	'comma-dangle': 2,
@@ -188,6 +189,15 @@ gulp.task('copy:jasmine.json', ['jasmine'], function() {
 		.pipe(gulp.dest(paths.dist));
 });
 
+gulp.task('test', function() {
+	return gulp.src(paths.srcTests)
+			.pipe(jasmine({
+				reporter: new coolReporter({
+					inColors: true
+				})
+			}))
+});
+
 gulp.task('watch', function() {
 	gulp.watch([paths.src, paths.srcTests], ['jasmine']);
 	gulp.watch(paths.src, ['lint']);
@@ -202,7 +212,5 @@ defaultTasks = ['check:deps', 'jasmine', 'docs', 'readme'];
 gulp.task('one', defaultTasks);
 
 gulp.task('default', defaultTasks.concat(['watch']));
-
-gulp.task('test', ['jasmine']);
 
 gulp.task('production', defaultTasks.concat(['copy', 'jasmine:production', 'coveralls']));

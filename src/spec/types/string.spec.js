@@ -1,11 +1,10 @@
 var errors = require('../../lib/errors.js');
 var buildTests = require('../helpers/builder.js');
-var clone = require('clone');
 
 // Test Data
 var suites = [
 	{
-		label: 'String type',
+		label: 'Simple string variable',
 		schema: {
 			type: 'string'
 		},
@@ -44,7 +43,7 @@ var suites = [
 		]
 	},
 	{
-		label: 'String type required',
+		label: 'Simple required string variable',
 		schema: {
 			type: 'string',
 			required: true
@@ -79,7 +78,7 @@ var suites = [
 		]
 	},
 	{
-		label: 'String type required min/max',
+		label: 'Simple require string with min/max length requirements',
 		schema: {
 			type: 'string',
 			required: true,
@@ -132,7 +131,7 @@ var suites = [
 						+ 'characters and no more than 9 characters')
 			},
 		]
-	},
+	}
 ];
 
-buildTests(suites);
+buildTests('String type tests', suites);

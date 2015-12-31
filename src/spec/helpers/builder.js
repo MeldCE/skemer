@@ -31,7 +31,7 @@ function mapFalseInputs(suite, input, p) {
 	return true;
 }
 
-var buildTests = module.exports = function(testSuites) {
+var buildTests = module.exports = function(suiteLabel, testSuites) {
 	// Fix false inputs
 	var x;
 	for (x in testSuites) {
@@ -60,7 +60,7 @@ var buildTests = module.exports = function(testSuites) {
 
 
 	// Run the tests
-	describe('Skemer result checks', function() {
+	describe(suiteLabel, function() {
 		var s, testLabel;
 		for (s in testSuites) {
 			var o;
