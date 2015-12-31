@@ -1,8 +1,6 @@
 "use strict";
 
 /** @module Skemer/Schemas */
-var regex = require('./regexs.js');
-
 
 var buildDocOptions = {
 };

@@ -4,7 +4,7 @@
   "description": "A Javascript variable validation and merge tool",
   "main": "lib/skemer.js",
   "scripts": {
-    "test": "node_modules/jasmine/bin/jasmine.js"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
