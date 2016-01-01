@@ -1,5 +1,5 @@
 var skemerErrors = require('../lib/errors.js');
-var buildTests = require('./helpers/builder.js');
+var buildTests = require('./lib/builder.js');
 var clone = require('clone');
 
 var options = {
@@ -380,7 +380,7 @@ var suites = [
 				}
 			}
 		]
-	},
+	}
 ];
 
 

@@ -25,6 +25,22 @@ util.inherits(SchemaError, Error);
  * @param {string} message Error message
  * @param {} extra Extra information
  */
+var DataItemsError = module.exports.DataItemsError
+		= function(message, extra) {
+	Error.captureStackTrace(this, this.constructor);
+  //this.name = this.constructor.name;
+  this.name = 'DataItemsError';
+  this.message = message;
+  this.extra = extra;
+};
+util.inherits(DataItemsError, Error);
+
+/** @constructor
+ * Returned if the parameter value is out of the given range
+ *
+ * @param {string} message Error message
+ * @param {} extra Extra information
+ */
 var OptionsError = module.exports.OptionsError
 		= function(message, extra) {
 	Error.captureStackTrace(this, this.constructor);

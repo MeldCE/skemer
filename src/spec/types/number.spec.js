@@ -1,5 +1,5 @@
 var errors = require('../../lib/errors.js');
-var buildTests = require('../helpers/builder.js');
+var buildTests = require('../lib/builder.js');
 
 // Test Data
 var suites = [
@@ -129,7 +129,7 @@ var suites = [
 				input: [false, 'biggerNumber', false],
 				throws: new errors.DataRangeError('Value must be greater than or '
 						+ 'equal to 4 and less than 9')
-			},
+			}
 		]
 	}
 ];

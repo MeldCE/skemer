@@ -34,18 +34,7 @@ var schema = {
 					+ "allowed. Can be a boolean, or a number (the number of values "
 					+ "that the parameter must have, or an array containing the "
 					+ "minimum number of values and teh maximum number of values.",
-			types: [
-				{
-					type: 'boolean'
-				},
-				{
-					type: 'number'
-				},
-				{
-					type: 'number',
-					multiple: [1, 2]
-				}
-			]
+			type: 'boolean'
 		},
 		object: {
 			doc: "If multiple is true object is true, will force values to be "
@@ -71,10 +60,18 @@ var schema = {
 					+ "parameter is required",
 			types: [
 				{
+					type: 'boolean'
+				},
+				{
 					type: 'Function'
 				},
 				{
-					type: 'boolean'
+					type: 'number'
+				},
+				{
+					type: 'number',
+					multiple: true,
+					required: [1, 2]
 				}
 			]
 		},
@@ -107,7 +104,19 @@ module.exports = {
 				require: true,
 				type: schema.type
 			},
-			baseSchema: schema
+			baseSchema: schema,
+			replace: {
+				types: [
+					{
+						type: 'boolean'
+					},
+					{
+						type: 'boolean',
+						multiple: true,
+						object: true
+					}
+				]
+			}
 		}
 	},
 

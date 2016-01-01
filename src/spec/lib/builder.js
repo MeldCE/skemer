@@ -81,60 +81,58 @@ var buildTests = module.exports = function(suiteLabel, testSuites) {
 				var r;
 
 				for (r in this.results) {
-					var test = this.results[r];
-					var comment;
+					var ttest = this.results[r];
 
-					// Build comment
-					comment = 'result';
-					if (test.comment) {
-						if (test.comment instanceof Array && test.comment.length) {
-							if (test.comment.length > 1) {
-								comment = ', and ' + test.comment.pop();
+					//describe(comment + ' ' + r, function(testSuite) {
+					var i, message;
+					//console.log('\n\nstart of it:', '\noptions: ', testSuite.options,
+					//			'\ndata: ', testSuite.data, '\nnewData: ', testSuite.newData);
+
+					if (ttest.label) {
+						if (ttest.label instanceof Array) {
+							if (ttest.label.length === 1) {
+								message = ttest.label[0];
 							} else {
-								comment = '';
+								var end = ttest.label.pop();
+								message = ttest.label.join(', ') + ' and ' + end;
 							}
-
-							comment = test.comment.join(', ') + comment;
+						} else {
+							message = ttest.label;
+						}
+					} else {
+						if (this.throws) {
+							message = 'should throw';
+						} else {
+							message = 'should return expected value';
 						}
 					}
 
-					//console.log('it', comment, r, test);
-
-					describe(comment + ' ' + r, function(testSuite) {
-						var i, message;
-						//console.log('\n\nstart of it:', '\noptions: ', testSuite.options,
-						//			'\ndata: ', testSuite.data, '\nnewData: ', testSuite.newData);
-
-						for (i in this.input) {
-							//console.log('input is', this.input[i]);
-							if (this.throws) {
-								message = 'should throw';
+					for (i in ttest.input) {
+						//console.log('input is', this.input[i]);
+						it('(' + ttest.input[i] + ') ' + message, function(test, input) {
+							//console.log('it:', testSuite, this);
+							//console.log('it in', this);
+							//console.log('\n\nit:', '\ninputs:', this, '\noptions: ', testSuite.options[input[2]],
+							//		'\ndata: ', testSuite.data[input[0]], '\nnewData: ', testSuite.newData[input[1]]);
+							if (test.throws) {
+								expect(function (options, data, newData) {
+									if (!this.options) {
+										console.log('\n\nno options\n', test, '\n', this);
+									}
+									skemer.validateAdd(options, data, newData);
+								}.bind(this, this.options[input[2]],
+										clone(this.data[input[0]]),
+										clone(this.newData[input[1]]))).toThrow(test.throws);
 							} else {
-								message = 'should return expected value';
-							}
-
-							message += ' (' + this.input[i] + ')';
+								var result = skemer.validateAdd(this.options[input[2]],
+											clone(this.data[input[0]]),
+											clone(this.newData[input[1]]));
 							
-							it(message, function(input) {
-								//console.log('it:', testSuite, this);
-								//console.log('it in', this);
-								//console.log('\n\nit:', this, '\ninputs:', this, '\noptions: ', testSuite.options[this[2]],
-								//			'\ndata: ', testSuite.object[this[0]], '\nnewData: ', testSuite.data[this[1]]);
-								if (this.throws) {
-									expect(function () {skemer.validateAdd(testSuite.options[input[2]],
-											clone(testSuite.data[input[0]]), 
-											clone(testSuite.newData[input[1]]));}).toThrow(this.throws);
-								} else {
-									var result = skemer.validateAdd(testSuite.options[input[2]],
-												clone(testSuite.data[input[0]]),
-												clone(testSuite.newData[input[1]]));
-								
-									expect(result).toEqual(this.result);
-								}
-							}.bind(this, this.input[i]));
-						}
-						//break;
-					}.bind(test, this));
+								expect(result).toEqual(test.result);
+							}
+						}.bind(this, ttest, ttest.input[i]));
+					}
+					//}.bind(test, this));
 				}
 			}.bind(testSuites[s]));
 		}

@@ -14,10 +14,13 @@ var util = require('util');
  * @returns {boolean}
  */
 function shouldReplace(context) {
-	if (context.replace instanceof Object
-			&& typeof context.parameterName === 'string') {
-		if (typeof context.replace[context.parameterName] === 'boolean') {
-			return context.replace[context.parameterName];
+	//console.log('\nshouldReplace\n', context);
+	if (context.replace instanceof Object) {
+		var name = (context.parameterName !== undefined ? context.parameterName
+				: '');
+		//console.log('\nname is: ', name);
+		if (typeof context.replace[name] === 'boolean') {
+			return context.replace[name];
 		}
 	}
 	if (typeof context.replace === 'boolean') {
@@ -244,8 +247,9 @@ function doValidateAdd(context, inMultiple) {
 				return (context.data = clone(context.schema.default));
 			} else {
 				if (context.schema.required) {
-					throw new errors.DataRequiredError('Value for '
-							+ context.parameterName + ' required');
+					throw new errors.DataRequiredError('Value' + (context.parameterName
+							? ' for ' + context.parameterName
+										: '') + ' required');
 				}
 				return undefined;
 			}
@@ -293,8 +297,10 @@ function doValidateAdd(context, inMultiple) {
 			// Throw if we don't have an Array
 			if (!(context.newData instanceof Array)) {
 				//console.log(context);
-				throw new errors.DataTypeError(context.parameter + 'must be '
-						+ 'an array of values (' + typeof context.newData + ' given)');
+				throw new errors.DataTypeError('Value'
+									+ (context.parameterName ? ' for ' + context.parameterName
+									: '') + ' must be an array of values (' 
+									+ typeof context.newData + ' given)');
 			}
 
 			//let newData;
@@ -324,8 +330,33 @@ function doValidateAdd(context, inMultiple) {
 				}
 			}
 
-			if (newData.length) {
-				context.data = newData;
+			context.data = newData;
+
+			if (context.schema.required) {
+				if (context.schema.required instanceof Array
+						&& (context.data.length < context.schema.required[0]
+						|| (context.schema.required.length == 2
+						&& context.data.length > context.schema.required[1]))) {
+					if (context.schema.required.length == 2) {
+						if (context.schema.required[0] === context.schema.required[1]) {
+							throw new errors.DataItemsError('Must have exactly '
+									+ context.schema.required[0] + ' item(s)'
+										+ (context.parameterName ? ' for ' + context.parameterName
+										: ''));
+						} else {
+							throw new errors.DataItemsError('Must have between '
+									+ context.schema.required.join(' and ') + ' item(s)'
+										+ (context.parameterName ? ' for ' + context.parameterName
+										: ''));
+						}
+					} else {
+						throw new errors.DataItemsError('Must have atleast '
+								+ context.schema.required[0] + ' item(s)'
+									+ (context.parameterName ? ' for ' + context.parameterName
+									: ''));
+					}
+				}
+
 			}
 		}
 	} else {

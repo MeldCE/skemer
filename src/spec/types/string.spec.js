@@ -1,5 +1,5 @@
 var errors = require('../../lib/errors.js');
-var buildTests = require('../helpers/builder.js');
+var buildTests = require('../lib/builder.js');
 
 // Test Data
 var suites = [
@@ -129,7 +129,7 @@ var suites = [
 				input: [false, 'longerString', false],
 				throws: new errors.DataRangeError('Value must be atleast 4 '
 						+ 'characters and no more than 9 characters')
-			},
+			}
 		]
 	}
 ];

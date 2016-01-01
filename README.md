@@ -37,6 +37,13 @@ Add data to an object based on a schema from the data given.
 The Skemer library will throw the following Errors if any errors in the Schema
 or the variables are found
 
+## DataItemsError
+
+**Parameters**
+
+-   `message` **string** Error message
+-   `extra`  
+
 ## DataRangeError
 
 **Parameters**

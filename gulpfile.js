@@ -54,6 +54,7 @@ var paths = {
 	docs: 'docs/',
 	src: 'src/lib/**/*.js',
 	srcTests: 'src/spec/**/*.spec.js',
+	srcTestLib: 'src/spec/lib/*.spec.js',
 	srcJasmineJson: 'src/spec/support/jasmine.json',
 	tests: 'spec/**/*.spec.js',
 	lcov: 'coverage/lcov.info',
@@ -89,7 +90,7 @@ gulp.task('lint', function() {
 });
 
 gulp.task('test-lint', function() {
-	return gulp.src(paths.tests)
+	return gulp.src([paths.srcTests, paths.srcTestLib])
 			.pipe(eslint({
 				'ecmaFeatures': {
 					modules: true
@@ -189,7 +190,7 @@ gulp.task('copy:jasmine.json', ['jasmine'], function() {
 		.pipe(gulp.dest(paths.dist));
 });
 
-gulp.task('test', function() {
+gulp.task('test', ['lint', 'test-lint'], function() {
 	return gulp.src(paths.srcTests)
 			.pipe(jasmine({
 				reporter: new coolReporter({
