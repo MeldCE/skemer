@@ -45,6 +45,8 @@ describe('Skemer module', function() {
 				Skemer.validateAdd(invalid);
 			}).toThrow(new errors.DataTypeError('Value must be a string'));
 			expect(Skemer.validateAdd(valid)).toEqual(valid);
+			expect(Skemer.validateAdd(valid, valid1, valid2)).toEqual(valid2);
+			expect(Skemer.validateNew(valid)).toEqual(valid);
 		});
 	});
 });
