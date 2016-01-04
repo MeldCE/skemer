@@ -238,4 +238,4 @@ var suites = [
 	}
 ];
 
-buildTests('Array type tests', suites);
+buildTests('Multiple (Array) type tests', suites);

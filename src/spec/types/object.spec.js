@@ -13,7 +13,7 @@ var options = {
 	},
 	specific: {
 		replace: {
-			'test': true
+			'': true
 		}
 	}
 };
@@ -59,7 +59,7 @@ var suites = [
 			},
 			{
 				input: [false, 'invalid', 'empty'],
-				throws: new errors.DataTypeError('TODO Value must be a object (string given)')
+				throws: new errors.DataTypeError('Value must be an object (string given)')
 			},
 			{
 				input: [[false, 'empty', 'global'], [false, 'empty', 'specific']],

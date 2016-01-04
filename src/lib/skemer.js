@@ -169,12 +169,12 @@ function setValueToType(context) {
 				if (!(context.newData instanceof Object)) {
 					throw new errors.DataTypeError('Value'
 							+ (context.parameterName ? ' for ' + context.parameterName : '')
-							+ ' should be an Object');
+							+ ' must be an object (' + typeof context.newData + ' given)');
 				}
 
 
 				var newData;
-				if (context.data === undefined) {
+				if (context.data === undefined || shouldReplace(context)) {
 					newData = {};
 				} else {
 					newData = context.data;
@@ -194,8 +194,7 @@ function setValueToType(context) {
 					}
 				}
 
-				if (Object.keys(newData).length !== 0
-						|| (context.data === undefined && context.newData !== undefined)) {
+				if (Object.keys(newData).length || context.newData !== undefined) {
 					context.data = newData;
 				}
 			}
@@ -260,8 +259,10 @@ function doValidateAdd(context, inMultiple) {
 			if (context.newData) {
 				// Throw if we don't have an Object
 				if (!(context.newData instanceof Object)) {
-					throw new errors.TypeError(context.parameter + 'must be an ' +
-							+ 'object of values (' + typeof context.newData + ' given)');
+					throw new errors.DataTypeError('Value'
+							+ (context.parameterName ? ' for ' + context.parameterName : '')
+							+ ' must be an object of values (' + typeof context.newData
+							+ ' given)');
 				}
 				var newData;
 				if (context.data === undefined || shouldReplace(context)) {
@@ -407,7 +408,7 @@ function doValidateAdd(context, inMultiple) {
 
 			if (thrown) {
 				//console.log('throwing error', util.inspect(context, {depth: null}));
-				throw new errors.DataTypeError('invalid value for '
+				throw new errors.DataTypeError('Invalid value for '
 						+ context.parameterName, context);
 			}
 		} else {
@@ -429,6 +430,7 @@ function validateOptions(options) {
 	try {
 		//console.log(schemas.options);
 		return doValidateAdd({
+			parameterName: 'options',
 			schema: schemas.options,
 			newData: options,
 			baseSchema: schemas.schema
@@ -436,7 +438,10 @@ function validateOptions(options) {
 	} catch (err) {
 		// @TODO Add test to see if it was a schema problem rather than options
 		console.log(err);
-		throw new errors.OptionsError(err.message);
+		if (err.extra.parameterName.startsWith('options.schema')) {
+			throw new errors.SchemaError(err.message, err.extra);
+		}
+		throw new errors.OptionsError(err.message, err.extra);
 	}
 }
 

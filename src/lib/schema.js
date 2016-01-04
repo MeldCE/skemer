@@ -101,7 +101,7 @@ module.exports = {
 	options: {
 		type: {
 			schema: {
-				require: true,
+				required: true,
 				type: schema.type
 			},
 			baseSchema: schema,

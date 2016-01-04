@@ -61,7 +61,7 @@ var suites = [
 			},
 			{
 				input: [false, 'invalid', 'empty'],
-				throws: new errors.DataTypeError('Value must be an objecct of values (string given)')
+				throws: new errors.DataTypeError('Value must be an object of values (string given)')
 			},
 			{
 				input: [[false, 'empty', 'global'], [false, 'empty', 'specific']],
@@ -71,12 +71,12 @@ var suites = [
 				label: 'should work with arrays',
 				input: [['undef', 'array', false], ['empty', 'array', false]],
 				result: {
-					0: 'newString'
+					0: 'string'
 				}
 			},
 			{
 				input: [['empty', 'undef', false], ['empty', 'empty', false]],
-				result: []
+				result: {}
 			},
 			{
 				input: [['single', 'undef', 'empty'], ['single', 'empty', 'empty'],['single', 'undef', 'dont'], ['single', 'empty', 'dont']],
@@ -110,7 +110,7 @@ var suites = [
 				label: 'should replace existing object',
 				input: [
 					['double', 'double', 'global'],
-					['single', 'single', 'specific'] 
+					['double', 'double', 'specific'] 
 				],
 				result: {
 					one: 'newString',
@@ -121,4 +121,4 @@ var suites = [
 	}
 ];
 
-buildTests('Multiple in Object type tests', suites);
+buildTests('Multiple (Object) type tests', suites);

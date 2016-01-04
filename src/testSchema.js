@@ -1,8 +1,6 @@
 
 var schema = {
-	type: {
-		type: 'string'
-	}
+	type: 'string'
 };
 
 var valid = 'a string';

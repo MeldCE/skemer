@@ -9,20 +9,20 @@ var errors = require('../lib/errors.js');
 //=include testSchema.js
 
 describe('Skemer module', function() {
-	describe('Skemer prototyoe', function() {
+	describe('Skemer prototype', function() {
 		it('should throw on an invalid options', function() {
 			expect(function() { 
 				skemer.Skemer({
 					schema: schema,
-					require: 'bad'
+					replace: 'bad'
 				});
-			}).toThrow(new errors.OptionsError());
+			}).toThrow(new errors.OptionsError('Invalid value for options.replace'));
 		});
 
 		it('should throw on no schema', function() {
 			expect(function() { 
 				skemer.Skemer({});
-			}).toThrow(new errors.SchemaError(''));
+			}).toThrow(new errors.SchemaError('Value for options.schema required'));
 		});
 
 		it('should throw on invalid schema', function() {
@@ -32,19 +32,18 @@ describe('Skemer module', function() {
 						type: true
 					}
 				});
-			}).toThrow(new errors.SchemaError());
+			}).toThrow(new errors.SchemaError('Invalid value for options.schema.type'));
 		});
 
 		it('should return a working Skemer when valid', function() {
-			var Skemer = skemer.Skemer({
+			var Skemer = new skemer.Skemer({
 				schema: schema
 			});
 
 			expect(Skemer).toEqual(jasmine.any(skemer.Skemer));
 			expect(function() {
 				Skemer.validateAdd(invalid);
-			}).toThrow(new errors.DataTypeError('Value must be a string (boolean '
-					+ 'given)'));
+			}).toThrow(new errors.DataTypeError('Value must be a string'));
 			expect(Skemer.validateAdd(valid)).toEqual(valid);
 		});
 	});

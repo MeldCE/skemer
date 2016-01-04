@@ -217,7 +217,7 @@ gulp.task('copy:jasmine.json', ['jasmine'], function() {
 		.pipe(gulp.dest(paths.dist));
 });
 
-gulp.task('test', ['lint', 'lint:test'], function() {
+gulp.task('test', ['lint', 'lint:test', 'compile:tests'], function() {
 	return gulp.src(paths.srcTests)
 			.pipe(jasmine({
 				reporter: new coolReporter({
