@@ -97,7 +97,7 @@ function setValueToType(context) {
 									throw new errors.DataRangeError('Value'
 									+ (context.parameterName ? ' for ' + context.parameterName
 									: '') + ' must be '
-											+ parts.join(' and '));
+											+ parts.join(' and '), context);
 								}
 							} else if (context.schema.type === 'string') {
 								if ((context.schema.min !== undefined
@@ -115,7 +115,7 @@ function setValueToType(context) {
 									throw new errors.DataRangeError('Value'
 									+ (context.parameterName ? ' for ' + context.parameterName
 									: '') + ' must be '
-											+ parts.join(' and '));
+											+ parts.join(' and '), context);
 								}
 							}
 
@@ -288,7 +288,7 @@ function doValidateAdd(context, inMultiple) {
 					}
 				}
 
-				if (Object.keys(newData).length) {
+				if (Object.keys(newData).length || context.newData !== undefined) {
 					context.data = newData;
 				}
 			}
@@ -436,14 +436,13 @@ function validateOptions(options) {
 	} catch (err) {
 		// @TODO Add test to see if it was a schema problem rather than options
 		console.log(err);
-		throw new errors.OptionsError(err.msg);
+		throw new errors.OptionsError(err.message);
 	}
 }
 
-module.exports = {};
-
-/**
- * Add data to an object based on a schema from the data given.
+/** @private
+ *
+ * Adds new data to the existing data based on the given schema.
  *
  * @param {Object} options An object containing options
  * @param {Object} options.schema An Object containing a valid schema
@@ -455,19 +454,7 @@ module.exports = {};
  *
  * @returns {} Validated and merged data
  */
-var validateAdd = module.exports.validateAdd
-		= function(options, data, newData) {
-	
-	// @TODO Properly validate options
-	if (!options.schema) {
-		throw new errors.SchemaError('Need a schema');
-	}
-	
-	options = validateOptions(options);
-
-	//console.log('options after validation', util.inspect(options, {depth: null}));
-	//return;
-
+function validateAdd(options, data, newData) {
 	//console.log('doValidateAdd called with ', arguments.length, 'arguments\n', options);
 
 	var context = merge({}, options);
@@ -504,6 +491,30 @@ var validateAdd = module.exports.validateAdd
 	return data;
 };
 
+module.exports = {
+	/**
+	 * Add data to an object based on a schema from the data given.
+	 *
+	 * @param {Object} options An object containing options
+	 * @param {Object} options.schema An Object containing a valid schema
+	 *        should contain
+	 * @param {} data Data to validate and return. If no data is given,
+	 *           data containing any default values will be returned. If newData
+	 *           is given, newData will be validated and merged into data.
+	 * @param {} newData, ... Data to validate and merge into data
+	 *
+	 * @returns {} Validated and merged data
+	 */
+	validateAdd: function(options, data, newData) {
+		options = validateOptions(options);
+
+		//console.log('options after validation', util.inspect(options, {depth: null}));
+		//return;
+
+		return validateAdd.apply(this, [options].concat(Array.prototype.slice.call(arguments, 1)));
+	}
+};
+
 var Skemer = module.exports.Skemer = function(options) {
 	// Validate options and schema
 	options = validateOptions(options);
@@ -512,5 +523,28 @@ var Skemer = module.exports.Skemer = function(options) {
 };
 
 Skemer.prototype = {
-	validateAdd: {}
+	/**
+	 * Add new data to data based on the stored schema.
+	 *
+	 * @param {} newData, ... Data to validate and merge into data
+	 *
+	 * @returns {} Validated and merged data
+	 */
+	validateNew: function (newData) {
+		return validateAdd.apply(this, [this.options, undefined].concat(Array.prototype.slice.call(arguments)));
+	},
+	
+	/**
+	 * Add new data to data based on the stored schema.
+	 *
+	 * @param {} data Data to validate and return. If no data is given,
+	 *           data containing any default values will be returned. If newData
+	 *           is given, newData will be validated and merged into data.
+	 * @param {} newData, ... Data to validate and merge into data
+	 *
+	 * @returns {} Validated and merged data
+	 */
+	validateAdd: function (data, newData) {
+		return validateAdd.apply(this, [this.options].concat(Array.prototype.slice.call(arguments)));
+	}
 };

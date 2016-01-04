@@ -4,7 +4,8 @@
 [![Dependency Status](https://david-dm.org/MeldCE/skemer.svg)](https://david-dm.org/MeldCE/skemer)
 [![devDependency Status](https://david-dm.org/MeldCE/skemer/dev-status.svg)](https://david-dm.org/MeldCE/skemer#info=devDependencies)
 [![Coverage Status](https://coveralls.io/repos/MeldCE/skemer/badge.svg)](https://coveralls.io/github/MeldCE/skemer)
-[![Donate](https://img.shields.io/badge/donate-%20%E2%9D%A4%20-blue.svg)](https://www.paypal.me/theelectricwiz)
+[![Development Hours](https://img.shields.io/badge/development%20hours-10-blue.svg)](https://www.paypal.me/MeldCE) (since [https://github.com/MeldCE/skemer/commit/5a3e25fac0b992033799f9f295d98a4101a39077](5a3e25f))
+[![Donate](https://img.shields.io/badge/donate-%20%E2%9D%A4%20-blue.svg)](https://www.paypal.me/MeldCE)
 
 A Javascript variable validation and merge tool
 
@@ -29,6 +30,23 @@ Add data to an object based on a schema from the data given.
     -   `options.schema` **Object** An Object containing a valid schema
                should contain
 -   `data`  
+-   `newData`  
+
+## validateAdd
+
+Add new data to data based on the stored schema.
+
+**Parameters**
+
+-   `data`  
+-   `newData`  
+
+## validateNew
+
+Add new data to data based on the stored schema.
+
+**Parameters**
+
 -   `newData`  
 
 

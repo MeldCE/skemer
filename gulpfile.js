@@ -18,6 +18,7 @@ var foreach = require('gulp-foreach');
 var rename = require('gulp-rename');
 var include = require('gulp-include');
 var coolReporter = require('jasmine2-reporter').Jasmine2Reporter;
+var complexity = require('gulp-complexity');
 
 var eslintRules = {
 	'comma-dangle': 2,
@@ -53,6 +54,8 @@ var paths = {
 	reports: 'reports/',
 	docs: 'docs/',
 	src: 'src/lib/**/*.js',
+	testDir: 'src/spec',
+	testSrc: 'src/*.spec.js',
 	srcTests: 'src/spec/**/*.spec.js',
 	srcTestLib: 'src/spec/lib/*.spec.js',
 	srcJasmineJson: 'src/spec/support/jasmine.json',
@@ -89,7 +92,7 @@ gulp.task('lint', function() {
 			.pipe(eslint.failAfterError());
 });
 
-gulp.task('test-lint', function() {
+gulp.task('lint:test', function() {
 	return gulp.src([paths.srcTests, paths.srcTestLib])
 			.pipe(eslint({
 				'ecmaFeatures': {
@@ -106,7 +109,26 @@ gulp.task('test-lint', function() {
 			.pipe(eslint.failAfterError());
 });
 
-gulp.task('pre-test', ['lint', 'test-lint'], function() {
+gulp.task('compile:tests', function() {
+	return gulp.src(paths.testSrc)
+			.pipe(include())
+			.pipe(eslint({
+				'ecmaFeatures': {
+					modules: true
+				},
+				rules: eslintRules,
+				env: {
+					node: true,
+					es6: true,
+					jasmine: true
+				}
+			}))
+			.pipe(eslint.format())
+			.pipe(eslint.failAfterError())
+			.pipe(gulp.dest(paths.testDir));
+});
+
+gulp.task('pre-test', ['lint', 'lint:test'], function() {
 	return gulp.src(paths.src)
     // Covering files
     .pipe(istanbul())
@@ -116,7 +138,7 @@ gulp.task('pre-test', ['lint', 'test-lint'], function() {
     .pipe(gulp.dest('test-tmp/'));
 });
 
-gulp.task('jasmine', ['lint', 'test-lint', 'pre-test'], function() {
+gulp.task('jasmine', ['compile:tests', 'lint', 'lint:test', 'pre-test'], function() {
 	return gulp.src(paths.srcTests)
 			.pipe(jasmine())
 			.pipe(istanbul.writeReports());
@@ -132,6 +154,11 @@ gulp.task('jasmine:production', ['copy', 'jasmine'], function() {
 gulp.task('coveralls', ['jasmine:production'], function() {
 	return gulp.src(paths.lcov)
   			.pipe(coveralls());
+});
+
+gulp.task('complexity', ['lint', 'lint:test'], function() {
+	return gulp.src(paths.src)
+			.pipe(complexity());
 });
 
 gulp.task('docs', ['htmldocs', 'mddocs']);
@@ -190,7 +217,7 @@ gulp.task('copy:jasmine.json', ['jasmine'], function() {
 		.pipe(gulp.dest(paths.dist));
 });
 
-gulp.task('test', ['lint', 'test-lint'], function() {
+gulp.task('test', ['lint', 'lint:test'], function() {
 	return gulp.src(paths.srcTests)
 			.pipe(jasmine({
 				reporter: new coolReporter({
@@ -202,13 +229,14 @@ gulp.task('test', ['lint', 'test-lint'], function() {
 gulp.task('watch', function() {
 	gulp.watch([paths.src, paths.srcTests], ['jasmine']);
 	gulp.watch(paths.src, ['lint']);
-	gulp.watch(paths.srcTests, ['test-lint']);
+	gulp.watch(paths.testSrc, ['compile:tests']);
+	gulp.watch(paths.srcTests, ['lint:test']);
 	gulp.watch(['src/README.md', paths.src], ['readme']);
 	gulp.watch(paths.src, ['docs']);
 	gulp.watch('package.json', ['check:deps']);
 });
 
-defaultTasks = ['check:deps', 'jasmine', 'docs', 'readme'];
+defaultTasks = ['check:deps', 'jasmine', 'complexity', 'docs', 'readme'];
 
 gulp.task('one', defaultTasks);
 

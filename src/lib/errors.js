@@ -1,16 +1,12 @@
 var util = require('util');
 
-
-module.exports = {};
-
 /** @constructor
  * Returned if the parameter value is out of the given range
  *
  * @param {string} message Error message
  * @param {} extra Extra information
  */
-var SchemaError = module.exports.SchemaError
-		= function(message, extra) {
+function SchemaError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
   //this.name = this.constructor.name;
   this.name = 'SchemaError';
@@ -25,11 +21,10 @@ util.inherits(SchemaError, Error);
  * @param {string} message Error message
  * @param {} extra Extra information
  */
-var DataItemsError = module.exports.DataItemsError
-		= function(message, extra) {
+function DataItemsError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
   //this.name = this.constructor.name;
-  this.name = 'DataItemsError';
+  this.name = this.constructor.name;
   this.message = message;
   this.extra = extra;
 };
@@ -41,8 +36,7 @@ util.inherits(DataItemsError, Error);
  * @param {string} message Error message
  * @param {} extra Extra information
  */
-var OptionsError = module.exports.OptionsError
-		= function(message, extra) {
+function OptionsError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
@@ -56,7 +50,7 @@ util.inherits(OptionsError, Error);
  * @param {string} message Error message
  * @param {} extra Extra information
  */
-var DataTypeError = module.exports.DataTypeError = function(message, extra) {
+function DataTypeError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
@@ -70,8 +64,7 @@ util.inherits(DataTypeError, Error);
  * @param {string} message Error message
  * @param {} extra Extra information
  */
-var DataRequiredError = module.exports.DataRequiredError
-		= function(message, extra) {
+function DataRequiredError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
@@ -85,8 +78,7 @@ util.inherits(DataRequiredError, Error);
  * @param {string} message Error message
  * @param {} extra Extra information
  */
-var DataRangeError = module.exports.DataRangeError
-		= function(message, extra) {
+function DataRangeError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
@@ -94,3 +86,11 @@ var DataRangeError = module.exports.DataRangeError
 };
 util.inherits(DataRangeError, Error);
 
+module.exports = {
+	SchemaError: SchemaError,
+	DataItemsError: DataItemsError,
+	OptionsError: OptionsError,
+	DataTypeError: DataTypeError,
+	DataRequiredError: DataRequiredError,
+	DataRangeError: DataRangeError
+};
