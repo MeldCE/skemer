@@ -75,6 +75,10 @@ function setValueToType(context) {
 		if (typeof context.schema.type === 'string') { // A simple type or instance of a certain prototype
 			//console.log('type given as string', context.schema.type);
 			switch (context.schema.type) {
+				case 'Function':
+					// Change Function (prototype) to function (typeof)
+					context.schema.type = 'function';
+				case 'function':
 				case 'number':
 				case 'string':
 				case 'boolean':
@@ -158,7 +162,7 @@ function setValueToType(context) {
 						} else {
 							throw new errors.DataTypeError('Value'
 									+ (context.parameterName ? ' for ' + context.parameterName
-									: '') + ' should be a '
+									: '') + ' must be a '
 									+ context.schema.type);
 						}
 					}
@@ -520,6 +524,9 @@ module.exports = {
 	}
 };
 
+/** @constructor
+ * Skemer prototype to enable simple reuse of a schema
+ */
 var Skemer = module.exports.Skemer = function(options) {
 	// Validate options and schema
 	options = validateOptions(options);

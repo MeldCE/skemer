@@ -109,7 +109,7 @@ var buildTests = module.exports = function(suiteLabel, testSuites) {
 
 					for (i in ttest.input) {
 						//console.log('input is', this.input[i]);
-						it('(' + ttest.input[i] + ') ' + message, function(test, input) {
+						var func = function(test, input) {
 							//console.log('it:', testSuite, this);
 							//console.log('it in', this);
 							//console.log('\n\nit:', '\ninputs:', this, '\noptions: ', testSuite.options[input[2]],
@@ -130,7 +130,15 @@ var buildTests = module.exports = function(suiteLabel, testSuites) {
 							
 								expect(result).toEqual(test.result);
 							}
-						}.bind(this, ttest, ttest.input[i]));
+						}.bind(this, ttest, ttest.input[i])
+						var desc = '(' + ttest.input[i] + ') ' + message
+						
+						if (this.pending || ttest.pending) {
+							console.log('should be pending');
+							xit(desc, func);
+						} else {
+							it(desc, func);
+						}
 					}
 					//}.bind(test, this));
 				}
