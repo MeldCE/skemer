@@ -55,151 +55,198 @@ function shouldReplace(context) {
  *          value or a default value. Otherwise, the new value
  */
 function setValueToType(context) {
+	var t, value;
 	//console.log('\nsetValueToType', util.inspect(context, {depth: null}));
-	
-	// If type is null start again the original schema for the value
-	if (context.schema.type === null) { // magical value to represent the schema (schema within the schema)
-		var value;
-		// Restart with base schema
-		//console.log('!!!!!!!restarting with base schema', merge({}, context, {
-		//	schema: context.baseSchema
-		//}));
+	if (context.schema.types) {
+		//console.log('have types, checking for value', context.schema, context.newData);
+		// Return default value if we don't have a value
+		if (context.newData !== undefined) {
+			//console.log('have types and a value', context.schema, context.newData);
+			//if (schema.type && schema.type instanceof Array) {
+			//}
 
-		if ((value = doValidateAdd(merge({}, context, {
-			schema: context.baseSchema
-		}))) !== undefined) {
-			context.data = value;
-			//console.log('got a value from null schema', util.inspect(context, {depth: null}));
+			// Go through possible types and return first one that returns a value
+			var validData = false, thrown;
+			for (t in context.schema.types) {
+				thrown = false;
+				//console.log('checking type ' + t + ' for ' + context.parameterName, context.schema.types[t]);
+				try {
+					if ((value = doValidateAdd(merge({}, context, {
+								data: undefined,
+								schema: context.schema.types[t]
+							}))) !== undefined) {
+						//console.log('success', value);
+						context.data = value;
+						//console.log(util.inspect(context, {depth: null}));
+						return context.data;
+					}
+				} catch(err) {
+					//console.log('types error thrown', err);
+					if (!(err instanceof errors.DataTypeError)) {
+						//console.log('error is not a DataTypeError - rethrowing');
+						throw err;
+					}
+					thrown = true;
+					//console.log('Caught a type error - not that type');
+				}
+			}
+
+			if (thrown) {
+				//console.log('throwing error', util.inspect(context, {depth: null}));
+				throw new errors.DataTypeError('Invalid value'
+						+ (context.parameterName ? ' for ' + context.parameterName : ''),
+						context);
+			}
 		}
 	} else {
-		if (typeof context.schema.type === 'string') { // A simple type or instance of a certain prototype
-			//console.log('type given as string', context.schema.type);
-			switch (context.schema.type) {
-				case 'Function':
-					// Change Function (prototype) to function (typeof)
-					context.schema.type = 'function';
-				case 'function':
-				case 'number':
-				case 'string':
-				case 'boolean':
-					if (context.newData !== undefined) {
-						if (typeof context.newData === context.schema.type) {
-							var parts = [];
-							// TODO Add min/max checks for string?
-							if (context.schema.type === 'number') {
-								if ((context.schema.min !== undefined
-										&& context.newData < context.schema.min)
-										|| (context.schema.max !== undefined
-										&& context.newData >= context.schema.max)) {
-									if (context.schema.min !== undefined) {
-										parts.push('greater than or equal to '
-												+ context.schema.min);
-									}
-									if (context.schema.max !== undefined) {
-										parts.push('less than ' + context.schema.max);
-									}
-									throw new errors.DataRangeError('Value'
-									+ (context.parameterName ? ' for ' + context.parameterName
-									: '') + ' must be '
-											+ parts.join(' and '), context);
-								}
-							} else if (context.schema.type === 'string') {
-								if ((context.schema.min !== undefined
-										&& context.newData.length < context.schema.min)
-										|| (context.schema.max !== undefined
-										&& context.newData.length > context.schema.max)) {
-									if (context.schema.min !== undefined) {
-										parts.push('atleast ' + context.schema.min
-												+ ' characters');
-									}
-									if (context.schema.max !== undefined) {
-										parts.push('no more than ' + context.schema.max
-												+ ' characters');
-									}
-									throw new errors.DataRangeError('Value'
-									+ (context.parameterName ? ' for ' + context.parameterName
-									: '') + ' must be '
-											+ parts.join(' and '), context);
-								}
-							}
+		// If type is null start again the original schema for the value
+		if (context.schema.type === null) { // magical value to represent the schema (schema within the schema)
+			// Restart with base schema
+			//console.log('!!!!!!!restarting with base schema', merge({}, context, {
+			//	schema: context.baseSchema
+			//}));
 
-							context.data = context.newData;
-						} else {
-							throw new errors.DataTypeError('Value'
-									+ (context.parameterName ? ' for ' + context.parameterName
-									: '') + ' must be a '
-									+ context.schema.type);
-						}
-					}
-					break;
-				case 'null':
-				case 'Null':
-					if (context.newData !== undefined) {
-						if (context.newData === null) {
-							context.data = null;
-						} else {
-							throw new errors.DataTypeError('Value'
-									+ (context.parameterName ? ' for ' + context.parameterName
-									: '') + ' must be a '
-									+ context.schema.type);
-						}
-					}
-					break;
-				default: /// @TODO Think of a safer way of doing this
-					if (context.newData !== undefined) {
-						var type;
-						try {
-							type = eval(context.schema.type);
-						} catch(error) {
-							throw new errors.SchemaError('Error determining type to test ' 
-									+ 'against'
-									+ (context.parameterName ? ' for ' + context.parameterName
-									: '')
-									+ ': ' + error.toString());
-						}
-						if (context.newData instanceof type) {
-							context.data = context.newData;
-						} else {
-							throw new errors.DataTypeError('Value'
-									+ (context.parameterName ? ' for ' + context.parameterName
-									: '') + ' must be a '
-									+ context.schema.type);
-						}
-					}
-					break;
+			if ((value = doValidateAdd(merge({}, context, {
+				schema: context.baseSchema
+			}))) !== undefined) {
+				context.data = value;
+				//console.log('got a value from null schema', util.inspect(context, {depth: null}));
 			}
-		} else if (context.schema.type instanceof Object) {
-			if (context.newData !== undefined) {
-				if (!(context.newData instanceof Object)) {
-					throw new errors.DataTypeError('Value'
-							+ (context.parameterName ? ' for ' + context.parameterName : '')
-							+ ' must be an object (' + typeof context.newData + ' given)');
+		} else {
+			if (typeof context.schema.type === 'string') { // A simple type or instance of a certain prototype
+				//console.log('type given as string', context.schema.type);
+				switch (context.schema.type) {
+					case 'any':
+						if (context.newData !== undefined) {
+							context.data = context.newData;
+						}
+						break;
+					case 'Function':
+						// Change Function (prototype) to function (typeof)
+						context.schema.type = 'function';
+					case 'function':
+					case 'number':
+					case 'string':
+					case 'boolean':
+						if (context.newData !== undefined) {
+							if (typeof context.newData === context.schema.type) {
+								var parts = [];
+								// TODO Add min/max checks for string?
+								if (context.schema.type === 'number') {
+									if ((context.schema.min !== undefined
+											&& context.newData < context.schema.min)
+											|| (context.schema.max !== undefined
+											&& context.newData >= context.schema.max)) {
+										if (context.schema.min !== undefined) {
+											parts.push('greater than or equal to '
+													+ context.schema.min);
+										}
+										if (context.schema.max !== undefined) {
+											parts.push('less than ' + context.schema.max);
+										}
+										throw new errors.DataRangeError('Value'
+										+ (context.parameterName ? ' for ' + context.parameterName
+										: '') + ' must be '
+												+ parts.join(' and '), context);
+									}
+								} else if (context.schema.type === 'string') {
+									if ((context.schema.min !== undefined
+											&& context.newData.length < context.schema.min)
+											|| (context.schema.max !== undefined
+											&& context.newData.length > context.schema.max)) {
+										if (context.schema.min !== undefined) {
+											parts.push('atleast ' + context.schema.min
+													+ ' characters');
+										}
+										if (context.schema.max !== undefined) {
+											parts.push('no more than ' + context.schema.max
+													+ ' characters');
+										}
+										throw new errors.DataRangeError('Value'
+										+ (context.parameterName ? ' for ' + context.parameterName
+										: '') + ' must be '
+												+ parts.join(' and '), context);
+									}
+								}
+
+								context.data = context.newData;
+							} else {
+								throw new errors.DataTypeError('Value'
+										+ (context.parameterName ? ' for ' + context.parameterName
+										: '') + ' must be a '
+										+ context.schema.type);
+							}
+						}
+						break;
+					case 'null':
+					case 'Null':
+						if (context.newData !== undefined) {
+							if (context.newData === null) {
+								context.data = null;
+							} else {
+								throw new errors.DataTypeError('Value'
+										+ (context.parameterName ? ' for ' + context.parameterName
+										: '') + ' must be a '
+										+ context.schema.type);
+							}
+						}
+						break;
+					default: /// @TODO Think of a safer way of doing this
+						if (context.newData !== undefined) {
+							var type;
+							try {
+								type = eval(context.schema.type);
+							} catch(error) {
+								throw new errors.SchemaError('Error determining type to test ' 
+										+ 'against'
+										+ (context.parameterName ? ' for ' + context.parameterName
+										: '')
+										+ ': ' + error.toString());
+							}
+							if (context.newData instanceof type) {
+								context.data = context.newData;
+							} else {
+								throw new errors.DataTypeError('Value'
+										+ (context.parameterName ? ' for ' + context.parameterName
+										: '') + ' must be a '
+										+ context.schema.type);
+							}
+						}
+						break;
 				}
-
-
-				var newData;
-				if (context.data === undefined || shouldReplace(context)) {
-					newData = {};
-				} else {
-					newData = context.data;
-				}
-
-				var t, newValue;
-				for (t in context.schema.type) {
-					//console.log('checking newData value of ' + t);
-					if ((newValue = doValidateAdd(merge({}, context, {
-						schema:context.schema.type[t],
-						newData: context.newData[t],
-						data: newData[t],
-						parameterName: (context.parameterName ? context.parameterName + '.'
-								: '') + t
-					}))) !== undefined) {
-						newData[t] = newValue;
+			} else if (context.schema.type instanceof Object) {
+				if (context.newData !== undefined) {
+					if (!(context.newData instanceof Object)) {
+						throw new errors.DataTypeError('Value'
+								+ (context.parameterName ? ' for ' + context.parameterName : '')
+								+ ' must be an object (' + typeof context.newData + ' given)');
 					}
-				}
 
-				if (Object.keys(newData).length || context.newData !== undefined) {
-					context.data = newData;
+
+					var newData;
+					if (context.data === undefined || shouldReplace(context)) {
+						newData = {};
+					} else {
+						newData = context.data;
+					}
+
+					var newValue;
+					for (t in context.schema.type) {
+						//console.log('checking newData value of ' + t);
+						if ((newValue = doValidateAdd(merge({}, context, {
+							schema:context.schema.type[t],
+							newData: context.newData[t],
+							data: newData[t],
+							parameterName: (context.parameterName ? context.parameterName + '.'
+									: '') + t
+						}))) !== undefined) {
+							newData[t] = newValue;
+						}
+					}
+
+					if (Object.keys(newData).length || context.newData !== undefined) {
+						context.data = newData;
+					}
 				}
 			}
 		}
@@ -273,8 +320,9 @@ function doValidateAdd(context, inMultiple) {
 					newData = {};
 				} else {
 					if (!(context.data instanceof Object)) {
-						throw new errors.DataTypeError('Existing data for '
-								+ context.parameterName + ' is not an object as it should be');
+						throw new errors.DataTypeError('Existing data'
+								+ (context.parameterName ? ' for ' + context.parameterName 
+								: '') + ' is not an object as it should be');
 					}
 					newData = context.data;
 				}
@@ -316,8 +364,9 @@ function doValidateAdd(context, inMultiple) {
 			} else {
 				//console.log('have a value already');
 				if (!(context.data instanceof Array)) {
-					throw new errors.DataTypeError('Existing data for '
-							+ context.parameterName + ' is not an array as it should be');
+					throw new errors.DataTypeError('Existing data'
+							+ (context.parameterName ? ' for ' + context.parameterName : '')
+							+ ' is not an array as it should be');
 				}
 				newData = context.data;
 			}
@@ -365,59 +414,7 @@ function doValidateAdd(context, inMultiple) {
 			}
 		}
 	} else {
-		if (context.schema.types) {
-			//console.log('have types, checking for value', context.schema, context.newData);
-			// Return default value if we don't have a value
-			if (context.newData === undefined) {
-				if (context.data) {
-					return context.data;
-				} else if (context.schema.default) {
-					context.data = merge(true, context.schema.default);
-				} else {
-					if (context.schema.required) {
-						throw new errors.DataRequiredError('Value for '
-								+ context.parameterName + ' required');
-					}
-					return undefined;
-				}
-			}
-
-			//console.log('have types and a value', context.schema, context.newData);
-			//if (schema.type && schema.type instanceof Array) {
-			//}
-
-			// Go through possible types and return first one that returns a value
-			var t, value, validData = false, thrown;
-			for (t in context.schema.types) {
-				thrown = false;
-				//console.log('checking type ' + t + ' for ' + context.parameterName);
-				try {
-					if ((value = doValidateAdd(merge({}, context, {
-								data: undefined,
-								schema: context.schema.types[t]
-							}))) !== undefined) {
-						//console.log('success', value);
-						context.data = value;
-						//console.log(util.inspect(context, {depth: null}));
-						return context.data;
-					}
-				} catch(err) {
-					if (!(err instanceof errors.DataTypeError)) {
-						throw err;
-					}
-					thrown = true;
-					//console.log('Caught a type error - not that type');
-				}
-			}
-
-			if (thrown) {
-				//console.log('throwing error', util.inspect(context, {depth: null}));
-				throw new errors.DataTypeError('Invalid value for '
-						+ context.parameterName, context);
-			}
-		} else {
-			return setValueToType(context);
-		}
+		return setValueToType(context);
 	}
 
 	return context.data;
@@ -464,7 +461,7 @@ function validateOptions(options) {
  * @returns {} Validated and merged data
  */
 function validateAdd(options, data, newData) {
-	//console.log('doValidateAdd called with ', arguments.length, 'arguments\n', options);
+	//console.log('validateAdd called with ', arguments.length, 'arguments\n', arguments);
 
 	var context = merge({}, options);
 
@@ -519,6 +516,7 @@ module.exports = {
 
 		//console.log('options after validation', util.inspect(options, {depth: null}));
 		//return;
+		//console.log('skemer.validateAdd called', arguments);
 
 		return validateAdd.apply(this, [options].concat(Array.prototype.slice.call(arguments, 1)));
 	}

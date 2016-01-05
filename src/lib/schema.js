@@ -76,7 +76,8 @@ var schema = {
 			]
 		},
 		default: {
-			doc: "Default value for parameter"
+			doc: "Default value for parameter",
+			type: 'any'
 		},
 		validation: {
 			doc: "Function to validate the value of the parameter. Will be given "

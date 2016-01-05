@@ -78,6 +78,42 @@ var suites = [
 		]
 	},
 	{
+		label: 'Simple required string variable with default',
+		schema: {
+			type: 'string',
+			required: true,
+			default: 'default'
+		},
+		data: {
+			undef: undefined,
+			string: 'test'
+		},
+		newData: {
+			undef: undefined,
+			empty: '',
+			string: 'newString'
+		},
+		options: [{}],
+		results: [
+			{
+				input: ['undef', 'undef', false],
+				result: 'default'
+			},
+			{
+				input: ['string', 'undef', false],
+				result: 'test'
+			},
+			{
+				input: [false, 'empty', false],
+				result: ''
+			},
+			{
+				input: [false, 'string', false],
+				result: 'newString'
+			}
+		]
+	},
+	{
 		label: 'Simple require string with min/max length requirements',
 		schema: {
 			type: 'string',

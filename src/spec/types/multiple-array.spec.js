@@ -29,7 +29,8 @@ var suites = [
 			undef: undefined,
 			empty: [],
 			single: ['test'],
-	  double: ['test1', 'test2']
+	  	double: ['test1', 'test2'],
+			invalid: 'string'
 		},
 		newData: {
 			undef: undefined,
@@ -48,8 +49,18 @@ var suites = [
 				result: ['test']
 			},
 			{
-				input: [false, 'invalid', 'empty'],
+				input: [
+					['invalid', 'undef', 'empty'],
+					[false, 'invalid', 'empty']
+				],
 				throws: new errors.DataTypeError('Value must be an array of values (string given)')
+			},
+			{
+				input: [
+					['invalid', 'empty', 'empty'],
+					['invalid', 'single', 'empty']
+				],
+				throws: new errors.DataTypeError('Existing data is not an array as it should be')
 			},
 			{
 				input: [[false, 'empty', 'global'], [false, 'empty', 'specific']],

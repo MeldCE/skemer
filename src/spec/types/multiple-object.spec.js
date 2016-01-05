@@ -35,7 +35,8 @@ var suites = [
 	  	double: {
 				one: 'test1',
 				two: 'test2'
-			}
+			},
+			invalid: 'string'
 		},
 		newData: {
 			undef: undefined,
@@ -60,8 +61,18 @@ var suites = [
 				}
 			},
 			{
-				input: [false, 'invalid', 'empty'],
+				input: [
+					['invalid', 'undef', 'empty'],
+					[false, 'invalid', 'empty']
+				],
 				throws: new errors.DataTypeError('Value must be an object of values (string given)')
+			},
+			{
+				input: [
+					['invalid', 'empty', 'empty'],
+					['invalid', 'double', 'empty']
+				],
+				throws: new errors.DataTypeError('Existing data is not an object as it should be')
 			},
 			{
 				input: [[false, 'empty', 'global'], [false, 'empty', 'specific']],

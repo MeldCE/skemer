@@ -100,7 +100,7 @@ var buildTests = module.exports = function(suiteLabel, testSuites) {
 							message = ttest.label;
 						}
 					} else {
-						if (this.throws) {
+						if (ttest.throws) {
 							message = 'should throw';
 						} else {
 							message = 'should return expected value';
@@ -112,8 +112,8 @@ var buildTests = module.exports = function(suiteLabel, testSuites) {
 						var func = function(test, input) {
 							//console.log('it:', testSuite, this);
 							//console.log('it in', this);
-							//console.log('\n\nit:', '\ninputs:', this, '\noptions: ', testSuite.options[input[2]],
-							//		'\ndata: ', testSuite.data[input[0]], '\nnewData: ', testSuite.newData[input[1]]);
+							//console.log('\n\nit:', '\ninputs:', input, '\nsuite:', this, '\noptions: ', this.options[input[2]],
+							//		'\ndata: ', this.data[input[0]], '\nnewData: ', this.newData[input[1]]);
 							if (test.throws) {
 								expect(function (options, data, newData) {
 									if (!this.options) {
@@ -134,7 +134,6 @@ var buildTests = module.exports = function(suiteLabel, testSuites) {
 						var desc = '(' + ttest.input[i] + ') ' + message
 						
 						if (this.pending || ttest.pending) {
-							console.log('should be pending');
 							xit(desc, func);
 						} else {
 							it(desc, func);
