@@ -1,10 +1,12 @@
 var util = require('util');
 
-/** @constructor
- * Returned if the parameter value is out of the given range
+/**
+ * Thrown if the parameter value is out of the given range
  *
  * @param {string} message Error message
- * @param {} extra Extra information
+ * @param {*} extra Extra information
+ *
+ * @class
  */
 function SchemaError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
@@ -12,14 +14,16 @@ function SchemaError(message, extra) {
   this.name = 'SchemaError';
   this.message = message;
   this.extra = extra;
-};
+}
 util.inherits(SchemaError, Error);
 
-/** @constructor
- * Returned if the parameter value is out of the given range
+/**
+ * Thrown if the parameter value is out of the given range
  *
  * @param {string} message Error message
- * @param {} extra Extra information
+ * @param {*} extra Extra information
+ *
+ * @class
  */
 function DataItemsError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
@@ -27,63 +31,71 @@ function DataItemsError(message, extra) {
   this.name = this.constructor.name;
   this.message = message;
   this.extra = extra;
-};
+}
 util.inherits(DataItemsError, Error);
 
-/** @constructor
- * Returned if the parameter value is out of the given range
+/**
+ * Thrown if the parameter value is out of the given range
  *
  * @param {string} message Error message
- * @param {} extra Extra information
+ * @param {*} extra Extra information
+ *
+ * @class
  */
 function OptionsError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
   this.extra = extra;
-};
+}
 util.inherits(OptionsError, Error);
 
-/** @constructor
- * Returned if the type of value for a parameter in the schema is incorrect,
+/**
+ * Thrown if the type of value for a parameter in the schema is incorrect,
  *
  * @param {string} message Error message
- * @param {} extra Extra information
+ * @param {*} extra Extra information
+ *
+ * @class
  */
 function DataTypeError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
   this.extra = extra;
-};
+}
 util.inherits(DataTypeError, Error);
 
-/** @constructor
- * Returned if a parameter is required, but was not given
+/**
+ * Thrown if a parameter is required, but was not given
  *
  * @param {string} message Error message
- * @param {} extra Extra information
+ * @param {*} extra Extra information
+ *
+ * @class
  */
 function DataRequiredError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
   this.extra = extra;
-};
+}
 util.inherits(DataRequiredError, Error);
 
-/** @constructor
- * Returned if the parameter value is out of the given range
+/**
+ * Thrown if the parameter value is out of the given range
  *
  * @param {string} message Error message
- * @param {} extra Extra information
+ * @param {*} extra Extra information
+ *
+ * @class
  */
 function DataRangeError(message, extra) {
 	Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
   this.extra = extra;
-};
+}
 util.inherits(DataRangeError, Error);
 
 module.exports = {

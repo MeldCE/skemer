@@ -168,7 +168,81 @@ var suites = [
 		]
 	},
 	{
-		label: 'Simple required array of strings variable with min/max number of elements',
+		label: 'Simple array of strings variable with default value',
+		schema: {
+			type: 'string',
+			multiple: true,
+			default: ['default']
+		},
+		data: {
+			undef: undefined,
+			empty: [],
+			single: ['test'],
+	  	double: ['test1', 'test2'],
+			invalid: 'string'
+		},
+		newData: {
+			undef: undefined,
+			invalid: 'notinarray',
+			empty: [],
+			single: ['newString']
+		},
+		options: clone(options),
+		results: [
+			{
+				input: ['undef', 'undef', false],
+				result: ['default']
+			},
+			{
+				input: ['single', 'undef', false],
+				result: ['test']
+			},
+			{
+				input: [
+					['invalid', 'undef', 'empty'],
+					[false, 'invalid', 'empty']
+				],
+				throws: new errors.DataTypeError('Value must be an array of values (string given)')
+			},
+			{
+				input: [
+					['invalid', 'empty', 'empty'],
+					['invalid', 'single', 'empty']
+				],
+				throws: new errors.DataTypeError('Existing data is not an array as it should be')
+			},
+			{
+				input: [[false, 'empty', 'global'], [false, 'empty', 'specific']],
+				result: []
+			},
+			{
+				input: [['undef', 'single', false], ['empty', 'single', false]],
+				result: ['newString']
+			},
+			{
+				input: [['empty', 'undef', false], ['empty', 'empty', false]],
+				result: []
+			},
+			{
+				input: ['single', 'empty', 'empty'],
+				result: ['test']
+			},
+			{
+				input: ['single', 'single', 'empty'],
+				result: ['test', 'newString']
+			},
+			{
+				input: ['double', 'single', 'empty'],
+				result: ['test1', 'test2', 'newString']
+			},
+			{
+				input: [['single', 'single', 'global'], ['single', 'single', 'specific'], ['double', 'single', 'global'], ['double', 'single', 'specific']],
+				result: ['newString']
+			}
+		]
+	},
+	{
+		label: 'Simple required array of strings variable with exact number of elements',
 		schema: {
 			type: 'string',
 			multiple: true,
@@ -244,6 +318,169 @@ var suites = [
 			{
 				input: [false, 'double', false],
 				throws: new errors.DataItemsError('Must have exactly 1 item(s)')
+			}
+		]
+	},
+	{
+		label: 'Simple required array of strings variable with min/max number of elements',
+		schema: {
+			type: 'string',
+			multiple: true,
+			required: [1,2]
+		},
+		data: {
+			undef: undefined,
+			empty: [],
+			single: ['test']
+		},
+		newData: {
+			undef: undefined,
+			empty: [],
+			single: ['newString'],
+			double: ['test1', 'test2']
+		},
+		options: clone(options),
+		results: [
+			{
+				input: ['undef', 'undef', false],
+				throws: new errors.DataRequiredError('Value required')
+			},
+			{
+				input: ['single', 'undef', false],
+				result: ['test']
+			},
+			{
+				input: [
+					[false, 'empty', 'global'],
+					[false, 'empty', 'specific']
+				],
+				throws: new errors.DataItemsError('Must have between 1 and 2 item(s)')
+			},
+			{
+				input: [
+					['undef', 'single', false],
+					['empty', 'single', false]
+				],
+				result: ['newString']
+			},
+			{
+				input: [
+					['empty', 'undef', false],
+					['empty', 'empty', false]
+					],
+				throws: new errors.DataItemsError('Must have between 1 and 2 item(s)')
+			},
+			{
+				input: ['single', 'empty', 'empty'],
+				result: ['test']
+			},
+			{
+				input: [
+					['single', 'empty', 'global'],
+					['single', 'empty', 'specific']
+				],
+				throws: new errors.DataItemsError('Must have between 1 and 2 item(s)')
+			},
+			{
+				input: ['single', 'single', 'empty'],
+				result: ['test', 'newString']
+			},
+			{
+				input: ['single', 'double', 'empty'],
+				throws: new errors.DataItemsError('Must have between 1 and 2 item(s)')
+			},
+			{
+				input: [
+					['single', 'single', 'global'],
+					['single', 'single', 'specific']
+				],
+				result: ['newString']
+			},
+			{
+				input: [
+					['empty', 'double', 'empty'],
+					['empty', 'double', 'dont'],
+					[false, 'double', 'global'],
+					[false, 'double', 'specific']
+				],
+				result: ['test1', 'test2']
+			}
+		]
+	},
+	{
+		label: 'Simple required array of strings variable with min number of elements',
+		schema: {
+			type: 'string',
+			multiple: true,
+			required: [1]
+		},
+		data: {
+			undef: undefined,
+			empty: [],
+			single: ['test']
+		},
+		newData: {
+			undef: undefined,
+			empty: [],
+			single: ['newString'],
+			double: ['test1', 'test2']
+		},
+		options: clone(options),
+		results: [
+			{
+				input: ['undef', 'undef', false],
+				throws: new errors.DataRequiredError('Value required')
+			},
+			{
+				input: ['single', 'undef', false],
+				result: ['test']
+			},
+			{
+				input: [
+					[false, 'empty', 'global'],
+					[false, 'empty', 'specific']
+				],
+				throws: new errors.DataItemsError('Must have atleast 1 item(s)')
+			},
+			{
+				input: [
+					['undef', 'single', false],
+					['empty', 'single', false]
+				],
+				result: ['newString']
+			},
+			{
+				input: [
+					['empty', 'undef', false],
+					['empty', 'empty', false]
+					],
+				throws: new errors.DataItemsError('Must have atleast 1 item(s)')
+			},
+			{
+				input: ['single', 'empty', 'empty'],
+				result: ['test']
+			},
+			{
+				input: [
+					['single', 'empty', 'global'],
+					['single', 'empty', 'specific']
+				],
+				throws: new errors.DataItemsError('Must have atleast 1 item(s)')
+			},
+			{
+				input: ['single', 'double', 'empty'],
+				result: ['test', 'test1', 'test2']
+			},
+			{
+				input: ['single', 'single', 'empty'],
+				result: ['test', 'newString']
+			},
+			{
+				input: [
+					['single', 'single', 'global'],
+					['single', 'single', 'specific']
+				],
+				result: ['newString']
 			}
 		]
 	}

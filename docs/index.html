@@ -127,6 +127,11 @@
                 class='block bold'>
                 validateAdd
               </a>
+              <a
+                href='#validateNew'
+                class='block bold'>
+                validateNew
+              </a>
           </div>
         </div>
       </div>
@@ -142,7 +147,8 @@
   <h2 id='DataItemsError' class='mt0'>
     DataItemsError<span class='gray'>(message, extra)</span>
   </h2>
-  
+  <p>Thrown if the parameter value is out of the given range</p>
+
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
@@ -152,10 +158,11 @@
 
           </div>
         </li>
-        <li> <strong>extra</strong>
+        <li>Any <strong>extra</strong>
           :
           <div class='force-inline'>
-            
+            <p>Extra information</p>
+
           </div>
         </li>
     </ul>
@@ -164,7 +171,8 @@
   <h2 id='DataRangeError' class='mt0'>
     DataRangeError<span class='gray'>(message, extra)</span>
   </h2>
-  
+  <p>Thrown if the parameter value is out of the given range</p>
+
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
@@ -174,10 +182,11 @@
 
           </div>
         </li>
-        <li> <strong>extra</strong>
+        <li>Any <strong>extra</strong>
           :
           <div class='force-inline'>
-            
+            <p>Extra information</p>
+
           </div>
         </li>
     </ul>
@@ -186,7 +195,8 @@
   <h2 id='DataRequiredError' class='mt0'>
     DataRequiredError<span class='gray'>(message, extra)</span>
   </h2>
-  
+  <p>Thrown if a parameter is required, but was not given</p>
+
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
@@ -196,10 +206,11 @@
 
           </div>
         </li>
-        <li> <strong>extra</strong>
+        <li>Any <strong>extra</strong>
           :
           <div class='force-inline'>
-            
+            <p>Extra information</p>
+
           </div>
         </li>
     </ul>
@@ -208,7 +219,8 @@
   <h2 id='DataTypeError' class='mt0'>
     DataTypeError<span class='gray'>(message, extra)</span>
   </h2>
-  
+  <p>Thrown if the type of value for a parameter in the schema is incorrect,</p>
+
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
@@ -218,10 +230,11 @@
 
           </div>
         </li>
-        <li> <strong>extra</strong>
+        <li>Any <strong>extra</strong>
           :
           <div class='force-inline'>
-            
+            <p>Extra information</p>
+
           </div>
         </li>
     </ul>
@@ -405,7 +418,8 @@
   <h2 id='OptionsError' class='mt0'>
     OptionsError<span class='gray'>(message, extra)</span>
   </h2>
-  
+  <p>Thrown if the parameter value is out of the given range</p>
+
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
@@ -415,10 +429,11 @@
 
           </div>
         </li>
-        <li> <strong>extra</strong>
+        <li>Any <strong>extra</strong>
           :
           <div class='force-inline'>
-            
+            <p>Extra information</p>
+
           </div>
         </li>
     </ul>
@@ -427,7 +442,8 @@
   <h2 id='SchemaError' class='mt0'>
     SchemaError<span class='gray'>(message, extra)</span>
   </h2>
-  
+  <p>Thrown if the parameter value is out of the given range</p>
+
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
@@ -437,10 +453,11 @@
 
           </div>
         </li>
-        <li> <strong>extra</strong>
+        <li>Any <strong>extra</strong>
           :
           <div class='force-inline'>
-            
+            <p>Extra information</p>
+
           </div>
         </li>
     </ul>
@@ -449,13 +466,15 @@
   <h2 id='Skemer' class='mt0'>
     Skemer<span class='gray'>(options)</span>
   </h2>
-  
+  <p>Skemer prototype to enable simple reuse of a schema</p>
+
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
-        <li> <strong>options</strong>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
           :
           <div class='force-inline'>
-            
+            <p>An object containing options</p>
+
           </div>
         </li>
     </ul>
@@ -479,19 +498,30 @@
             
                 <h4>Parameters</h4>
                 <ul class='suppress-p-margin'>
-                    <li> <strong>data</strong>
+                    <li>Any <strong>data</strong>
                       :
                       <div class='force-inline'>
-                        
+                        <p>Data to validate and return. If no data is given,
+            data containing any default values will be returned. If newData
+            is given, newData will be validated and merged into data.</p>
+            
                       </div>
                     </li>
-                    <li> <strong>newData</strong>
+                    <li>...Any <strong>newData</strong>
                       :
                       <div class='force-inline'>
-                        
+                        <p>Data to validate and merge into data</p>
+            
                       </div>
                     </li>
                 </ul>
+                  <h4>Returns</h4>
+                  <code>Any</code>
+                  :
+                  <div class='force-inline'>
+                    <p>Validated and merged data</p>
+            
+                  </div>
             </section>
           </div>
         </div>
@@ -514,13 +544,21 @@
             
                 <h4>Parameters</h4>
                 <ul class='suppress-p-margin'>
-                    <li> <strong>newData</strong>
+                    <li>...Any <strong>newData</strong>
                       :
                       <div class='force-inline'>
-                        
+                        <p>Data to validate and merge into data</p>
+            
                       </div>
                     </li>
                 </ul>
+                  <h4>Returns</h4>
+                  <code>Any</code>
+                  :
+                  <div class='force-inline'>
+                    <p>Validated and merged data</p>
+            
+                  </div>
             </section>
           </div>
         </div>
@@ -546,19 +584,67 @@ should contain</p>
 </li>
             </ul>
         </li>
-        <li> <strong>data</strong>
+        <li>Any <strong>data</strong>
           :
           <div class='force-inline'>
-            
+            <p>Data to validate and return. If no data is given,
+data containing any default values will be returned. If newData
+is given, newData will be validated and merged into data.</p>
+
           </div>
         </li>
-        <li> <strong>newData</strong>
+        <li>...Any <strong>newData</strong>
           :
           <div class='force-inline'>
-            
+            <p>Data to validate and merge into data</p>
+
           </div>
         </li>
     </ul>
+      <h4>Returns</h4>
+      <code>Any</code>
+      :
+      <div class='force-inline'>
+        <p>Validated and merged data</p>
+
+      </div>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='validateNew' class='mt0'>
+    validateNew<span class='gray'>(options, newData)</span>
+  </h2>
+  <p>Add new data to data based on the stored schema.</p>
+
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
+          :
+          <div class='force-inline'>
+            <p>An object containing options</p>
+
+          </div>
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> options.schema
+                  <p>An Object containing a valid schema
+should contain</p>
+</li>
+            </ul>
+        </li>
+        <li>...Any <strong>newData</strong>
+          :
+          <div class='force-inline'>
+            <p>Data to validate and merge into data</p>
+
+          </div>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code>Any</code>
+      :
+      <div class='force-inline'>
+        <p>Validated and merged data</p>
+
+      </div>
 </section>
 </div>
         </div>

@@ -48,5 +48,18 @@ describe('Skemer module', function() {
 			expect(Skemer.validateAdd(valid, valid1, valid2)).toEqual(valid2);
 			expect(Skemer.validateNew(valid)).toEqual(valid);
 		});
+
+		it('should validate new data', function() {
+			expect(function() {
+				skemer.validateAdd({ schema: schema }, invalid);
+			}).toThrow(new errors.DataTypeError('Value must be a string'));
+			expect(function() {
+				skemer.validateNew({ schema: schema }, invalid);
+			}).toThrow(new errors.DataTypeError('Value must be a string'));
+		});
+
+		xit('should not validate existing data', function() {
+			expect(skemer.validateAdd({ schema: schema }, invalid)).toEqual(invalid);
+		});
 	});
 });

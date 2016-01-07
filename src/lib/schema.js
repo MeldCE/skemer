@@ -1,5 +1,3 @@
-"use strict";
-
 /** @module Skemer/Schemas */
 
 var buildDocOptions = {

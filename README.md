@@ -22,9 +22,11 @@ a JSDoc comment from the schema and its `doc` parameters.
 
 ## Skemer
 
+Skemer prototype to enable simple reuse of a schema
+
 **Parameters**
 
--   `options`  
+-   `options` **Object** An object containing options
 
 ### validateAdd
 
@@ -32,8 +34,12 @@ Add new data to data based on the stored schema.
 
 **Parameters**
 
--   `data`  
--   `newData`  
+-   `data` **Any** Data to validate and return. If no data is given,
+              data containing any default values will be returned. If newData
+              is given, newData will be validated and merged into data.
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Any** Validated and merged data
 
 ### validateNew
 
@@ -41,7 +47,9 @@ Add new data to data based on the stored schema.
 
 **Parameters**
 
--   `newData`  
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Any** Validated and merged data
 
 ## validateAdd
 
@@ -52,8 +60,25 @@ Add data to an object based on a schema from the data given.
 -   `options` **Object** An object containing options
     -   `options.schema` **Object** An Object containing a valid schema
                should contain
--   `data`  
--   `newData`  
+-   `data` **Any** Data to validate and return. If no data is given,
+              data containing any default values will be returned. If newData
+              is given, newData will be validated and merged into data.
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Any** Validated and merged data
+
+## validateNew
+
+Add new data to data based on the stored schema.
+
+**Parameters**
+
+-   `options` **Object** An object containing options
+    -   `options.schema` **Object** An Object containing a valid schema
+               should contain
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Any** Validated and merged data
 
 
 # Skemer Errors
@@ -63,43 +88,55 @@ or the variables are found
 
 ## DataItemsError
 
+Thrown if the parameter value is out of the given range
+
 **Parameters**
 
 -   `message` **string** Error message
--   `extra`  
+-   `extra` **Any** Extra information
 
 ## DataRangeError
 
+Thrown if the parameter value is out of the given range
+
 **Parameters**
 
 -   `message` **string** Error message
--   `extra`  
+-   `extra` **Any** Extra information
 
 ## DataRequiredError
 
+Thrown if a parameter is required, but was not given
+
 **Parameters**
 
 -   `message` **string** Error message
--   `extra`  
+-   `extra` **Any** Extra information
 
 ## DataTypeError
 
+Thrown if the type of value for a parameter in the schema is incorrect,
+
 **Parameters**
 
 -   `message` **string** Error message
--   `extra`  
+-   `extra` **Any** Extra information
 
 ## OptionsError
 
+Thrown if the parameter value is out of the given range
+
 **Parameters**
 
 -   `message` **string** Error message
--   `extra`  
+-   `extra` **Any** Extra information
 
 ## SchemaError
 
+Thrown if the parameter value is out of the given range
+
 **Parameters**
 
 -   `message` **string** Error message
--   `extra`  
+-   `extra` **Any** Extra information
 

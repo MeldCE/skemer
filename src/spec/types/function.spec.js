@@ -3,12 +3,16 @@ var buildTests = require('../lib/builder.js');
 
 /** @private
  * Old Function
+ *
+ * @returns {undefined}
  */
 function oldFunc() {
 }
 
 /** @private
  * New Function
+ *
+ * @returns {undefined}
  */
 function newFunc() {
 }

@@ -11,7 +11,7 @@ var util = require('util');
  * @param {Object} context Context of parameter to check
  * @param {string} parameterName Name of parameter to check
  *
- * @returns {boolean}
+ * @returns {boolean} Whether any existing value should be replaced
  */
 function shouldReplace(context) {
 	//console.log('\nshouldReplace\n', context);
@@ -38,8 +38,8 @@ function shouldReplace(context) {
  * with mulitple possible types instead a single type.
  *
  * @param {Object} context Context of the validation
- * @param {} context.data The current value
- * @param {} context.newData The schema to validate the data against
+ * @param {*} context.data The current value
+ * @param {*} context.newData The schema to validate the data against
  * @param {Object} context.schema The schema to validate the value against
  * @param {boolean} context.add If true and value can contain multiple values
  *        add the value to the existing values
@@ -51,8 +51,8 @@ function shouldReplace(context) {
  * @throws {ValueError} When the new value (given in context.data) is not of
  *         the given type
  *
- * @returns undefined if no value set, either by the existing value, the new
- *          value or a default value. Otherwise, the new value
+ * @returns {*} undefined if no value set, either by the existing value, the
+ *          new value or a default value. Otherwise, the new value
  */
 function setValueToType(context) {
 	var t, value;
@@ -66,7 +66,7 @@ function setValueToType(context) {
 			//}
 
 			// Go through possible types and return first one that returns a value
-			var validData = false, thrown;
+			var thrown;
 			for (t in context.schema.types) {
 				thrown = false;
 				//console.log('checking type ' + t + ' for ' + context.parameterName, context.schema.types[t]);
@@ -131,7 +131,6 @@ function setValueToType(context) {
 						if (context.newData !== undefined) {
 							if (typeof context.newData === context.schema.type) {
 								var parts = [];
-								// TODO Add min/max checks for string?
 								if (context.schema.type === 'number') {
 									if ((context.schema.min !== undefined
 											&& context.newData < context.schema.min)
@@ -272,8 +271,8 @@ function setValueToType(context) {
  * Add data to an object based on a schema from the data given.
  *
  * @param {Object} context An Object containing the context of the call.
- * @param {} context.data The current value
- * @param {} context.newData The schema to validate the data against
+ * @param {*} context.data The current value
+ * @param {*} context.newData The schema to validate the data against
  * @param {Object} context.type The type to validate the value against
  * @param {boolean} context.add If true and value can contain multiple values
  *        add the value to the existing values
@@ -281,6 +280,8 @@ function setValueToType(context) {
  *        used in recursive schema
  * @param {boolean} context.inMultiple Used to determine if have called itself
  *        to validate a value that can have multiple values
+ * @param {boolean} inMultiple Flag to tell whether have called itself while
+ *        handling a multiple value variable
  *
  * @returns {boolean} True if any data was added to the object
  */
@@ -425,6 +426,8 @@ function doValidateAdd(context, inMultiple) {
  * Validates the given options Object
  *
  * @param {Object} options Options Object to validate
+ *
+ * @returns {undefined}
  */
 function validateOptions(options) {
 	// Validate the schema
@@ -449,16 +452,17 @@ function validateOptions(options) {
 /** @private
  *
  * Adds new data to the existing data based on the given schema.
+ * 
  *
  * @param {Object} options An object containing options
  * @param {Object} options.schema An Object containing a valid schema
  *        should contain
- * @param {} data Data to validate and return. If no data is given,
+ * @param {*} data Data to validate and return. If no data is given,
  *           data containing any default values will be returned. If newData
  *           is given, newData will be validated and merged into data.
- * @param {} newData, ... Data to validate and merge into data
+ * @param {...*} newData, ... Data to validate and merge into data
  *
- * @returns {} Validated and merged data
+ * @returns {*} Validated and merged data
  */
 function validateAdd(options, data, newData) {
 	//console.log('validateAdd called with ', arguments.length, 'arguments\n', arguments);
@@ -495,35 +499,61 @@ function validateAdd(options, data, newData) {
 	//console.log('validateAdd complete', context, data);
 
 	return data;
-};
+}
 
 module.exports = {
 	/**
-	 * Add data to an object based on a schema from the data given.
+	 * Add new data to data based on the stored schema.
 	 *
 	 * @param {Object} options An object containing options
 	 * @param {Object} options.schema An Object containing a valid schema
 	 *        should contain
-	 * @param {} data Data to validate and return. If no data is given,
-	 *           data containing any default values will be returned. If newData
-	 *           is given, newData will be validated and merged into data.
-	 * @param {} newData, ... Data to validate and merge into data
+	 * @param {...*} newData Data to validate and merge into data
 	 *
-	 * @returns {} Validated and merged data
+	 * @returns {*} Validated and merged data
 	 */
-	validateAdd: function(options, data, newData) {
+	validateNew: function (options) {
 		options = validateOptions(options);
 
 		//console.log('options after validation', util.inspect(options, {depth: null}));
 		//return;
 		//console.log('skemer.validateAdd called', arguments);
 
-		return validateAdd.apply(this, [options].concat(Array.prototype.slice.call(arguments, 1)));
+		return validateAdd.apply(this, [options, 
+				undefined].concat(Array.prototype.slice.call(arguments)));
+	},
+
+	/**
+	 * Add data to an object based on a schema from the data given.
+	 *
+	 * @param {Object} options An object containing options
+	 * @param {Object} options.schema An Object containing a valid schema
+	 *        should contain
+	 * @param {*} data Data to validate and return. If no data is given,
+	 *           data containing any default values will be returned. If newData
+	 *           is given, newData will be validated and merged into data.
+	 * @param {...*} newData Data to validate and merge into data
+	 *
+	 * @returns {*} Validated and merged data
+	 */
+	validateAdd: function(options) {
+		options = validateOptions(options);
+
+		//console.log('options after validation', util.inspect(options, {depth: null}));
+		//return;
+		//console.log('skemer.validateAdd called', arguments);
+
+		return validateAdd.apply(this,
+				[options].concat(Array.prototype.slice.call(arguments, 1)));
 	}
 };
 
-/** @constructor
+/**
  * Skemer prototype to enable simple reuse of a schema
+ *
+ * @param {Object} options An object containing options
+ *
+ * @class
  */
 var Skemer = module.exports.Skemer = function(options) {
 	// Validate options and schema
@@ -536,25 +566,27 @@ Skemer.prototype = {
 	/**
 	 * Add new data to data based on the stored schema.
 	 *
-	 * @param {} newData, ... Data to validate and merge into data
+	 * @param {...*} newData Data to validate and merge into data
 	 *
-	 * @returns {} Validated and merged data
+	 * @returns {*} Validated and merged data
 	 */
-	validateNew: function (newData) {
-		return validateAdd.apply(this, [this.options, undefined].concat(Array.prototype.slice.call(arguments)));
+	validateNew: function () {
+		return validateAdd.apply(this, [this.options,
+				undefined].concat(Array.prototype.slice.call(arguments)));
 	},
 	
 	/**
 	 * Add new data to data based on the stored schema.
 	 *
-	 * @param {} data Data to validate and return. If no data is given,
+	 * @param {*} data Data to validate and return. If no data is given,
 	 *           data containing any default values will be returned. If newData
 	 *           is given, newData will be validated and merged into data.
-	 * @param {} newData, ... Data to validate and merge into data
+	 * @param {...*} newData Data to validate and merge into data
 	 *
-	 * @returns {} Validated and merged data
+	 * @returns {*} Validated and merged data
 	 */
-	validateAdd: function (data, newData) {
-		return validateAdd.apply(this, [this.options].concat(Array.prototype.slice.call(arguments)));
+	validateAdd: function () {
+		return validateAdd.apply(this, 
+				[this.options].concat(Array.prototype.slice.call(arguments)));
 	}
 };
