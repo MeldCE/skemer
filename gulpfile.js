@@ -20,33 +20,6 @@ var include = require('gulp-include');
 var coolReporter = require('jasmine2-reporter').Jasmine2Reporter;
 var complexity = require('gulp-complexity');
 
-var eslintRules = {
-	'comma-dangle': 2,
-	'curly': 2,
-	'no-caller': 2,
-	'no-dupe-args': 2,
-	'no-dupe-keys': 2,
-	'no-duplicate-case': 2,
-	'no-extra-semi': 1,
-	'no-invalid-regexp': 2,
-	'no-redeclare': 2,
-	'no-shadow': 2,
-	'no-unused-vars': 1,
-	'no-undef': 2,
-	'no-var': 0, // TODO 1,
-	"require-jsdoc": [2, {
-		"require": {
-			"FunctionDeclaration": true,
-			"MethodDefinition": true,
-			"ClassDeclaration": true
-		}
-	}],
-	'no-warning-comments': 1,
-	'semi': 2,
-	'strict': 1,
-	'valid-jsdoc': 1,
-	'valid-typeof': 2
-};
 
 var paths = {
 	dist: './',
@@ -79,10 +52,7 @@ gulp.task('check:deps', function() {
 gulp.task('lint', function() {
 	return gulp.src(paths.src)
 			.pipe(eslint({
-				'ecmaFeatures': {
-					modules: true
-				},
-				rules: eslintRules,
+				useEslintrc: true,
 				env: {
 					node: true,
 					es6: true
@@ -95,10 +65,7 @@ gulp.task('lint', function() {
 gulp.task('lint:test', function() {
 	return gulp.src([paths.srcTests, paths.srcTestLib])
 			.pipe(eslint({
-				'ecmaFeatures': {
-					modules: true
-				},
-				rules: eslintRules,
+				useEslintrc: true,
 				env: {
 					node: true,
 					es6: true,
@@ -113,10 +80,7 @@ gulp.task('compile:tests', function() {
 	return gulp.src(paths.testSrc)
 			.pipe(include())
 			.pipe(eslint({
-				'ecmaFeatures': {
-					modules: true
-				},
-				rules: eslintRules,
+				useEslintrc: true,
 				env: {
 					node: true,
 					es6: true,
