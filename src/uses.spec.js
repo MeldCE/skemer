@@ -1,5 +1,6 @@
 var skemer = require('../lib/skemer.js');
 var errors = require('../lib/errors.js');
+var merge  = require('merge');
 
 /**
  * This spec is designed to test the objects and functions in the Skemer
@@ -43,23 +44,24 @@ describe('Skemer module', function() {
 			expect(Skemer).toEqual(jasmine.any(skemer.Skemer));
 			expect(function() {
 				Skemer.validateAdd(invalid);
-			}).toThrow(new errors.DataTypeError('Value must be a string'));
+			}).toThrow(new errors.DataTypeError('Value must be an object (boolean given)'));
 			expect(Skemer.validateAdd(valid)).toEqual(valid);
-			expect(Skemer.validateAdd(valid, valid1, valid2)).toEqual(valid2);
+			expect(Skemer.validateAdd(valid, valid1, valid2))
+					.toEqual(merge({}, valid, valid1, valid2));
 			expect(Skemer.validateNew(valid)).toEqual(valid);
 		});
 
 		it('should validate new data', function() {
 			expect(function() {
 				skemer.validateAdd({ schema: schema }, invalid);
-			}).toThrow(new errors.DataTypeError('Value must be a string'));
+			}).toThrow(new errors.DataTypeError('Value must be an object (boolean given)'));
 			expect(function() {
 				skemer.validateNew({ schema: schema }, invalid);
-			}).toThrow(new errors.DataTypeError('Value must be a string'));
+			}).toThrow(new errors.DataTypeError('Value must be an object (boolean given)'));
 		});
 
-		xit('should not validate existing data', function() {
-			expect(skemer.validateAdd({ schema: schema }, invalid)).toEqual(invalid);
+		it('should not validate existing data', function() {
+			expect(skemer.validateAdd({ schema: schema }, valid2, valid1)).toEqual(merge({}, valid2, valid1));
 		});
 	});
 });

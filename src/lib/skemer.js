@@ -177,8 +177,9 @@ function setValueToType(context) {
 							}
 						}
 						break;
-					case 'null':
 					case 'Null':
+						context.schema.type = 'null';
+					case 'null':
 						if (context.newData !== undefined) {
 							if (context.newData === null) {
 								context.data = null;

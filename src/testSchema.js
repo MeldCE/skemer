@@ -1,10 +1,28 @@
 
 var schema = {
-	type: 'string'
+	type: {
+		value: {
+			type: 'string'
+		},
+		figure: {
+			type: 'number',
+			min: 20,
+			max: 50
+		}
+	}
 };
 
-var valid = 'a string';
-var valid1 = 'another string';
-var valid2 = 'a different string';
+var valid = {
+	value: 'a string',
+	figure: 30
+};
+
+var valid1 = {
+	figure: 35
+};
+
+var valid2 = {
+	value: 'a different string'
+};
 
 var invalid = false;
