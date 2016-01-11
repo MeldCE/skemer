@@ -112,7 +112,7 @@ gulp.task('jasmine:production', ['copy', 'jasmine'], function() {
 	return gulp.src(paths.tests)
 			.pipe(jasmine())
 			.pipe(istanbul.writeReports())
-			.pipe(istanbul.enforceThresholds({ thresholds: { global: 80 } }));
+			.pipe(istanbul.enforceThresholds({ thresholds: { global: 100 } }));
 });
 
 gulp.task('coveralls', ['jasmine:production'], function() {
