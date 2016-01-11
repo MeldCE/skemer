@@ -1,5 +1,3 @@
-/** @module Skemer/Schemas */
-
 var buildDocOptions = {
 };
 
@@ -46,12 +44,18 @@ var schema = {
 			type: 'RegExp'
 		},
 		min: {
-			doc: "The minimum number, or number of Array elements required",
+			doc: "The minimum number, string length or number of Array elements "
+					+ "required",
 			type: 'number'
 		},
 		max: {
-			doc: "The maximum number, or number of Array elements allowed",
+			doc: "The maximum number, string length or number of Array elements "
+					+ "allowed",
 			type: 'number'
+		},
+		replace: {
+			doc: 'Whether a new value should completely replace an old value',
+			type: 'boolean'
 		},
 		required: {
 			doc: "Either true/false or a function returning true/false to whether the "

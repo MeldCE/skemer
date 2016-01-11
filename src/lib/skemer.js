@@ -99,21 +99,21 @@ function setValueToType(context) {
 			}
 		}
 	} else {
-		// If type is null start again the original schema for the value
-		if (context.schema.type === null) { // magical value to represent the schema (schema within the schema)
-			// Restart with base schema
-			//console.log('!!!!!!!restarting with base schema', merge({}, context, {
-			//	schema: context.baseSchema
-			//}));
+		if (context.newData !== undefined) {
+			// If type is null start again the original schema for the value
+			if (context.schema.type === null) { // magical value to represent the schema (schema within the schema)
+				// Restart with base schema
+				//console.log('!!!!!!!restarting with base schema', merge({}, context, {
+				//	schema: context.baseSchema
+				//}));
 
-			if ((value = doValidateAdd(merge({}, context, {
-				schema: context.baseSchema
-			}))) !== undefined) {
-				context.data = value;
-				//console.log('got a value from null schema', util.inspect(context, {depth: null}));
-			}
-		} else {
-			if (typeof context.schema.type === 'string') { // A simple type or instance of a certain prototype
+				if ((value = doValidateAdd(merge({}, context, {
+					schema: context.baseSchema
+				}))) !== undefined) {
+					context.data = value;
+					//console.log('got a value from null schema', util.inspect(context, {depth: null}));
+				}
+			} else if (typeof context.schema.type === 'string') { // A simple type or instance of a certain prototype
 				//console.log('type given as string', context.schema.type);
 				switch (context.schema.type) {
 					case 'any':

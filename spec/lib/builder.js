@@ -138,7 +138,7 @@ function buildTests(suiteLabel, testSuites) {
 							if (test.throws) {
 								expect(function (options, data, newData) {
 									if (!this.options) {
-										console.log('\n\nno options\n', test, '\n', this);
+										void 0;
 									}
 									skemer.validateAdd(options, data, newData);
 								}.bind(this, this.options[input[2]],

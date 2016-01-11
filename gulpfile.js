@@ -30,7 +30,7 @@ var paths = {
 	testDir: 'src/spec',
 	testSrc: 'src/*.spec.js',
 	srcTests: 'src/spec/**/*.spec.js',
-	srcTestLib: 'src/spec/lib/*.spec.js',
+	srcTestLib: 'src/spec/lib/*.js',
 	srcJasmineJson: 'src/spec/support/jasmine.json',
 	tests: 'spec/**/*.spec.js',
 	lcov: 'coverage/lcov.info',
@@ -112,7 +112,7 @@ gulp.task('jasmine:production', ['copy', 'jasmine'], function() {
 	return gulp.src(paths.tests)
 			.pipe(jasmine())
 			.pipe(istanbul.writeReports())
-			.pipe(istanbul.enforceThresholds({ thresholds: { global: 100 } }));
+			.pipe(istanbul.enforceThresholds({ thresholds: { global: 80 } }));
 });
 
 gulp.task('coveralls', ['jasmine:production'], function() {
@@ -171,7 +171,7 @@ gulp.task('readme', ['mddocs'], function() {
 });
 
 gulp.task('copy', ['jasmine', 'copy:jasmine.json'], function() {
-	return gulp.src([paths.src, paths.srcTests], { base: 'src' })
+	return gulp.src([paths.src, paths.srcTests, paths.srcTestLib], { base: 'src' })
 		.pipe(stripDebug())
 		.pipe(gulp.dest(paths.dist));
 });
@@ -200,7 +200,7 @@ gulp.task('watch', function() {
 	gulp.watch('package.json', ['check:deps']);
 });
 
-defaultTasks = ['check:deps', 'jasmine', 'complexity', 'docs', 'readme'];
+defaultTasks = ['check:deps', 'jasmine', /*'complexity',*/ 'docs', 'readme'];
 
 gulp.task('one', defaultTasks);
 
