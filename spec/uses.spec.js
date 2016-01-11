@@ -71,7 +71,7 @@ describe('Skemer module', function() {
 
 			expect(Skemer).toEqual(jasmine.any(skemer.Skemer));
 			expect(function() {
-				Skemer.validateAdd(invalid);
+				Skemer.validateNew(invalid);
 			}).toThrow(new errors.DataTypeError('Value must be an object (boolean given)'));
 			expect(Skemer.validateAdd(valid)).toEqual(valid);
 			expect(Skemer.validateAdd(valid, valid1, valid2))
@@ -81,7 +81,7 @@ describe('Skemer module', function() {
 
 		it('should validate new data', function() {
 			expect(function() {
-				skemer.validateAdd({ schema: schema }, invalid);
+				skemer.validateAdd({ schema: schema }, valid, invalid);
 			}).toThrow(new errors.DataTypeError('Value must be an object (boolean given)'));
 			expect(function() {
 				skemer.validateNew({ schema: schema }, invalid);

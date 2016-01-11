@@ -141,9 +141,9 @@ var suites = [
 				throws: new errors.DataRequiredError('Value required')
 			},
 			{
+				label: 'Will return as existing data should not be validated',
 				input: ['number', 'undef', false],
-				throws: new errors.DataRangeError('Value must be greater than or '
-						+ 'equal to 453 and less than 454')
+				result: 34
 			},
 			{
 				input: ['string', 'undef', false],

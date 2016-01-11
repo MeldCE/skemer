@@ -31,6 +31,7 @@ Skemer prototype to enable simple reuse of a schema
 ### validateAdd
 
 Add new data to data based on the stored schema.
+NOTE: Existing data WILL NOT be validated
 
 **Parameters**
 
@@ -54,6 +55,7 @@ Returns **Any** Validated and merged data
 ## validateAdd
 
 Add data to an object based on a schema from the data given.
+NOTE: Existing data WILL NOT be validated
 
 **Parameters**
 

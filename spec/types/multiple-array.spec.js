@@ -15,6 +15,11 @@ var options = {
 		replace: {
 			'': true
 		}
+	},
+	specificButNot: {
+		replace: {
+			bob: true
+		}
 	}
 };
 
@@ -50,20 +55,28 @@ var suites = [
 			},
 			{
 				input: [
-					['invalid', 'undef', 'empty'],
-					[false, 'invalid', 'empty']
+					['undef', 'invalid', 'empty'],
+					['empty', 'invalid', 'empty'],
+					['single', 'invalid', 'empty'],
+					['double', 'invalid', 'empty']
 				],
 				throws: new errors.DataTypeError('Value must be an array of values (string given)')
 			},
 			{
-				input: [
-					['invalid', 'empty', 'empty'],
-					['invalid', 'single', 'empty']
-				],
+				input: ['invalid', false, false],
 				throws: new errors.DataTypeError('Existing data is not an array as it should be')
 			},
 			{
-				input: [[false, 'empty', 'global'], [false, 'empty', 'specific']],
+				input: [
+					['undef', 'empty', 'global'],
+					['empty', 'empty', 'global'],
+					['single', 'empty', 'global'],
+					['double', 'empty', 'global'],
+					['undef', 'empty', 'specific'],
+					['empty', 'empty', 'specific'],
+					['single', 'empty', 'specific'],
+					['double', 'empty', 'specific']
+				],
 				result: []
 			},
 			{
@@ -199,20 +212,32 @@ var suites = [
 			},
 			{
 				input: [
-					['invalid', 'undef', 'empty'],
-					[false, 'invalid', 'empty']
+					['undef', 'invalid', 'empty'],
+					['empty', 'invalid', 'empty'],
+					['single', 'invalid', 'empty'],
+					['double', 'invalid', 'empty']
 				],
 				throws: new errors.DataTypeError('Value must be an array of values (string given)')
 			},
 			{
 				input: [
+					['invalid', 'undef', 'empty'],
 					['invalid', 'empty', 'empty'],
 					['invalid', 'single', 'empty']
 				],
 				throws: new errors.DataTypeError('Existing data is not an array as it should be')
 			},
 			{
-				input: [[false, 'empty', 'global'], [false, 'empty', 'specific']],
+				input: [
+					['undef', 'empty', 'global'],
+					['empty', 'empty', 'global'],
+					['single', 'empty', 'global'],
+					['double', 'empty', 'global'],
+					['undef', 'empty', 'specific'],
+					['empty', 'empty', 'specific'],
+					['single', 'empty', 'specific'],
+					['double', 'empty', 'specific']
+				],
 				result: []
 			},
 			{
@@ -284,10 +309,11 @@ var suites = [
 				result: ['newString']
 			},
 			{
-				input: [
-					['empty', 'undef', false],
-					['empty', 'empty', false]
-					],
+				input: ['empty', 'undef', false],
+				result: []
+			},
+			{
+				input: ['empty', 'empty', false],
 				throws: new errors.DataItemsError('Must have exactly 1 item(s)')
 			},
 			{
@@ -364,10 +390,12 @@ var suites = [
 				result: ['newString']
 			},
 			{
-				input: [
-					['empty', 'undef', false],
-					['empty', 'empty', false]
-					],
+				label: 'Will return empty array as don\'t check existing data',
+				input: ['empty', 'undef', false],
+				result: []
+			},
+			{
+				input: ['empty', 'empty', false],
 				throws: new errors.DataItemsError('Must have between 1 and 2 item(s)')
 			},
 			{
@@ -450,10 +478,12 @@ var suites = [
 				result: ['newString']
 			},
 			{
-				input: [
-					['empty', 'undef', false],
-					['empty', 'empty', false]
-					],
+				label: 'Will return empty array as don\'t check existing data',
+				input: ['empty', 'undef', false],
+				result: []
+			},
+			{
+				input: ['empty', 'empty', false],
 				throws: new errors.DataItemsError('Must have atleast 1 item(s)')
 			},
 			{
