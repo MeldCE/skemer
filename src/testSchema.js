@@ -26,3 +26,9 @@ var valid2 = {
 };
 
 var invalid = false;
+
+var stringSchema = {
+	type: 'string'
+};
+
+var aString = 'string';
