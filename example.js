@@ -1,65 +1,49 @@
-{
-	address: {
-		type: 'string',
-		regex: regex.HOSTNAME
-	},
-	port: {
-		type: 'number',
-		validation: valid.PORT
-	},
-	spots: {
-		doc: "Spots (URIs) where pokes (POST requests) are expected",
-		type: [
-			{
-				url: {
-					doc: "Github repository HTTPS URL",
-					type: 'string',
-					regex: regex.HTTPS,
-					required: true
-				uri: {
-					doc: "URI of poke",
-					type: 'string',
-					regex: regex.URI,
-					required: true
-				},
-				secret: {
-					doc: "Secret of poke",
-					type: 'string',
-					required: true
-				}
-			}
-		],
-		required: true
-	},
-	folders: {
-		doc: "Folders to update when their associated pokes come in",
-		types: [
-			{
-				type:[ 'string' ],
-				regex: regex.PATH,
-				required: true
-			},
-			{
-				type: {
-					path: {
-						doc: "Folder path",
-						type: 'string',
-						regex: regex.PATH,
-						required: true
-					},
-					url: {
-						doc: "Repository URL (only required if folder doesn't already exist",
-						type: 'string',
-						regex: regex.URL,
-						required: true
-					},
-					branch: {
-						doc: "Repository branch (only required if folder doesn't already exist",
-						type: 'string',
-						regex: regex.GIT_REF_NAME
-					}
-				}
-			},
-		]
+var skemer = require('skemer');
+
+
+var schema = {
+	type: {
+		value: {
+			type: 'string'
+		},
+		figure: {
+			type: 'number',
+			min: 20,
+			max: 50
+		}
 	}
-}		
+};
+
+var valid = {
+	value: 'a string',
+	figure: 30
+};
+
+var valid1 = {
+	figure: 35
+};
+
+var valid2 = {
+	value: 'a different string'
+};
+
+var invalid = false;
+
+var stringSchema = {
+	type: 'string'
+};
+
+var aString = 'string';
+
+
+skemer.validateNew({ schema: stringSchema }, aString);
+
+var Schema, data;
+
+Schema = new skemer.Skemer({ schema: schema });
+
+console.log(data = Schema.validateNew(valid));
+
+console.log(data = Schema.validateAdd(data, valid1));
+
+Schema.validateAdd(data, valid2, invalid);

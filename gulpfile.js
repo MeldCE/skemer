@@ -27,6 +27,7 @@ var paths = {
 	reports: 'reports/',
 	docs: 'docs/',
 	src: 'src/lib/**/*.js',
+	exampleSrc: 'src/example.js',
 	testDir: 'src/spec',
 	testSrc: 'src/*.spec.js',
 	srcTests: 'src/spec/**/*.spec.js',
@@ -91,6 +92,23 @@ gulp.task('compile:tests', function() {
 			.pipe(eslint.failAfterError())
 			.pipe(gulp.dest(paths.testDir));
 });
+
+gulp.task('compile:example', function() {
+	return gulp.src(paths.exampleSrc)
+			.pipe(include())
+			.pipe(eslint({
+				useEslintrc: true,
+				env: {
+					node: true,
+					es6: true,
+					jasmine: true
+				}
+			}))
+			.pipe(eslint.format())
+			.pipe(eslint.failAfterError())
+			.pipe(gulp.dest(paths.dist));
+});
+
 
 gulp.task('pre-test', ['lint', 'lint:test'], function() {
 	return gulp.src(paths.src)

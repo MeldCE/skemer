@@ -4,8 +4,11 @@
 [![Dependency Status](https://david-dm.org/MeldCE/skemer.svg)](https://david-dm.org/MeldCE/skemer)
 [![devDependency Status](https://david-dm.org/MeldCE/skemer/dev-status.svg)](https://david-dm.org/MeldCE/skemer#info=devDependencies)
 [![Coverage Status](https://coveralls.io/repos/MeldCE/skemer/badge.svg)](https://coveralls.io/github/MeldCE/skemer)
-[![Development Hours](https://img.shields.io/badge/development%20hours-15-blue.svg)](https://www.paypal.me/MeldCE) (since [5a3e25f](https://github.com/MeldCE/skemer/commit/5a3e25fac0b992033799f9f295d98a4101a39077))
-[![Donate](https://img.shields.io/badge/donate-%20%E2%9D%A4%20-blue.svg)](https://www.paypal.me/MeldCE)
+
+[![Development Hours](https://img.shields.io/badge/development%20hours%20%28since%205a3e25f%29-15-lightgrey.svg)](https://github.com/MeldCE/skemer/commit/5a3e25fac0b992033799f9f295d98a4101a39077)
+[![Bountysource](https://img.shields.io/bountysource/team/meldce/activity.svg)](https://www.bountysource.com/teams/meldce/issues?tracker_ids=27337966)
+<!--[![Gratipay Team](https://img.shields.io/gratipay/meldce/shields.svg)](https://gratipay.com/meldce)-->
+[![Donate](https://img.shields.io/badge/donate%20via%20Paypal.me -%20%E2%9D%A4%20-blue.svg)](https://www.paypal.me/MeldCE)
 
 %%description%%
 

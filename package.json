@@ -1,6 +1,6 @@
 {
   "name": "skemer",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "description": "A Javascript variable validation and merge tool.",
   "main": "lib/skemer.js",
   "scripts": {
