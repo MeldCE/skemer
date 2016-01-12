@@ -25,7 +25,7 @@ var suites = [
 			},
 			{
 				input: ['date', 'undef', false],
-				result: new Date('2015-11-1')
+				result: new Date('2015-11-01')
 			},
 			{
 				input: [false, 'invalid', false],
@@ -60,7 +60,7 @@ var suites = [
 			},
 			{
 				input: ['date', 'undef', false],
-				result: new Date('2015-11-1')
+				result: new Date('2015-11-01')
 			},
 			{
 				input: [false, 'invalid', false],
