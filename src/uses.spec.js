@@ -68,5 +68,11 @@ describe('Skemer module', function() {
 			expect(skemer.validateNew({ schema: stringSchema }, aString)).toEqual(aString);
 			expect(skemer.validateAdd({ schema: stringSchema }, '', aString)).toEqual(aString);
 		});
+
+    it('should build JSDoc based on schem', function() {
+      console.log(skemer.buildJsDocs(schema, {
+        preLine: ' * '
+      }));
+    });
 	});
 });

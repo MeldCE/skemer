@@ -1,4 +1,4 @@
-# skemer 0.8.0
+# skemer 0.8.1
 <!--[![NPM version](http://img.shields.io/npm/v/convict.svg)](https://www.npmjs.org/package/convict)-->
 [![Build status](https://api.travis-ci.org/MeldCE/skemer.svg?branch=master)](https://travis-ci.org/MeldCE/skemer/branches)
 [![Dependency Status](https://david-dm.org/MeldCE/skemer.svg)](https://david-dm.org/MeldCE/skemer)
@@ -24,6 +24,48 @@ a JSDoc comment from the schema and its `doc` parameters-->.
 - Validating dynamic data during runtime
 
 # Skemer API
+
+## buildJsDocs
+
+Add data to an object based on a schema from the data given.
+
+**Parameters**
+
+-   `schema` **Object** An Object containing a valid schema
+-   `options` **Object** An object containing options
+           should contain
+
+Returns **string** JSDoc Formatted string containing the parameters of the
+
+## validateAdd
+
+Add data to an object based on a schema from the data given.
+NOTE: Existing data WILL NOT be validated
+
+**Parameters**
+
+-   `options` **Object** An object containing options
+    -   `options.schema` **Object** An Object containing a valid schema
+               should contain
+-   `data` **Any** Data to validate and return. If no data is given,
+              data containing any default values will be returned. If newData
+              is given, newData will be validated and merged into data.
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Any** Validated and merged data
+
+## validateNew
+
+Add new data to data based on the stored schema.
+
+**Parameters**
+
+-   `options` **Object** An object containing options
+    -   `options.schema` **Object** An Object containing a valid schema
+               should contain
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Any** Validated and merged data
 
 ## Skemer
 
@@ -53,36 +95,6 @@ Add new data to data based on the stored schema.
 
 **Parameters**
 
--   `newData` **...Any** Data to validate and merge into data
-
-Returns **Any** Validated and merged data
-
-## validateAdd
-
-Add data to an object based on a schema from the data given.
-NOTE: Existing data WILL NOT be validated
-
-**Parameters**
-
--   `options` **Object** An object containing options
-    -   `options.schema` **Object** An Object containing a valid schema
-               should contain
--   `data` **Any** Data to validate and return. If no data is given,
-              data containing any default values will be returned. If newData
-              is given, newData will be validated and merged into data.
--   `newData` **...Any** Data to validate and merge into data
-
-Returns **Any** Validated and merged data
-
-## validateNew
-
-Add new data to data based on the stored schema.
-
-**Parameters**
-
--   `options` **Object** An object containing options
-    -   `options.schema` **Object** An Object containing a valid schema
-               should contain
 -   `newData` **...Any** Data to validate and merge into data
 
 Returns **Any** Validated and merged data

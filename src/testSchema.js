@@ -1,10 +1,13 @@
 
 var schema = {
+  doc: 'A basic schema',
 	type: {
 		value: {
+      doc: 'Some string value',
 			type: 'string'
 		},
 		figure: {
+      doc: 'A number value',
 			type: 'number',
 			min: 20,
 			max: 50

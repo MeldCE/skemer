@@ -508,6 +508,78 @@ function validateAdd(options, data, newData) {
 	return data;
 }
 
+/** @private
+ * Builds line of JSDoc for the given schema
+ *
+ * @param {Object} schema Schema to build the schema for
+ * @param {Object} options Options for building JSDoc
+ * @param {Boolean} [parameter] Whether or not schema is for a parameter (if
+ *        not, will return @type instead of @param
+ * @param {String} [name] Name of object building JSDoc for
+ *
+ * @returns {Array} Array of string lines containing the JSDoc schema
+ */
+function buildLines(schema, options, parameter, name) {
+  var line, lines = [], type = '';
+  console.log('buildLines called', util.inspect(arguments, { deep: null }));
+
+  if (typeof name === undefined) {
+    if (typeof options.name !== undefined) {
+      name = options.name;
+    } else {
+      name = '';
+    }
+  }
+
+  if (typeof schema.type === 'string') {
+    if (schema.type === 'any') {
+      type = '{*}';
+    } else {
+      type = '{' + schema.type + '}';
+    }
+  } else if (schema.type instanceof Object) {
+    type = '{Object}';
+  }
+
+  if (parameter) {
+    line = options.preLine + '@param ' + type;
+
+    if (name) {
+      if (schema.required) {
+        line += ' ' + name;
+      } else {
+        line += ' [' + name + ']';
+      }
+    }
+    
+    if (schema.doc) {
+      line += ' ' + schema.doc;
+    }
+
+    lines.push(line);
+  } else {
+    if (schema.doc) {
+      lines.push(options.preLine + schema.doc);
+      lines.push(options.preLine);
+    }
+
+    if (!(schema.type instanceof Object)) {
+      lines.push(options.preLine + '@type ' + type + (name ? ' ' + name : ''));
+    }
+  }
+
+  if (schema.type instanceof Object) {
+    var o;
+    for (o in schema.type) {
+      lines = lines.concat(buildLines(schema.type[o], options, true,
+          (name ? name + '.' : '') + o));
+    }
+  }
+
+  console.log('returning', lines);
+  return lines;
+}
+
 module.exports = {
 	/**
 	 * Add new data to data based on the stored schema.
@@ -553,7 +625,70 @@ module.exports = {
 
 		return validateAdd.apply(this,
 				[options].concat(Array.prototype.slice.call(arguments, 1)));
-	}
+	},
+
+  /**
+   * Add data to an object based on a schema from the data given.
+   * @param {Object} schema An Object containing a valid schema
+   * @param {Object} options An object containing options
+   *        should contain
+   *
+   * @returns {string} JSDoc Formatted string containing the parameters of the
+   */
+  buildJsDocs: function(schema, options) {
+    console.log('skemer.buildJsDocs called', util.inspect(arguments));
+    
+    // Validate schema
+    schema = validateAdd({
+      schema: schemas.schema
+    }, {}, schema);
+
+    // Validate options
+    options = validateAdd({
+      schema: schemas.buildDocOptions
+    }, {}, {}, options);
+
+    var doc = '';
+
+    var tw = options.tabWidth;
+    var c, s, w, line, l;
+    var lines = buildLines(schema, options, options.parameter);
+
+    if (options.wrap) {
+      for (l in lines) {
+        line = options.preLine + lines[l];
+
+        c = 0;
+        s = 0;
+
+        while (c < line.length) {
+          if (line[c] === ' ') {
+            s = c;
+          } else if (line[c] === "\t") {
+            w += tw - 1;
+            s = c;
+          }
+          w++;
+          if (w > options.wrap) {
+            doc += line.slice(0, s) + "\n";
+            line = options.preLine + (options.lineup ? '       ' : '');
+            c = 0;
+            s = 0;
+            w = 0;
+          } else {
+            c++;
+          }
+        }
+        if (line) {
+          doc += line + "\n";
+        }
+      }
+    } else {
+      doc = lines.join("\n");
+    }
+
+    return doc;
+  }
 };
 
 /**

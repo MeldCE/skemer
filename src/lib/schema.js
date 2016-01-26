@@ -1,11 +1,82 @@
+/** @private
+ * Schema for the buildDocOptions
+ */
 var buildDocOptions = {
+  type: {
+    name: {
+      doc: 'Name of the object documenting (will be prepended to any '
+          + 'parameter names',
+      type: 'string'
+    },
+    tabWidth: {
+      doc: 'The width (number of characters) of a tab',
+      type: 'number',
+      default: 8
+    },
+    preLine: {
+      doc: 'String (normally indentation) to include before each line',
+      type: 'string',
+      default: ''
+    },
+    lineup: {
+      doc: 'Whether to line up text in a JSDoc (eg @param) with the end of '
+          + 'the end of the command',
+      type: 'boolean',
+      default: true
+    },
+    wrap: {
+      doc: 'Number of characters to wrap the JSDoc lines at',
+      type: 'number'
+    }
+  }
 };
 
+/** @private
+ * Schema for Skemer schemas
+ */
 var schema = {
 	type: {
 		doc: {
 			doc: "A String giving information on the parameter",
-			type: 'string'
+			types: [
+        {
+          type: 'string'
+        },
+        {
+          type: {
+            doc: {
+              type: 'string'
+            },
+            parameters: {
+              type: {
+                doc: {
+                  type: 'string',
+                  required: true
+                },
+                type: {
+                  type: 'string',
+                  required: true
+                },
+                required: {
+                  type: 'boolean'
+                }
+              },
+              multiple: true,
+              object: true
+            },
+            returns: {
+              doc: {
+                type: 'string',
+                required: true
+              },
+              type: {
+                doc: 'string',
+                required: true
+              }
+            }
+          }
+        }
+      ]
 		},
 		type: {
 			doc: "The value type of the parameter expected",
