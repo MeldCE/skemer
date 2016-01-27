@@ -1,4 +1,4 @@
-# skemer 0.8.2
+# skemer 0.8.3
 <!--[![NPM version](http://img.shields.io/npm/v/convict.svg)](https://www.npmjs.org/package/convict)-->
 [![Build status](https://api.travis-ci.org/MeldCE/skemer.svg?branch=master)](https://travis-ci.org/MeldCE/skemer/branches)
 [![Dependency Status](https://david-dm.org/MeldCE/skemer.svg)](https://david-dm.org/MeldCE/skemer)
@@ -7,8 +7,9 @@
 
 [![Development Hours](https://img.shields.io/badge/development%20hours%20%28since%205a3e25f%29-15-lightgrey.svg)](https://github.com/MeldCE/skemer/commit/5a3e25fac0b992033799f9f295d98a4101a39077)
 [![Bountysource](https://img.shields.io/bountysource/team/meldce/activity.svg)](https://www.bountysource.com/teams/meldce/issues?tracker_ids=27337966)
-<!--[![Gratipay Team](https://img.shields.io/gratipay/meldce/shields.svg)](https://gratipay.com/meldce)-->
 [![Donate](https://img.shields.io/badge/donate%20via%20Paypal.me -%20%E2%9D%A4%20-blue.svg)](https://www.paypal.me/MeldCE)
+
+<!--[![Gratipay Team](https://img.shields.io/gratipay/meldce/shields.svg)](https://gratipay.com/meldce)-->
 
 A Javascript variable validation and merge tool.
 
@@ -19,8 +20,7 @@ a string value, to as complex as a nested Object.
 The library contains the `validateNew` function for validating and merging all
 new data, the `validateAdd` function for doing validating and merging new data
 into existing data, a `Skemer` prototype for doing multiple validations /
-merges against the same schema<!--, and a `makeJSDoc` function for creating
-a JSDoc comment from the schema and its `doc` parameters-->.
+merges against the same schema.
 
 ## Uses
 - Validating static data during testing
