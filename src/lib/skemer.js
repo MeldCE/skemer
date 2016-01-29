@@ -121,9 +121,12 @@ function setValueToType(context) {
 							context.data = context.newData;
 						}
 						break;
+					case 'Number':
+					case 'String':
+					case 'Boolean':
 					case 'Function':
 						// Change Function (prototype) to function (typeof)
-						context.schema.type = 'function';
+						context.schema.type = context.schema.type.toLowerCase();
 					case 'function':
 					case 'number':
 					case 'string':
@@ -177,6 +180,39 @@ function setValueToType(context) {
 							}
 						}
 						break;
+          case 'Date':
+						context.schema.type = 'date';
+          case 'date':
+						if (context.newData !== undefined) {
+							if (typeof context.newData === context.schema.type) {
+								var parts = [];
+
+                if ((context.schema.min !== undefined
+                    && context.newData < context.schema.min)
+                    || (context.schema.max !== undefined
+                    && context.newData >= context.schema.max)) {
+                  if (context.schema.min !== undefined) {
+                    parts.push('at or after '
+                        + context.schema.min);
+                  }
+                  if (context.schema.max !== undefined) {
+                    parts.push('before ' + context.schema.max);
+                  }
+                  throw new errors.DataRangeError('Value'
+                  + (context.parameterName ? ' for ' + context.parameterName
+                  : '') + ' must be '
+                      + parts.join(' and '), context);
+                }
+
+								context.data = context.newData;
+							} else {
+								throw new errors.DataTypeError('Value'
+										+ (context.parameterName ? ' for ' + context.parameterName
+										: '') + ' must be a '
+										+ context.schema.type);
+							}
+						}
+            break;
 					case 'Null':
 						context.schema.type = 'null';
 					case 'null':

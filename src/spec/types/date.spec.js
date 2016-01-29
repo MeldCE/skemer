@@ -73,7 +73,6 @@ var suites = [
 		]
 	},
 	{
-		pending: true,
 		label: 'simple required date variable with min/max requirements',
 		schema: {
 			type: 'Date',
