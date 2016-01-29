@@ -55,7 +55,7 @@ function shouldReplace(context) {
  *          new value or a default value. Otherwise, the new value
  */
 function setValueToType(context) {
-	var t, value;
+	var t, value, parts;
 	//console.log('\nsetValueToType', util.inspect(context, {depth: null}));
 	if (context.schema.types) {
 		//console.log('have types, checking for value', context.schema, context.newData);
@@ -133,7 +133,7 @@ function setValueToType(context) {
 					case 'boolean':
 						if (context.newData !== undefined) {
 							if (typeof context.newData === context.schema.type) {
-								var parts = [];
+								parts = [];
 								if (context.schema.type === 'number') {
 									if ((context.schema.min !== undefined
 											&& context.newData < context.schema.min)
@@ -185,7 +185,7 @@ function setValueToType(context) {
           case 'date':
 						if (context.newData !== undefined) {
 							if (typeof context.newData === context.schema.type) {
-								var parts = [];
+								parts = [];
 
                 if ((context.schema.min !== undefined
                     && context.newData < context.schema.min)
