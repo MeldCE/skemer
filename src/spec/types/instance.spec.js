@@ -12,6 +12,8 @@ function TestPrototype(num) {
 	this.num = num;
 }
 
+global.TestPrototype = TestPrototype;
+
 var proto1 = new TestPrototype(1);
 var proto2 = new TestPrototype(2);
 
@@ -19,7 +21,6 @@ var proto2 = new TestPrototype(2);
 // Test Data
 var suites = [
 	{
-		pending: true,
 		label: 'Simple TestPrototype instance variable',
 		schema: {
 			type: 'TestPrototype'
@@ -45,7 +46,7 @@ var suites = [
 			},
 			{
 				input: [false, 'invalid', false],
-				throws: new errors.DataTypeError('Value must be a null')
+				throws: new errors.DataTypeError('Value must be a TestPrototype')
 			},
 			{
 				input: [false, 'proto', false],
