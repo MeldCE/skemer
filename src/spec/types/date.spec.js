@@ -64,7 +64,7 @@ var suites = [
 			},
 			{
 				input: [false, 'invalid', false],
-				throws: new errors.DataTypeError('Value must be a Date')
+				throws: new errors.DataTypeError('Value must be a date')
 			},
 			{
 				input: [false, 'date', false],
@@ -103,7 +103,7 @@ var suites = [
 			},
 			{
 				input: [false, 'invalid', false],
-				throws: new errors.DataTypeError('Value must be a Date')
+				throws: new errors.DataTypeError('Value must be a date')
 			},
 			{
 				input: [false, 'before', false],

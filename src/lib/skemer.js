@@ -184,7 +184,7 @@ function setValueToType(context) {
 						context.schema.type = 'date';
           case 'date':
 						if (context.newData !== undefined) {
-							if (typeof context.newData === context.schema.type) {
+                if (context.newData instanceof Date) {
 								parts = [];
 
                 if ((context.schema.min !== undefined
