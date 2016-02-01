@@ -195,7 +195,11 @@ module.exports = {
         required: true,
         type: schema.type
       },
-      baseSchema: schema,
+      //baseSchema: schema,
+      baseSchema: {
+        doc: 'Schema to be used for recursive schemas',
+        type: null
+      },
       replace: {
         doc: 'A boolean to specify whether to globally replace all existing '
             + 'values for arrays and objects, or an object of '
@@ -216,7 +220,7 @@ module.exports = {
     }
   },
 
-  /**
+  /** @private
    * Options that can be passed when creating a Skemer Schema
    */
   schemaOptions: {

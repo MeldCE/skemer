@@ -120,7 +120,11 @@ NOTE: Existing data WILL NOT be validated
            the parameter. Will be given the value as the parameter. The
            function must return true if valid, false if not, or null if no
            value
--   `replace`  
+-   `replace`  A boolean to specify whether to globally replace all
+           existing values for arrays and objects, or an object of
+           variable/boolean pairs used to specify what variables (their name
+           given as the key) should have their value replaced by default (a
+           boolean value of true
 -   `data` **Any** Data to validate and return. If no data is given,
               data containing any default values will be returned. If newData
               is given, newData will be validated and merged into data.
