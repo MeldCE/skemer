@@ -36,6 +36,12 @@ var valid2 = {
 
 var invalid = false;
 
+var stringSchema = {
+	type: 'string'
+};
+
+var aString = 'string';
+
 
 describe('Skemer module', function() {
 	describe('Skemer prototype', function() {
@@ -90,6 +96,11 @@ describe('Skemer module', function() {
 
 		it('should not validate existing data', function() {
 			expect(skemer.validateAdd({ schema: schema }, valid2, valid1)).toEqual(merge({}, valid2, valid1));
+		});
+
+		it('should return new data', function() {
+			expect(skemer.validateNew({ schema: stringSchema }, aString)).toEqual(aString);
+			expect(skemer.validateAdd({ schema: stringSchema }, '', aString)).toEqual(aString);
 		});
 	});
 });

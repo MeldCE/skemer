@@ -1,11 +1,15 @@
-# skemer 0.8.1
+# skemer 0.8.5
 <!--[![NPM version](http://img.shields.io/npm/v/convict.svg)](https://www.npmjs.org/package/convict)-->
 [![Build status](https://api.travis-ci.org/MeldCE/skemer.svg?branch=master)](https://travis-ci.org/MeldCE/skemer/branches)
 [![Dependency Status](https://david-dm.org/MeldCE/skemer.svg)](https://david-dm.org/MeldCE/skemer)
 [![devDependency Status](https://david-dm.org/MeldCE/skemer/dev-status.svg)](https://david-dm.org/MeldCE/skemer#info=devDependencies)
 [![Coverage Status](https://coveralls.io/repos/MeldCE/skemer/badge.svg)](https://coveralls.io/github/MeldCE/skemer)
-[![Development Hours](https://img.shields.io/badge/development%20hours-15-blue.svg)](https://www.paypal.me/MeldCE) (since [5a3e25f](https://github.com/MeldCE/skemer/commit/5a3e25fac0b992033799f9f295d98a4101a39077))
-[![Donate](https://img.shields.io/badge/donate-%20%E2%9D%A4%20-blue.svg)](https://www.paypal.me/MeldCE)
+
+[![Development Hours](https://img.shields.io/badge/development%20hours%20%28since%205a3e25f%29-15-lightgrey.svg)](https://github.com/MeldCE/skemer/commit/5a3e25fac0b992033799f9f295d98a4101a39077)
+[![Bountysource](https://img.shields.io/bountysource/team/meldce/activity.svg)](https://www.bountysource.com/teams/meldce/issues?tracker_ids=27337966)
+[![Donate](https://img.shields.io/badge/donate%20via%20Paypal.me -%20%E2%9D%A4%20-blue.svg)](https://www.paypal.me/MeldCE)
+
+<!--[![Gratipay Team](https://img.shields.io/gratipay/meldce/shields.svg)](https://gratipay.com/meldce)-->
 
 A Javascript variable validation and merge tool.
 
@@ -78,8 +82,6 @@ NOTE: Existing data WILL NOT be validated
                the values will be stored in an array
     -   `schema.regex` **[RegExp]** A regular expression to validate a String
                value
-    -   `schema.min` **[number]** The minimum number, string length or number of
-               Array elements required
     -   `schema.max` **[number]** The maximum number, string length or number of
                Array elements allowed
     -   `schema.replace` **[boolean]** Whether a new value should completely
@@ -90,36 +92,9 @@ NOTE: Existing data WILL NOT be validated
     -   `schema.validation` **[Function]** Function to validate the value of the
                parameter. Will be given the value as the parameter. The function
                must return true if valid, false if not, or null if no value
--   `baseSchema.doc`  A String giving information on the parameter
--   `baseSchema.type`  The value type of the parameter expected
--   `baseSchema.types`  An Array or Object of Objects containing the
-           details of the values expected
--   `baseSchema.values` **[Any]** Specifies the possible values for strings,
-           numbers and dates
--   `baseSchema.multiple` **[boolean]** Whether or not multiple values
-           (stored in an array) are allowed. Can be a boolean, or a number (the
-           number of values that the parameter must have, or an array
-           containing the minimum number of values and teh maximum number of
-           values.
--   `baseSchema.object` **[boolean]** If multiple is true object is true,
-           will force values to be stored in an object - appending will not
-           work. If multiple is true and object is false, the key will be
-           ignored and the values will be stored in an array
--   `baseSchema.regex` **[RegExp]** A regular expression to validate a
-           String value
--   `baseSchema.min` **[number]** The minimum number, string length or
-           number of Array elements required
--   `baseSchema.max` **[number]** The maximum number, string length or
-           number of Array elements allowed
--   `baseSchema.replace` **[boolean]** Whether a new value should completely
-           replace an old value
--   `baseSchema.required`  Either true/false or a function returning
-           true/false to whether the parameter is required
--   `baseSchema.default` **[Any]** Default value for parameter
--   `baseSchema.validation` **[Function]** Function to validate the value of
-           the parameter. Will be given the value as the parameter. The
-           function must return true if valid, false if not, or null if no
-           value
+    -   `schema.min` **[number]** The minimum number, string length or number of
+               Array elements required
+-   `baseSchema`  Schema to be used for recursive schemas
 -   `replace`  A boolean to specify whether to globally replace all
            existing values for arrays and objects, or an object of
            variable/boolean pairs used to specify what variables (their name
@@ -128,7 +103,6 @@ NOTE: Existing data WILL NOT be validated
 -   `data` **Any** Data to validate and return. If no data is given,
               data containing any default values will be returned. If newData
               is given, newData will be validated and merged into data.
--   `baseSchema` **[Object]** 
 
 Returns **Any** Validated and merged data
 

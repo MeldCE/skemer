@@ -1,6 +1,6 @@
 {
   "name": "skemer",
-  "version": "0.8.1",
+  "version": "0.8.5",
   "description": "A Javascript variable validation and merge tool.",
   "main": "lib/skemer.js",
   "scripts": {
@@ -8,19 +8,30 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/theelectricwiz/skema.git"
+    "url": "git+https://github.com/MeldCE/skemer.git"
   },
   "keywords": [
     "schema",
     "validation",
     "oject"
   ],
-  "author": "The Electric Wiz",
+  "author": {
+    "name": "MeldCE Opensource",
+    "url": "http://www.meldce.com",
+    "email": "npm@meldce.com"
+  },
+  "contributors": [
+    {
+      "name": "Jack Farley",
+      "url": "http://www.thesolderingbench.com",
+      "email": "npm@thesolderingbench.com"
+    }
+  ],
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/theelectricwiz/skema/issues"
+    "url": "https://github.com/MeldCE/skemer/issues"
   },
-  "homepage": "https://github.com/theelectricwiz/skema#readme",
+  "homepage": "https://github.com/MeldCE/skemer#readme",
   "devDependencies": {
     "concat": "^1.0.0",
     "del": "^2.2.0",
