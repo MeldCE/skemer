@@ -42,7 +42,7 @@ var suites = [
 			},
 			{
 				input: [false, 'invalid', false],
-				throws: new errors.DataTypeError('Invalid value')
+				throws: new errors.DataTypeError('boolean value is not allowed')
 			},
 			{
 				input: [false, 'string', false],
@@ -94,7 +94,7 @@ var suites = [
 			},
 			{
 				input: [false, 'invalid', false],
-				throws: new errors.DataTypeError('Invalid value')
+				throws: new errors.DataTypeError('boolean value is not allowed')
 			},
 			{
 				input: [false, 'string', false],
@@ -151,7 +151,7 @@ var suites = [
 			},
 			{
 				input: [false, 'invalid', false],
-				throws: new errors.DataTypeError('Invalid value')
+				throws: new errors.DataTypeError('boolean value is not allowed')
 			},
 			{
 				input: [false, 'string', false],

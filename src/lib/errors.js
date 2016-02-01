@@ -98,11 +98,28 @@ function DataRangeError(message, extra) {
 }
 util.inherits(DataRangeError, Error);
 
+/**
+ * Thrown if the parameter value is not valid
+ *
+ * @param {string} message Error message
+ * @param {*} extra Extra information
+ *
+ * @class
+ */
+function DataInvalidError(message, extra) {
+	Error.captureStackTrace(this, this.constructor);
+  this.name = this.constructor.name;
+  this.message = message;
+  this.extra = extra;
+}
+util.inherits(DataInvalidError, Error);
+
 module.exports = {
 	SchemaError: SchemaError,
 	DataItemsError: DataItemsError,
 	OptionsError: OptionsError,
 	DataTypeError: DataTypeError,
 	DataRequiredError: DataRequiredError,
-	DataRangeError: DataRangeError
+	DataRangeError: DataRangeError,
+	DataInvalidError: DataInvalidError
 };

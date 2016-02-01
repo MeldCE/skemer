@@ -165,6 +165,6 @@ function buildTests(suiteLabel, testSuites) {
 			}.bind(testSuites[s]));
 		}
 	});
-};
+}
 
 module.exports = buildTests; 

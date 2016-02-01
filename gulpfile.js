@@ -27,6 +27,7 @@ var paths = {
 	reports: 'reports/',
 	docs: 'docs/',
 	src: 'src/lib/**/*.js',
+  docsSrc: 'build/docsSrc',
 	testDir: 'src/spec',
 	testSrc: 'src/*.spec.js',
 	srcTests: 'src/spec/**/*.spec.js',
@@ -129,16 +130,68 @@ gulp.task('complexity', ['lint', 'lint:test'], function() {
 			.pipe(complexity());
 });
 
-gulp.task('docs', ['htmldocs', 'mddocs']);
+gulp.task('compile:docs', ['lint'], function() {
+  var skemer = require('./src/lib/skemer.js');
+  var schemas = require('./src/lib/schema.js');
 
-gulp.task('htmldocs', ['lint'], function() {
-	return gulp.src(paths.src)
+  var toCompile = {
+    buildJsDocOptions: {
+      schema: schemas.buildDocOptions,
+      options: {
+        preLine: '   * ',
+        name: 'options',
+        wrap: 80,
+        type: 'param'
+      }
+    },
+    schema: {
+      schema: schemas.schema,
+      options: {
+        preLine: '   * ',
+        type: 'param', // @TODO XXX
+        wrap: 80
+      }
+    },
+    options: {
+      schema: schemas.options,
+      options: {
+        preLine: '   * ',
+        type: 'param', // @TODO XXX
+        wrap: 80
+      }
+    }
+  };
+
+  var builtDocs = {};
+  var d;
+
+  for (d in toCompile) {
+    //console.log('doing', d, toCompile[d].schema);
+    builtDocs[d] = skemer.buildJsDocs(toCompile[d].schema,
+        toCompile[d].options);
+  }
+
+  return gulp.src(paths.src)
+			.pipe(replace(/%%([a-zA-Z0-9-_.]+)%%/g, function(match, param) {
+				if (builtDocs[param]) {
+					return builtDocs[param];
+				} else {
+					return match;
+				}
+			}))
+      .pipe(gulp.dest(paths.docsSrc));
+});
+
+gulp.task('docs', ['compile:docs', 'htmldocs', 'mddocs']);
+
+gulp.task('htmldocs', ['lint', 'compile:docs'], function() {
+	return gulp.src(path.join(paths.docsSrc, '**/*.js'))
 			.pipe(documentation({ format: 'html' }))
 			.pipe(gulp.dest(paths.docs));
 });
 
-gulp.task('mddocs', ['lint'], function() {
-	return gulp.src(paths.src)
+gulp.task('mddocs', ['lint', 'compile:docs'], function() {
+	return gulp.src(path.join(paths.docsSrc, '**/*.js'))
 			.pipe(foreach(function(stream, file) {
 				return stream
 						.pipe(documentation({ format: 'md', shallow: true }))

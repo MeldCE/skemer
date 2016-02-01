@@ -23,6 +23,21 @@
             type='text' />
           <div id='toc'>
               <a
+                href='#options'
+                class='block bold'>
+                options
+              </a>
+              <a
+                href='#schema'
+                class='block bold'>
+                schema
+              </a>
+              <a
+                href='#schemaOptions'
+                class='block bold'>
+                schemaOptions
+              </a>
+              <a
                 href='#buildJsDocs'
                 class='block bold'>
                 buildJsDocs
@@ -36,6 +51,11 @@
                 href='#validateNew'
                 class='block bold'>
                 validateNew
+              </a>
+              <a
+                href='#DataInvalidError'
+                class='block bold'>
+                DataInvalidError
               </a>
               <a
                 href='#DataItemsError'
@@ -57,56 +77,6 @@
                 class='block bold'>
                 DataTypeError
               </a>
-              <a
-                href='#regexps'
-                class='block bold'>
-                regexps
-              </a>
-                <a
-                  href='#regexps.GIT_REF_NAME'
-                  class='regular block'>
-                  .GIT_REF_NAME
-                </a>
-                <a
-                  href='#regexps.HOSTNAME'
-                  class='regular block'>
-                  .HOSTNAME
-                </a>
-                <a
-                  href='#regexps.IPV4'
-                  class='regular block'>
-                  .IPV4
-                </a>
-                <a
-                  href='#regexps.IPV6'
-                  class='regular block'>
-                  .IPV6
-                </a>
-              <a
-                href='#regexps'
-                class='block bold'>
-                regexps
-              </a>
-                <a
-                  href='#regexps.GIT_REF_NAME'
-                  class='regular block'>
-                  .GIT_REF_NAME
-                </a>
-                <a
-                  href='#regexps.HOSTNAME'
-                  class='regular block'>
-                  .HOSTNAME
-                </a>
-                <a
-                  href='#regexps.IPV4'
-                  class='regular block'>
-                  .IPV4
-                </a>
-                <a
-                  href='#regexps.IPV6'
-                  class='regular block'>
-                  .IPV6
-                </a>
               <a
                 href='#OptionsError'
                 class='block bold'>
@@ -138,6 +108,271 @@
       <div class='fix-margin-3'>
         <div class='px2'>
 <div class='py1'><section class='py2 clearfix'>
+  <h2 id='options' class='mt0'>
+    options<span class='gray'>(schema, [baseSchema], replace)</span>
+  </h2>
+  <p>Options to pass to skemer</p>
+
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>schema</strong>
+          :
+          <div class='force-inline'>
+            <p><a href="#schema"><code>Schema</code></a> to use for the validation</p>
+
+          </div>
+            <ul>
+                <li> schema.doc
+                  <p>A String giving information on the parameter</p>
+</li>
+                <li> schema.type
+                  <p>The value type of the parameter expected</p>
+</li>
+                <li> schema.types
+                  <p>An Array or Object of Objects containing the details
+of the values expected</p>
+</li>
+                <li><code>[Any]</code> schema.values
+                  <p>Specifies the possible values for strings,
+numbers and dates</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.multiple
+                  <p>Whether or not multiple values (stored
+in an array) are allowed. Can be a boolean, or a number (the number
+of values that the parameter must have, or an array containing the
+minimum number of values and teh maximum number of values.</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.object
+                  <p>If multiple is true object is true, will
+force values to be stored in an object - appending will not work. If
+multiple is true and object is false, the key will be ignored and
+the values will be stored in an array</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a></code>]</code> schema.regex
+                  <p>A regular expression to validate a String
+value</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> schema.min
+                  <p>The minimum number, string length or number of
+Array elements required</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> schema.max
+                  <p>The maximum number, string length or number of
+Array elements allowed</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.replace
+                  <p>Whether a new value should completely
+replace an old value</p>
+</li>
+                <li> schema.required
+                  <p>Either true/false or a function returning
+true/false to whether the parameter is required</p>
+</li>
+                <li><code>[Any]</code> schema.default
+                  <p>Default value for parameter</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">Function</a></code>]</code> schema.validation
+                  <p>Function to validate the value of the
+parameter. Will be given the value as the parameter. The function
+must return true if valid, false if not, or null if no value</p>
+</li>
+            </ul>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code>]</code> <strong>baseSchema</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+            <ul>
+                <li> baseSchema.doc
+                  <p>A String giving information on the parameter</p>
+</li>
+                <li> baseSchema.type
+                  <p>The value type of the parameter expected</p>
+</li>
+                <li> baseSchema.types
+                  <p>An Array or Object of Objects containing the
+details of the values expected</p>
+</li>
+                <li><code>[Any]</code> baseSchema.values
+                  <p>Specifies the possible values for strings,
+numbers and dates</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> baseSchema.multiple
+                  <p>Whether or not multiple values
+(stored in an array) are allowed. Can be a boolean, or a number (the
+number of values that the parameter must have, or an array
+containing the minimum number of values and teh maximum number of
+values.</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> baseSchema.object
+                  <p>If multiple is true object is true,
+will force values to be stored in an object - appending will not
+work. If multiple is true and object is false, the key will be
+ignored and the values will be stored in an array</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a></code>]</code> baseSchema.regex
+                  <p>A regular expression to validate a
+String value</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> baseSchema.min
+                  <p>The minimum number, string length or
+number of Array elements required</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> baseSchema.max
+                  <p>The maximum number, string length or
+number of Array elements allowed</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> baseSchema.replace
+                  <p>Whether a new value should completely
+replace an old value</p>
+</li>
+                <li> baseSchema.required
+                  <p>Either true/false or a function returning
+true/false to whether the parameter is required</p>
+</li>
+                <li><code>[Any]</code> baseSchema.default
+                  <p>Default value for parameter</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">Function</a></code>]</code> baseSchema.validation
+                  <p>Function to validate the value of
+the parameter. Will be given the value as the parameter. The
+function must return true if valid, false if not, or null if no
+value</p>
+</li>
+            </ul>
+        </li>
+        <li> <strong>replace</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
+        </li>
+    </ul>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='schema' class='mt0'>
+    schema<span class='gray'>(doc, type, types, [values], [multiple], [object], [regex], [min], [max], [replace], required, [default], [validation])</span>
+  </h2>
+  <p>Schema detailing the requirements for Skemer Schema</p>
+
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li> <strong>doc</strong>
+          :
+          <div class='force-inline'>
+            <p>A String giving information on the parameter</p>
+
+          </div>
+        </li>
+        <li> <strong>type</strong>
+          :
+          <div class='force-inline'>
+            <p>The value type of the parameter expected</p>
+
+          </div>
+        </li>
+        <li> <strong>types</strong>
+          :
+          <div class='force-inline'>
+            <p>An Array or Object of Objects containing the details of the
+values expected</p>
+
+          </div>
+        </li>
+        <li><code>[Any]</code> <strong>values</strong>
+          :
+          <div class='force-inline'>
+            <p>Specifies the possible values for strings, numbers and
+dates</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>multiple</strong>
+          :
+          <div class='force-inline'>
+            <p>Whether or not multiple values (stored in an
+array) are allowed. Can be a boolean, or a number (the number of
+values that the parameter must have, or an array containing the
+minimum number of values and teh maximum number of values.</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>object</strong>
+          :
+          <div class='force-inline'>
+            <p>If multiple is true object is true, will force
+values to be stored in an object - appending will not work. If
+multiple is true and object is false, the key will be ignored and
+the values will be stored in an array</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a></code>]</code> <strong>regex</strong>
+          :
+          <div class='force-inline'>
+            <p>A regular expression to validate a String value</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> <strong>min</strong>
+          :
+          <div class='force-inline'>
+            <p>The minimum number, string length or number of Array
+elements required</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> <strong>max</strong>
+          :
+          <div class='force-inline'>
+            <p>The maximum number, string length or number of Array
+elements allowed</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>replace</strong>
+          :
+          <div class='force-inline'>
+            <p>Whether a new value should completely replace an
+old value</p>
+
+          </div>
+        </li>
+        <li> <strong>required</strong>
+          :
+          <div class='force-inline'>
+            <p>Either true/false or a function returning true/false to
+whether the parameter is required</p>
+
+          </div>
+        </li>
+        <li><code>[Any]</code> <strong>default</strong>
+          :
+          <div class='force-inline'>
+            <p>Default value for parameter</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">Function</a></code>]</code> <strong>validation</strong>
+          :
+          <div class='force-inline'>
+            <p>Function to validate the value of the
+parameter. Will be given the value as the parameter. The function
+must return true if valid, false if not, or null if no value</p>
+
+          </div>
+        </li>
+    </ul>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='schemaOptions' class='mt0'>
+    schemaOptions<span class='gray'></span>
+  </h2>
+  <p>Options that can be passed when creating a Skemer Schema</p>
+
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
   <h2 id='buildJsDocs' class='mt0'>
     buildJsDocs<span class='gray'>(schema, options)</span>
   </h2>
@@ -148,7 +383,8 @@
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>schema</strong>
           :
           <div class='force-inline'>
-            <p>An Object containing a valid schema</p>
+            <p>An Object containing a valid
+<a href="#schema"><code>schema</code></a></p>
 
           </div>
         </li>
@@ -159,6 +395,35 @@
 should contain</p>
 
           </div>
+            <ul>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>]</code> options.name
+                  <p>Name of the object documenting (will be
+prepended to any parameter names</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>]</code> options.type
+                    (default <code>&#x27;prop&#x27;</code>)
+                  <p>Specify what block tag should be used
+for the variables</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> options.tabWidth
+                    (default <code>8</code>)
+                  <p>The width (number of characters) of a
+tab</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>]</code> options.preLine
+                  <p>String (normally indentation) to include
+before each line</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> options.lineup
+                    (default <code>true</code>)
+                  <p>Whether to line up text in a JSDoc
+(eg @param) with the end of the end of the command</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> options.wrap
+                  <p>Number of characters to wrap the JSDoc lines
+at</p>
+</li>
+            </ul>
         </li>
     </ul>
       <h4>Returns</h4>
@@ -171,7 +436,7 @@ should contain</p>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
   <h2 id='validateAdd' class='mt0'>
-    validateAdd<span class='gray'>(options, data, newData)</span>
+    validateAdd<span class='gray'>(options, newData, schema, baseSchema.doc, baseSchema.type, baseSchema.types, [baseSchema.values], [baseSchema.multiple], [baseSchema.object], [baseSchema.regex], [baseSchema.min], [baseSchema.max], [baseSchema.replace], baseSchema.required, [baseSchema.default], [baseSchema.validation], replace, data, [baseSchema])</span>
   </h2>
   <p>Add data to an object based on a schema from the data given.
 NOTE: Existing data WILL NOT be validated</p>
@@ -187,9 +452,193 @@ NOTE: Existing data WILL NOT be validated</p>
             <ul>
                 <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> options.schema
                   <p>An Object containing a valid schema
-should contain</p>
+should containi</p>
 </li>
             </ul>
+        </li>
+        <li>...Any <strong>newData</strong>
+          :
+          <div class='force-inline'>
+            <p>Data to validate and merge into data</p>
+
+          </div>
+        </li>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>schema</strong>
+          :
+          <div class='force-inline'>
+            <p><a href="#schema"><code>Schema</code></a> to use for the validation</p>
+
+          </div>
+            <ul>
+                <li> schema.doc
+                  <p>A String giving information on the parameter</p>
+</li>
+                <li> schema.type
+                  <p>The value type of the parameter expected</p>
+</li>
+                <li> schema.types
+                  <p>An Array or Object of Objects containing the details
+of the values expected</p>
+</li>
+                <li><code>[Any]</code> schema.values
+                  <p>Specifies the possible values for strings,
+numbers and dates</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.multiple
+                  <p>Whether or not multiple values (stored
+in an array) are allowed. Can be a boolean, or a number (the number
+of values that the parameter must have, or an array containing the
+minimum number of values and teh maximum number of values.</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.object
+                  <p>If multiple is true object is true, will
+force values to be stored in an object - appending will not work. If
+multiple is true and object is false, the key will be ignored and
+the values will be stored in an array</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a></code>]</code> schema.regex
+                  <p>A regular expression to validate a String
+value</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> schema.min
+                  <p>The minimum number, string length or number of
+Array elements required</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> schema.max
+                  <p>The maximum number, string length or number of
+Array elements allowed</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.replace
+                  <p>Whether a new value should completely
+replace an old value</p>
+</li>
+                <li> schema.required
+                  <p>Either true/false or a function returning
+true/false to whether the parameter is required</p>
+</li>
+                <li><code>[Any]</code> schema.default
+                  <p>Default value for parameter</p>
+</li>
+                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">Function</a></code>]</code> schema.validation
+                  <p>Function to validate the value of the
+parameter. Will be given the value as the parameter. The function
+must return true if valid, false if not, or null if no value</p>
+</li>
+            </ul>
+        </li>
+        <li> <strong>baseSchema.doc</strong>
+          :
+          <div class='force-inline'>
+            <p>A String giving information on the parameter</p>
+
+          </div>
+        </li>
+        <li> <strong>baseSchema.type</strong>
+          :
+          <div class='force-inline'>
+            <p>The value type of the parameter expected</p>
+
+          </div>
+        </li>
+        <li> <strong>baseSchema.types</strong>
+          :
+          <div class='force-inline'>
+            <p>An Array or Object of Objects containing the
+details of the values expected</p>
+
+          </div>
+        </li>
+        <li><code>[Any]</code> <strong>baseSchema.values</strong>
+          :
+          <div class='force-inline'>
+            <p>Specifies the possible values for strings,
+numbers and dates</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>baseSchema.multiple</strong>
+          :
+          <div class='force-inline'>
+            <p>Whether or not multiple values
+(stored in an array) are allowed. Can be a boolean, or a number (the
+number of values that the parameter must have, or an array
+containing the minimum number of values and teh maximum number of
+values.</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>baseSchema.object</strong>
+          :
+          <div class='force-inline'>
+            <p>If multiple is true object is true,
+will force values to be stored in an object - appending will not
+work. If multiple is true and object is false, the key will be
+ignored and the values will be stored in an array</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a></code>]</code> <strong>baseSchema.regex</strong>
+          :
+          <div class='force-inline'>
+            <p>A regular expression to validate a
+String value</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> <strong>baseSchema.min</strong>
+          :
+          <div class='force-inline'>
+            <p>The minimum number, string length or
+number of Array elements required</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> <strong>baseSchema.max</strong>
+          :
+          <div class='force-inline'>
+            <p>The maximum number, string length or
+number of Array elements allowed</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>baseSchema.replace</strong>
+          :
+          <div class='force-inline'>
+            <p>Whether a new value should completely
+replace an old value</p>
+
+          </div>
+        </li>
+        <li> <strong>baseSchema.required</strong>
+          :
+          <div class='force-inline'>
+            <p>Either true/false or a function returning
+true/false to whether the parameter is required</p>
+
+          </div>
+        </li>
+        <li><code>[Any]</code> <strong>baseSchema.default</strong>
+          :
+          <div class='force-inline'>
+            <p>Default value for parameter</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">Function</a></code>]</code> <strong>baseSchema.validation</strong>
+          :
+          <div class='force-inline'>
+            <p>Function to validate the value of
+the parameter. Will be given the value as the parameter. The
+function must return true if valid, false if not, or null if no
+value</p>
+
+          </div>
+        </li>
+        <li> <strong>replace</strong>
+          :
+          <div class='force-inline'>
+            
+          </div>
         </li>
         <li>Any <strong>data</strong>
           :
@@ -200,11 +649,10 @@ is given, newData will be validated and merged into data.</p>
 
           </div>
         </li>
-        <li>...Any <strong>newData</strong>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code>]</code> <strong>baseSchema</strong>
           :
           <div class='force-inline'>
-            <p>Data to validate and merge into data</p>
-
+            
           </div>
         </li>
     </ul>
@@ -252,6 +700,30 @@ should contain</p>
         <p>Validated and merged data</p>
 
       </div>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='DataInvalidError' class='mt0'>
+    DataInvalidError<span class='gray'>(message, extra)</span>
+  </h2>
+  <p>Thrown if the parameter value is not valid</p>
+
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
+          :
+          <div class='force-inline'>
+            <p>Error message</p>
+
+          </div>
+        </li>
+        <li>Any <strong>extra</strong>
+          :
+          <div class='force-inline'>
+            <p>Extra information</p>
+
+          </div>
+        </li>
+    </ul>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
   <h2 id='DataItemsError' class='mt0'>
@@ -348,181 +820,6 @@ should contain</p>
           </div>
         </li>
     </ul>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='regexps' class='mt0'>
-    regexps<span class='gray'></span>
-  </h2>
-  <p>Common regular expressions that can be used the regex Schema parameter</p>
-
-      <h4>Static members</h4>
-        <div class='collapsible' id='regexps.GIT_REF_NAME'>
-          <a href='#regexps.GIT_REF_NAME'>
-            <code>
-              .GIT_REF_NAME<span class='gray'></span>
-            </code>
-            <div class='force-inline'>
-              <p>Git reference (branches etc) name</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='regexps.GIT_REF_NAME' class='mt0'>
-                GIT_REF_NAME<span class='gray'></span>
-              </h2>
-              <p>Git reference (branches etc) name</p>
-            
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='regexps.HOSTNAME'>
-          <a href='#regexps.HOSTNAME'>
-            <code>
-              .HOSTNAME<span class='gray'></span>
-            </code>
-            <div class='force-inline'>
-              <p>Hostname or domain name</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='regexps.HOSTNAME' class='mt0'>
-                HOSTNAME<span class='gray'></span>
-              </h2>
-              <p>Hostname or domain name</p>
-            
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='regexps.IPV4'>
-          <a href='#regexps.IPV4'>
-            <code>
-              .IPV4<span class='gray'></span>
-            </code>
-            <div class='force-inline'>
-              <p>IPv4 address</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='regexps.IPV4' class='mt0'>
-                IPV4<span class='gray'></span>
-              </h2>
-              <p>IPv4 address</p>
-            
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='regexps.IPV6'>
-          <a href='#regexps.IPV6'>
-            <code>
-              .IPV6<span class='gray'></span>
-            </code>
-            <div class='force-inline'>
-              <p>IPv6 address</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='regexps.IPV6' class='mt0'>
-                IPV6<span class='gray'></span>
-              </h2>
-              <p>IPv6 address</p>
-            
-            </section>
-          </div>
-        </div>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='regexps' class='mt0'>
-    regexps<span class='gray'></span>
-  </h2>
-  
-      <h4>Static members</h4>
-        <div class='collapsible' id='regexps.GIT_REF_NAME'>
-          <a href='#regexps.GIT_REF_NAME'>
-            <code>
-              .GIT_REF_NAME<span class='gray'></span>
-            </code>
-            <div class='force-inline'>
-              <p>Git reference (branches etc) name</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='regexps.GIT_REF_NAME' class='mt0'>
-                GIT_REF_NAME<span class='gray'></span>
-              </h2>
-              <p>Git reference (branches etc) name</p>
-            
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='regexps.HOSTNAME'>
-          <a href='#regexps.HOSTNAME'>
-            <code>
-              .HOSTNAME<span class='gray'></span>
-            </code>
-            <div class='force-inline'>
-              <p>Hostname or domain name</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='regexps.HOSTNAME' class='mt0'>
-                HOSTNAME<span class='gray'></span>
-              </h2>
-              <p>Hostname or domain name</p>
-            
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='regexps.IPV4'>
-          <a href='#regexps.IPV4'>
-            <code>
-              .IPV4<span class='gray'></span>
-            </code>
-            <div class='force-inline'>
-              <p>IPv4 address</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='regexps.IPV4' class='mt0'>
-                IPV4<span class='gray'></span>
-              </h2>
-              <p>IPv4 address</p>
-            
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='regexps.IPV6'>
-          <a href='#regexps.IPV6'>
-            <code>
-              .IPV6<span class='gray'></span>
-            </code>
-            <div class='force-inline'>
-              <p>IPv6 address</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2 m2'>
-            <section class='py2 clearfix'>
-              <h2 id='regexps.IPV6' class='mt0'>
-                IPV6<span class='gray'></span>
-              </h2>
-              <p>IPv6 address</p>
-            
-            </section>
-          </div>
-        </div>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
   <h2 id='OptionsError' class='mt0'>

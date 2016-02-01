@@ -16,8 +16,8 @@ a string value, to as complex as a nested Object.
 The library contains the `validateNew` function for validating and merging all
 new data, the `validateAdd` function for doing validating and merging new data
 into existing data, a `Skemer` prototype for doing multiple validations /
-merges against the same schema<!--, and a `makeJSDoc` function for creating
-a JSDoc comment from the schema and its `doc` parameters-->.
+merges against the same schema, and a `makeJSDoc` function for creating
+a JSDoc comment from the schema and its `doc` parameters.
 
 ## Uses
 - Validating static data during testing
@@ -31,9 +31,22 @@ Add data to an object based on a schema from the data given.
 
 **Parameters**
 
--   `schema` **Object** An Object containing a valid schema
+-   `schema` **Object** An Object containing a valid
+           `schema`
 -   `options` **Object** An object containing options
            should contain
+    -   `options.name` **[string]** Name of the object documenting (will be
+               prepended to any parameter names
+    -   `options.type` **[string]** Specify what block tag should be used
+               for the variables (optional, default `'prop'`)
+    -   `options.tabWidth` **[number]** The width (number of characters) of a
+               tab (optional, default `8`)
+    -   `options.preLine` **[string]** String (normally indentation) to include
+               before each line
+    -   `options.lineup` **[boolean]** Whether to line up text in a JSDoc
+               (eg @param) with the end of the end of the command (optional, default `true`)
+    -   `options.wrap` **[number]** Number of characters to wrap the JSDoc lines
+               at
 
 Returns **string** JSDoc Formatted string containing the parameters of the
 
@@ -46,11 +59,72 @@ NOTE: Existing data WILL NOT be validated
 
 -   `options` **Object** An object containing options
     -   `options.schema` **Object** An Object containing a valid schema
-               should contain
+               should containi
+-   `newData` **...Any** Data to validate and merge into data
+-   `schema` **Object** `Schema` to use for the validation
+    -   `schema.doc`  A String giving information on the parameter
+    -   `schema.type`  The value type of the parameter expected
+    -   `schema.types`  An Array or Object of Objects containing the details
+               of the values expected
+    -   `schema.values` **[Any]** Specifies the possible values for strings,
+               numbers and dates
+    -   `schema.multiple` **[boolean]** Whether or not multiple values (stored
+               in an array) are allowed. Can be a boolean, or a number (the number
+               of values that the parameter must have, or an array containing the
+               minimum number of values and teh maximum number of values.
+    -   `schema.object` **[boolean]** If multiple is true object is true, will
+               force values to be stored in an object - appending will not work. If
+               multiple is true and object is false, the key will be ignored and
+               the values will be stored in an array
+    -   `schema.regex` **[RegExp]** A regular expression to validate a String
+               value
+    -   `schema.min` **[number]** The minimum number, string length or number of
+               Array elements required
+    -   `schema.max` **[number]** The maximum number, string length or number of
+               Array elements allowed
+    -   `schema.replace` **[boolean]** Whether a new value should completely
+               replace an old value
+    -   `schema.required`  Either true/false or a function returning
+               true/false to whether the parameter is required
+    -   `schema.default` **[Any]** Default value for parameter
+    -   `schema.validation` **[Function]** Function to validate the value of the
+               parameter. Will be given the value as the parameter. The function
+               must return true if valid, false if not, or null if no value
+-   `baseSchema.doc`  A String giving information on the parameter
+-   `baseSchema.type`  The value type of the parameter expected
+-   `baseSchema.types`  An Array or Object of Objects containing the
+           details of the values expected
+-   `baseSchema.values` **[Any]** Specifies the possible values for strings,
+           numbers and dates
+-   `baseSchema.multiple` **[boolean]** Whether or not multiple values
+           (stored in an array) are allowed. Can be a boolean, or a number (the
+           number of values that the parameter must have, or an array
+           containing the minimum number of values and teh maximum number of
+           values.
+-   `baseSchema.object` **[boolean]** If multiple is true object is true,
+           will force values to be stored in an object - appending will not
+           work. If multiple is true and object is false, the key will be
+           ignored and the values will be stored in an array
+-   `baseSchema.regex` **[RegExp]** A regular expression to validate a
+           String value
+-   `baseSchema.min` **[number]** The minimum number, string length or
+           number of Array elements required
+-   `baseSchema.max` **[number]** The maximum number, string length or
+           number of Array elements allowed
+-   `baseSchema.replace` **[boolean]** Whether a new value should completely
+           replace an old value
+-   `baseSchema.required`  Either true/false or a function returning
+           true/false to whether the parameter is required
+-   `baseSchema.default` **[Any]** Default value for parameter
+-   `baseSchema.validation` **[Function]** Function to validate the value of
+           the parameter. Will be given the value as the parameter. The
+           function must return true if valid, false if not, or null if no
+           value
+-   `replace`  
 -   `data` **Any** Data to validate and return. If no data is given,
               data containing any default values will be returned. If newData
               is given, newData will be validated and merged into data.
--   `newData` **...Any** Data to validate and merge into data
+-   `baseSchema` **[Object]** 
 
 Returns **Any** Validated and merged data
 
@@ -104,6 +178,15 @@ Returns **Any** Validated and merged data
 
 The Skemer library will throw the following Errors if any errors in the Schema
 or the variables are found
+
+## DataInvalidError
+
+Thrown if the parameter value is not valid
+
+**Parameters**
+
+-   `message` **string** Error message
+-   `extra` **Any** Extra information
 
 ## DataItemsError
 

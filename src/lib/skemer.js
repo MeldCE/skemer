@@ -3,7 +3,7 @@ var clone = require('clone');
 var errors = require('./errors.js');
 var schemas = require('./schema.js');
 
-var util = require('util');
+//var util = require('util');
 
 /** @private
  * Returns whether a certain variable should be replaced
@@ -86,16 +86,18 @@ function setValueToType(context) {
 						//console.log('error is not a DataTypeError - rethrowing');
 						throw err;
 					}
-					thrown = true;
+					thrown = err;
 					//console.log('Caught a type error - not that type');
 				}
 			}
 
 			if (thrown) {
 				//console.log('throwing error', util.inspect(context, {depth: null}));
-				throw new errors.DataTypeError('Invalid value'
-						+ (context.parameterName ? ' for ' + context.parameterName : ''),
-						context);
+				//console.log(context);
+        throw new errors.DataTypeError(typeof context.newData + ' value is '
+            + 'not allowed' + (thrown.extra && thrown.extra.parameterName ?
+            ' for ' + thrown.extra.parameterName : (context.parameterName ? 
+            ' for ' + context.parameterName : '')), context);
 			}
 		}
 	} else {
@@ -131,6 +133,20 @@ function setValueToType(context) {
 						if (context.newData !== undefined) {
 							if (typeof context.newData === context.schema.type) {
 								var parts = [];
+                // Validate new value against values if have them
+                if ((context.schema.type === 'number'
+                    || context.schema.type === 'string')
+                    && context.schema.values) {
+                  if (context.schema.values.indexOf(context.newData) === -1) {
+                    throw new errors.DataInvalidError('Value of \''
+                        + context.newData + '\'' + (context.parameterName ?
+                        ' for ' + context.parameterName : '') + ' is not one '
+                        + 'of the allowed values ('
+                        + context.schema.values.join(', ') + ')', context);
+                  }
+                }
+
+                // Check number range or string length if have min/max
 								if (context.schema.type === 'number') {
 									if ((context.schema.min !== undefined
 											&& context.newData < context.schema.min)
@@ -520,16 +536,20 @@ function validateAdd(options, data, newData) {
  * @returns {Array} Array of string lines containing the JSDoc schema
  */
 function buildLines(schema, options, parameter, name) {
-  var line, lines = [], type = '';
-  console.log('buildLines called', util.inspect(arguments, { deep: null }));
+  var line, lines = [], type = '', defaultValue;
+  //console.log('buildLines called', util.inspect(arguments, { deep: null }));
 
-  if (typeof name === undefined) {
-    if (typeof options.name !== undefined) {
+  if (name === undefined) {
+    //console.log('no name\n', options, options.name);
+    if (options.name !== undefined) {
+      //console.log('have a name\n');
       name = options.name;
     } else {
       name = '';
     }
   }
+
+  //console.log('name is', name);
 
   if (typeof schema.type === 'string') {
     if (schema.type === 'any') {
@@ -542,13 +562,31 @@ function buildLines(schema, options, parameter, name) {
   }
 
   if (parameter) {
-    line = options.preLine + '@param ' + type;
+    line = '@' + options.type + ' ' + type;
 
     if (name) {
-      if (schema.required) {
-        line += ' ' + name;
+      if (schema.default) {
+        switch (typeof schema.default) {
+          case 'object':
+            defaultValue = '';
+            break;
+          case 'boolean':
+            defaultValue = '=' + (schema.default ? 'true' : 'false');
+            break;
+          case 'string':
+            defaultValue = '=\'' + schema.default + '\'';
+            break;
+          default:
+            defaultValue = '=' + schema.default;
+            break;
+        }
       } else {
-        line += ' [' + name + ']';
+        defaultValue = '';
+      }
+      if (schema.required) {
+        line += ' ' + name + defaultValue;
+      } else {
+        line += ' [' + name + defaultValue + ']';
       }
     }
     
@@ -559,16 +597,16 @@ function buildLines(schema, options, parameter, name) {
     lines.push(line);
   } else {
     if (schema.doc) {
-      lines.push(options.preLine + schema.doc);
-      lines.push(options.preLine);
+      lines.push(schema.doc);
+      lines.push('');
     }
 
     if (!(schema.type instanceof Object)) {
-      lines.push(options.preLine + '@type ' + type + (name ? ' ' + name : ''));
+      lines.push('@type ' + type + (name ? ' ' + name : ''));
     }
   }
 
-  if (schema.type instanceof Object) {
+  if (schema.type instanceof Object && !schema.noDocDig) {
     var o;
     for (o in schema.type) {
       lines = lines.concat(buildLines(schema.type[o], options, true,
@@ -576,7 +614,7 @@ function buildLines(schema, options, parameter, name) {
     }
   }
 
-  console.log('returning', lines);
+  //console.log('returning', lines);
   return lines;
 }
 
@@ -608,7 +646,8 @@ module.exports = {
 	 *
 	 * @param {Object} options An object containing options
 	 * @param {Object} options.schema An Object containing a valid schema
-	 *        should contain
+	 *        should containi
+   %%options%%
 	 * @param {*} data Data to validate and return. If no data is given,
 	 *           data containing any default values will be returned. If newData
 	 *           is given, newData will be validated and merged into data.
@@ -629,14 +668,16 @@ module.exports = {
 
   /**
    * Add data to an object based on a schema from the data given.
-   * @param {Object} schema An Object containing a valid schema
+   * @param {Object} schema An Object containing a valid
+   *        [schema]{@link #schema}
    * @param {Object} options An object containing options
    *        should contain
+   %%buildJsDocOptions%%
    *
    * @returns {string} JSDoc Formatted string containing the parameters of the
    */
   buildJsDocs: function(schema, options) {
-    console.log('skemer.buildJsDocs called', util.inspect(arguments));
+    //console.log('skemer.buildJsDocs called', util.inspect(arguments));
     
     // Validate schema
     schema = validateAdd({
@@ -648,11 +689,14 @@ module.exports = {
       schema: schemas.buildDocOptions
     }, {}, {}, options);
 
+    //console.log('\n\noptions are', options);
+
     var doc = '';
 
     var tw = options.tabWidth;
     var c, s, w, line, l;
     var lines = buildLines(schema, options, options.parameter);
+    var block;
 
     if (options.wrap) {
       for (l in lines) {
@@ -660,6 +704,16 @@ module.exports = {
 
         c = 0;
         s = 0;
+        w = 0;
+
+        // Find length of jsdoc tag
+        if (options.lineup) {
+          if ((block = line.match(/@\S+/))) {
+            block = Array(block[0].length + 1).join(' ');
+          } else {
+            block = Array(3).join(' ');
+          }
+        }
 
         while (c < line.length) {
           if (line[c] === ' ') {
@@ -670,8 +724,10 @@ module.exports = {
           }
           w++;
           if (w > options.wrap) {
+            // @TODO test that s does not equal 0
             doc += line.slice(0, s) + "\n";
-            line = options.preLine + (options.lineup ? '       ' : '');
+            line = options.preLine + (options.lineup ? block : '')
+                + line.slice(s);
             c = 0;
             s = 0;
             w = 0;

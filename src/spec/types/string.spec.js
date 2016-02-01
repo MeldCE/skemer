@@ -167,6 +167,49 @@ var suites = [
 						+ 'characters and no more than 9 characters')
 			}
 		]
+	},
+	{
+		label: 'Simple required string variable with restricted values',
+		schema: {
+			type: 'string',
+			required: true,
+      values: ['test', 'test1']
+		},
+		data: {
+			undef: undefined,
+			string: 'test'
+		},
+		newData: {
+			undef: undefined,
+			empty: '',
+			string: 'newString',
+			validString: 'test1'
+		},
+		options: [{}],
+		results: [
+			{
+				input: ['undef', 'undef', false],
+				throws: new errors.DataRequiredError('Value required')
+			},
+			{
+				input: ['string', 'undef', false],
+				result: 'test'
+			},
+			{
+				input: [false, 'validString', false],
+				result: 'test1'
+			},
+			{
+				input: [false, 'empty', false],
+				throws: new errors.DataInvalidError('Value of \'\' is not one of the '
+            + 'allowed values (test, test1)')
+			},
+			{
+				input: [false, 'string', false],
+				throws: new errors.DataInvalidError('Value of \'newString\' is not '
+            + 'one of the allowed values (test, test1)')
+			}
+		]
 	}
 ];
 

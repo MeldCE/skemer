@@ -54,7 +54,8 @@ describe('Skemer module', function() {
 					schema: schema,
 					replace: 'bad'
 				});
-			}).toThrow(new errors.OptionsError('Invalid value for options.replace'));
+			}).toThrow(new errors.OptionsError('string value is not allowed for '
+          + 'options.replace'));
 		});
 
 		it('should throw on no schema', function() {
@@ -70,7 +71,8 @@ describe('Skemer module', function() {
 						type: true
 					}
 				});
-			}).toThrow(new errors.SchemaError('Invalid value for options.schema.type'));
+			}).toThrow(new errors.SchemaError('boolean value is not allowed for '
+          + 'options.schema.type'));
 		});
 
 		it('should return a working Skemer when valid', function() {
