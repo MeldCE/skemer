@@ -29,7 +29,7 @@ var suites = [
 			},
 			{
 				input: [false, 'invalid', false],
-				throws: new errors.DataTypeError('Value must be a Date')
+				throws: new errors.DataTypeError('Value must be a date')
 			},
 			{
 				input: [false, 'date', false],
@@ -82,13 +82,13 @@ var suites = [
 		},
 		data: {
 			undef: undefined,
-			date: new Date('2015-11-01')
+			date: new Date('2015-12-01')
 		},
 		newData: {
 			undef: undefined,
 			invalid: 'string',
-			before: new Date('2015-11-30'),
-			during: new Date('2015-11-31'),
+			before: new Date('2015-12-30'),
+			during: new Date('2015-12-31'),
 			after: new Date('2016-01-02')
 		},
 		options: [{}],
@@ -99,7 +99,7 @@ var suites = [
 			},
 			{
 				input: ['date', 'undef', false],
-				result: new Date('2015-11-1')
+				result: new Date('2015-12-01')
 			},
 			{
 				input: [false, 'invalid', false],
@@ -107,17 +107,19 @@ var suites = [
 			},
 			{
 				input: [false, 'before', false],
-				throws: new errors.DataRangeError('Value must be greater than or '
-						+ 'equal to 4 and less than 9')
+				throws: new errors.DataRangeError('Value must be at or after Thu Dec '
+            + '31 2015 00:00:00 GMT+0000 (GMT Standard Time) and before Fri '
+            + 'Jan 01 2016 00:00:00 GMT+0000 (GMT Standard Time)')
 			},
 			{
 				input: [false, 'during', false],
-				result: new Date('2014-11-12')
+				result: new Date('2015-12-31')
 			},
 			{
 				input: [false, 'after', false],
-				throws: new errors.DataRangeError('Value must be greater than or '
-						+ 'equal to 4 and less than 9')
+				throws: new errors.DataRangeError('Value must be at or after Thu Dec '
+            + '31 2015 00:00:00 GMT+0000 (GMT Standard Time) and before Fri '
+            + 'Jan 01 2016 00:00:00 GMT+0000 (GMT Standard Time)')
 			}
 		]
 	}
