@@ -36,18 +36,25 @@ var suites = [
     options: [{}],
     results: [
       {
+        label: 'should return an undefined value',
         input: ['undef', 'undef', false],
         result: undefined
       },
       {
+        label: 'should return the original prototype instance',
         input: ['proto', 'undef', false],
         result: proto1
       },
       {
+        label: 'should throw on a non-prototype instance value',
         input: [false, 'invalid', false],
         throws: new errors.DataTypeError('Value must be a null')
       },
       {
+        label: [
+          'should return the new prototype instance',
+          'should not throw on an invalid original value'
+        ],
         input: [false, 'proto', false],
         result: proto2
       }
@@ -67,6 +74,7 @@ var suites = [
     options: [{}],
     results: [
       {
+        label: 'should throw if the given prototype doesn\'t exist',
         input: [false, 'proto', false],
         throws: new errors.SchemaError('Error determining type to test '
             + 'against: ReferenceError: SomethingInvalid is not defined')

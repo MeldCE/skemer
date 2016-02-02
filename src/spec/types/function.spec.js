@@ -113,14 +113,17 @@ var suites = [
     options: [{}],
     results: [
       {
+        label: 'should throw a value required error',
         input: ['undef', 'undef', false],
         throws: new errors.DataRequiredError('Value required')
       },
       {
+        label: 'should return the old function',
         input: ['func', 'undef', false],
         result: oldFunc
       },
       {
+        label: 'should return the new function',
         input: [false, 'func', false],
         result: newFunc
       }
