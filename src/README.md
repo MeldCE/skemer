@@ -17,10 +17,11 @@ This library can be used to ensure a variable and any additions to that
 variable adhere to a certain schema. The schema can be as simple as allowing
 a string value, to as complex as a nested Object.
 
-The library contains the `validateNew` function for validating and merging all
-new data, the `validateAdd` function for doing validating and merging new data
-into existing data, a `Skemer` prototype for doing multiple validations /
-merges against the same schema, and a `makeJSDoc` function for creating
+The library contains the [`validateNew`](#validateNew) function for validating
+and merging all new data, the [`validateAdd`](#validataAdd) function for doing
+validating and merging new data into existing data, a [`Skemer`](#Skemer)
+prototype for doing multiple validations / merges against the same schema,
+and a [`buildJsDoc`](#buildJsDoc) function for creating
 a JSDoc comment from the schema and its `doc` parameters.
 
 ## Uses
@@ -41,3 +42,9 @@ The Skemer library will throw the following Errors if any errors in the Schema
 or the variables are found
 
 <!--=include ../build/errors.js.md -->
+
+# [Example](https://tonicdev.com/npm/skemer)
+
+```javascript
+<!--=include ../example.js -->
+```

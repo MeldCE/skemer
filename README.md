@@ -17,10 +17,11 @@ This library can be used to ensure a variable and any additions to that
 variable adhere to a certain schema. The schema can be as simple as allowing
 a string value, to as complex as a nested Object.
 
-The library contains the `validateNew` function for validating and merging all
-new data, the `validateAdd` function for doing validating and merging new data
-into existing data, a `Skemer` prototype for doing multiple validations /
-merges against the same schema, and a `makeJSDoc` function for creating
+The library contains the [`validateNew`](#validateNew) function for validating
+and merging all new data, the [`validateAdd`](#validataAdd) function for doing
+validating and merging new data into existing data, a [`Skemer`](#Skemer)
+prototype for doing multiple validations / merges against the same schema,
+and a [`buildJsDoc`](#buildJsDoc) function for creating
 a JSDoc comment from the schema and its `doc` parameters.
 
 ## Uses
@@ -120,12 +121,14 @@ Returns **Any** Validated and merged data
 
 ## options
 
-Options to pass to skemer
+Options to that must be passed to the one off
+`#validateAdd|validate` (@link #validateNew|functions} and
+on creating a `#Skemer|skemer`
 
 **Parameters**
 
--   `schema` **Object** [Schema](#schema) to use for the validation
--   `baseSchema` **Object**  [Schema](#schema) to be used for recursive schemas. If none
+-   `schema` **Object** `Schema` to use for the validation
+-   `baseSchema`  Schema to be used for recursive schemas. If none
            given, the given schema will be used
 -   `replace`  A boolean to specify whether to globally replace all
            existing values for arrays and objects, or an object of
@@ -238,3 +241,58 @@ Thrown if the parameter value is out of the given range
 -   `message` **string** Error message
 -   `extra` **Any** Extra information
 
+
+# [Example](https://tonicdev.com/npm/skemer)
+
+```javascript
+var skemer = require('skemer');
+
+
+var schema = {
+	type: {
+		value: {
+			type: 'string'
+		},
+		figure: {
+			type: 'number',
+			min: 20,
+			max: 50
+		}
+	}
+};
+
+var valid = {
+	value: 'a string',
+	figure: 30
+};
+
+var valid1 = {
+	figure: 35
+};
+
+var valid2 = {
+	value: 'a different string'
+};
+
+var invalid = false;
+
+var stringSchema = {
+	type: 'string'
+};
+
+var aString = 'string';
+
+
+skemer.validateNew({ schema: stringSchema }, aString);
+
+var Schema, data;
+
+Schema = new skemer.Skemer({ schema: schema });
+
+console.log(data = Schema.validateNew(valid));
+
+console.log(data = Schema.validateAdd(data, valid1));
+
+Schema.validateAdd(data, valid2, invalid);
+
+```

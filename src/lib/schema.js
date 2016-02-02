@@ -189,7 +189,9 @@ module.exports = {
   schema: schema,
 
   /**
-   * Options to pass to skemer
+   * Options to that must be passed to the one off
+   * {@link #validateAdd|validate} (@link #validateNew|functions} and
+   * on creating a {@link #Skemer|skemer}
    %%options%%
    */
   options: {
