@@ -122,8 +122,8 @@ Returns **Any** Validated and merged data
 ## options
 
 Options to that must be passed to the one off
-`#validateAdd|validate` (@link #validateNew|functions} and
-on creating a `#Skemer|skemer`
+[validate](#validateAdd) [functions](#validateNew) and
+on creating a [`Skemer`](#Skemer)
 
 **Parameters**
 

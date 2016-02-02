@@ -190,8 +190,8 @@ module.exports = {
 
   /**
    * Options to that must be passed to the one off
-   * {@link #validateAdd|validate} (@link #validateNew|functions} and
-   * on creating a {@link #Skemer|skemer}
+   * [validate]{@link #validateAdd} [functions](@link #validateNew} and
+   * on creating a [`Skemer`]{@link #Skemer}
    %%options%%
    */
   options: {
