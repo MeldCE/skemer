@@ -1,6 +1,10 @@
 var errors = require('../../lib/errors.js');
 var buildTests = require('../lib/builder.js');
 
+// Min/max dates used in min/max tests
+var minDate = new Date('2015-12-31');
+var maxDate = new Date('2016-01-01');
+
 // Test Data
 var suites = [
 	{
@@ -77,8 +81,8 @@ var suites = [
 		schema: {
 			type: 'Date',
 			required: true,
-			min: new Date('2015-12-31'),
-			max: new Date('2016-01-01')
+			min: minDate,
+			max: maxDate
 		},
 		data: {
 			undef: undefined,
@@ -107,9 +111,8 @@ var suites = [
 			},
 			{
 				input: [false, 'before', false],
-				throws: new errors.DataRangeError('Value must be at or after Thu Dec '
-            + '31 2015 00:00:00 GMT+0000 (GMT Standard Time) and before Fri '
-            + 'Jan 01 2016 00:00:00 GMT+0000 (GMT Standard Time)')
+				throws: new errors.DataRangeError('Value must be at or after '
+            + minDate.toString() + ' and before ' + maxDate.toString())
 			},
 			{
 				input: [false, 'during', false],
@@ -117,9 +120,8 @@ var suites = [
 			},
 			{
 				input: [false, 'after', false],
-				throws: new errors.DataRangeError('Value must be at or after Thu Dec '
-            + '31 2015 00:00:00 GMT+0000 (GMT Standard Time) and before Fri '
-            + 'Jan 01 2016 00:00:00 GMT+0000 (GMT Standard Time)')
+				throws: new errors.DataRangeError('Value must be at or after '
+            + minDate.toString() + ' and before ' + maxDate.toString())
 			}
 		]
 	}
