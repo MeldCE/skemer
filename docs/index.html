@@ -104,7 +104,7 @@
         <div class='px2'>
 <div class='py1'><section class='py2 clearfix'>
   <h2 id='options' class='mt0'>
-    options<span class='gray'>(schema, [baseSchema], replace)</span>
+    options<span class='gray'>(schema, baseSchema, replace)</span>
   </h2>
   <p>Options to pass to skemer</p>
 
@@ -116,126 +116,14 @@
             <p><a href="#schema"><code>Schema</code></a> to use for the validation</p>
 
           </div>
-            <ul>
-                <li> schema.doc
-                  <p>A String giving information on the parameter</p>
-</li>
-                <li> schema.type
-                  <p>The value type of the parameter expected</p>
-</li>
-                <li> schema.types
-                  <p>An Array or Object of Objects containing the details
-of the values expected</p>
-</li>
-                <li><code>[Any]</code> schema.values
-                  <p>Specifies the possible values for strings,
-numbers and dates</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.multiple
-                  <p>Whether or not multiple values (stored
-in an array) are allowed. Can be a boolean, or a number (the number
-of values that the parameter must have, or an array containing the
-minimum number of values and teh maximum number of values.</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.object
-                  <p>If multiple is true object is true, will
-force values to be stored in an object - appending will not work. If
-multiple is true and object is false, the key will be ignored and
-the values will be stored in an array</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a></code>]</code> schema.regex
-                  <p>A regular expression to validate a String
-value</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> schema.min
-                  <p>The minimum number, string length or number of
-Array elements required</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> schema.max
-                  <p>The maximum number, string length or number of
-Array elements allowed</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.replace
-                  <p>Whether a new value should completely
-replace an old value</p>
-</li>
-                <li> schema.required
-                  <p>Either true/false or a function returning
-true/false to whether the parameter is required</p>
-</li>
-                <li><code>[Any]</code> schema.default
-                  <p>Default value for parameter</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">Function</a></code>]</code> schema.validation
-                  <p>Function to validate the value of the
-parameter. Will be given the value as the parameter. The function
-must return true if valid, false if not, or null if no value</p>
-</li>
-            </ul>
         </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code>]</code> <strong>baseSchema</strong>
+        <li> <strong>baseSchema</strong>
           :
           <div class='force-inline'>
-            
+            <p>Schema to be used for recursive schemas. If none
+given, the given schema will be used</p>
+
           </div>
-            <ul>
-                <li> baseSchema.doc
-                  <p>A String giving information on the parameter</p>
-</li>
-                <li> baseSchema.type
-                  <p>The value type of the parameter expected</p>
-</li>
-                <li> baseSchema.types
-                  <p>An Array or Object of Objects containing the
-details of the values expected</p>
-</li>
-                <li><code>[Any]</code> baseSchema.values
-                  <p>Specifies the possible values for strings,
-numbers and dates</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> baseSchema.multiple
-                  <p>Whether or not multiple values
-(stored in an array) are allowed. Can be a boolean, or a number (the
-number of values that the parameter must have, or an array
-containing the minimum number of values and teh maximum number of
-values.</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> baseSchema.object
-                  <p>If multiple is true object is true,
-will force values to be stored in an object - appending will not
-work. If multiple is true and object is false, the key will be
-ignored and the values will be stored in an array</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a></code>]</code> baseSchema.regex
-                  <p>A regular expression to validate a
-String value</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> baseSchema.min
-                  <p>The minimum number, string length or
-number of Array elements required</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> baseSchema.max
-                  <p>The maximum number, string length or
-number of Array elements allowed</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> baseSchema.replace
-                  <p>Whether a new value should completely
-replace an old value</p>
-</li>
-                <li> baseSchema.required
-                  <p>Either true/false or a function returning
-true/false to whether the parameter is required</p>
-</li>
-                <li><code>[Any]</code> baseSchema.default
-                  <p>Default value for parameter</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">Function</a></code>]</code> baseSchema.validation
-                  <p>Function to validate the value of
-the parameter. Will be given the value as the parameter. The
-function must return true if valid, false if not, or null if no
-value</p>
-</li>
-            </ul>
         </li>
         <li> <strong>replace</strong>
           :
@@ -252,7 +140,7 @@ boolean value of true</p>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
   <h2 id='schema' class='mt0'>
-    schema<span class='gray'>(doc, type, types, [values], [multiple], [object], [regex], [min], [max], [replace], required, [default], [validation])</span>
+    schema<span class='gray'>(doc, [noDocDig], type, types, [values], [multiple], [object], [regex], [min], [max], [replace], required, [default], [validation])</span>
   </h2>
   <p>Schema detailing the requirements for Skemer Schema</p>
 
@@ -262,6 +150,14 @@ boolean value of true</p>
           :
           <div class='force-inline'>
             <p>A String giving information on the parameter</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>noDocDig</strong>
+          :
+          <div class='force-inline'>
+            <p>If set and the variable is an object,
+buildJsDoc will not document the parameters of the object</p>
 
           </div>
         </li>
@@ -429,7 +325,7 @@ at</p>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
   <h2 id='validateAdd' class='mt0'>
-    validateAdd<span class='gray'>(options, newData, schema, baseSchema.doc, baseSchema.type, baseSchema.types, [baseSchema.values], [baseSchema.multiple], [baseSchema.object], [baseSchema.regex], [baseSchema.min], [baseSchema.max], [baseSchema.replace], baseSchema.required, [baseSchema.default], [baseSchema.validation], replace, data, [baseSchema])</span>
+    validateAdd<span class='gray'>(options, data, newData)</span>
   </h2>
   <p>Add data to an object based on a schema from the data given.
 NOTE: Existing data WILL NOT be validated</p>
@@ -439,202 +335,9 @@ NOTE: Existing data WILL NOT be validated</p>
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
           :
           <div class='force-inline'>
-            <p>An object containing options</p>
-
-          </div>
-            <ul>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> options.schema
-                  <p>An Object containing a valid schema
-should containi</p>
-</li>
-            </ul>
-        </li>
-        <li>...Any <strong>newData</strong>
-          :
-          <div class='force-inline'>
-            <p>Data to validate and merge into data</p>
-
-          </div>
-        </li>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>schema</strong>
-          :
-          <div class='force-inline'>
-            <p><a href="#schema"><code>Schema</code></a> to use for the validation</p>
-
-          </div>
-            <ul>
-                <li> schema.doc
-                  <p>A String giving information on the parameter</p>
-</li>
-                <li> schema.type
-                  <p>The value type of the parameter expected</p>
-</li>
-                <li> schema.types
-                  <p>An Array or Object of Objects containing the details
-of the values expected</p>
-</li>
-                <li><code>[Any]</code> schema.values
-                  <p>Specifies the possible values for strings,
-numbers and dates</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.multiple
-                  <p>Whether or not multiple values (stored
-in an array) are allowed. Can be a boolean, or a number (the number
-of values that the parameter must have, or an array containing the
-minimum number of values and teh maximum number of values.</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.object
-                  <p>If multiple is true object is true, will
-force values to be stored in an object - appending will not work. If
-multiple is true and object is false, the key will be ignored and
-the values will be stored in an array</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a></code>]</code> schema.regex
-                  <p>A regular expression to validate a String
-value</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> schema.min
-                  <p>The minimum number, string length or number of
-Array elements required</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> schema.max
-                  <p>The maximum number, string length or number of
-Array elements allowed</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> schema.replace
-                  <p>Whether a new value should completely
-replace an old value</p>
-</li>
-                <li> schema.required
-                  <p>Either true/false or a function returning
-true/false to whether the parameter is required</p>
-</li>
-                <li><code>[Any]</code> schema.default
-                  <p>Default value for parameter</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">Function</a></code>]</code> schema.validation
-                  <p>Function to validate the value of the
-parameter. Will be given the value as the parameter. The function
-must return true if valid, false if not, or null if no value</p>
-</li>
-            </ul>
-        </li>
-        <li> <strong>baseSchema.doc</strong>
-          :
-          <div class='force-inline'>
-            <p>A String giving information on the parameter</p>
-
-          </div>
-        </li>
-        <li> <strong>baseSchema.type</strong>
-          :
-          <div class='force-inline'>
-            <p>The value type of the parameter expected</p>
-
-          </div>
-        </li>
-        <li> <strong>baseSchema.types</strong>
-          :
-          <div class='force-inline'>
-            <p>An Array or Object of Objects containing the
-details of the values expected</p>
-
-          </div>
-        </li>
-        <li><code>[Any]</code> <strong>baseSchema.values</strong>
-          :
-          <div class='force-inline'>
-            <p>Specifies the possible values for strings,
-numbers and dates</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>baseSchema.multiple</strong>
-          :
-          <div class='force-inline'>
-            <p>Whether or not multiple values
-(stored in an array) are allowed. Can be a boolean, or a number (the
-number of values that the parameter must have, or an array
-containing the minimum number of values and teh maximum number of
-values.</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>baseSchema.object</strong>
-          :
-          <div class='force-inline'>
-            <p>If multiple is true object is true,
-will force values to be stored in an object - appending will not
-work. If multiple is true and object is false, the key will be
-ignored and the values will be stored in an array</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a></code>]</code> <strong>baseSchema.regex</strong>
-          :
-          <div class='force-inline'>
-            <p>A regular expression to validate a
-String value</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> <strong>baseSchema.min</strong>
-          :
-          <div class='force-inline'>
-            <p>The minimum number, string length or
-number of Array elements required</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> <strong>baseSchema.max</strong>
-          :
-          <div class='force-inline'>
-            <p>The maximum number, string length or
-number of Array elements allowed</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>baseSchema.replace</strong>
-          :
-          <div class='force-inline'>
-            <p>Whether a new value should completely
-replace an old value</p>
-
-          </div>
-        </li>
-        <li> <strong>baseSchema.required</strong>
-          :
-          <div class='force-inline'>
-            <p>Either true/false or a function returning
-true/false to whether the parameter is required</p>
-
-          </div>
-        </li>
-        <li><code>[Any]</code> <strong>baseSchema.default</strong>
-          :
-          <div class='force-inline'>
-            <p>Default value for parameter</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">Function</a></code>]</code> <strong>baseSchema.validation</strong>
-          :
-          <div class='force-inline'>
-            <p>Function to validate the value of
-the parameter. Will be given the value as the parameter. The
-function must return true if valid, false if not, or null if no
-value</p>
-
-          </div>
-        </li>
-        <li> <strong>replace</strong>
-          :
-          <div class='force-inline'>
-            <p>A boolean to specify whether to globally replace all
-existing values for arrays and objects, or an object of
-variable/boolean pairs used to specify what variables (their name
-given as the key) should have their value replaced by default (a
-boolean value of true</p>
+            <p>An object containing the validation
+<a href="#options"><code>options</code></a>, including the
+<a href="#schema"><code>schema</code></a></p>
 
           </div>
         </li>
@@ -647,10 +350,11 @@ is given, newData will be validated and merged into data.</p>
 
           </div>
         </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code>]</code> <strong>baseSchema</strong>
+        <li>...Any <strong>newData</strong>
           :
           <div class='force-inline'>
-            
+            <p>Data to validate and merge into data</p>
+
           </div>
         </li>
     </ul>
@@ -673,15 +377,11 @@ is given, newData will be validated and merged into data.</p>
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
           :
           <div class='force-inline'>
-            <p>An object containing options</p>
+            <p>An object containing the validation
+<a href="#options"><code>options</code></a>, including the
+<a href="#schema"><code>schema</code></a></p>
 
           </div>
-            <ul>
-                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> options.schema
-                  <p>An Object containing a valid schema
-should contain</p>
-</li>
-            </ul>
         </li>
         <li>...Any <strong>newData</strong>
           :
@@ -878,7 +578,9 @@ should contain</p>
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
           :
           <div class='force-inline'>
-            <p>An object containing options</p>
+            <p>An object containing the validation
+<a href="#options"><code>options</code></a>, including the
+<a href="#schema"><code>schema</code></a></p>
 
           </div>
         </li>

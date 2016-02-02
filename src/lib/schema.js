@@ -80,6 +80,11 @@ var schema = {
         }
       ]
     },
+    noDocDig: {
+      doc: 'If set and the variable is an object, buildJsDoc will not '
+          + 'document the parameters of the object',
+      type: 'boolean'
+    },
     type: {
       doc: "The value type of the parameter expected",
       types: [
@@ -197,7 +202,9 @@ module.exports = {
       },
       //baseSchema: schema,
       baseSchema: {
-        doc: 'Schema to be used for recursive schemas',
+        doc: 'Schema to be used for recursive schemas. If none given, the '
+            + 'given schema will be used',
+        noDocDig: true,
         type: null
       },
       replace: {

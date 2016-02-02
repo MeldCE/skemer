@@ -168,49 +168,102 @@ var suites = [
 			}
 		]
 	},
-	{
-		label: 'Simple required string variable with restricted values',
-		schema: {
-			type: 'string',
-			required: true,
-      values: ['test', 'test1']
-		},
-		data: {
-			undef: undefined,
-			string: 'test'
-		},
-		newData: {
-			undef: undefined,
-			empty: '',
-			string: 'newString',
-			validString: 'test1'
-		},
-		options: [{}],
-		results: [
-			{
-				input: ['undef', 'undef', false],
-				throws: new errors.DataRequiredError('Value required')
-			},
-			{
-				input: ['string', 'undef', false],
-				result: 'test'
-			},
-			{
-				input: [false, 'validString', false],
-				result: 'test1'
-			},
-			{
-				input: [false, 'empty', false],
-				throws: new errors.DataInvalidError('Value of \'\' is not one of the '
-            + 'allowed values (test, test1)')
-			},
-			{
-				input: [false, 'string', false],
-				throws: new errors.DataInvalidError('Value of \'newString\' is not '
-            + 'one of the allowed values (test, test1)')
-			}
-		]
-	}
+  {
+    label: 'Simple required string variable with restricted values',
+    schema: {
+      type: 'string',
+      required: true,
+      values: ['test']
+    },
+    data: {
+      undef: undefined,
+      string: 'oldString'
+    },
+    newData: {
+      undef: undefined,
+      empty: '',
+      string: 'newString',
+      validString: 'test'
+    },
+    options: [{}],
+    results: [
+      {
+        label: 'should throw a value required error',
+        input: ['undef', 'undef', false],
+        throws: new errors.DataRequiredError('Value required')
+      },
+      {
+        label: 'should return original string as orginal string not validated',
+        input: ['string', 'undef', false],
+        result: 'oldString'
+      },
+      {
+        label: 'should return valid new string',
+        input: [false, 'validString', false],
+        result: 'test'
+      },
+      {
+        label: 'should throw as string is invalid',
+        input: [false, 'empty', false],
+        throws: new errors.DataInvalidError('Value of \'\' is not one of the '
+            + 'allowed values (test)')
+      },
+      {
+        label: 'should throw as string is invalid',
+        input: [false, 'string', false],
+        throws: new errors.DataInvalidError('Value of \'newString\' is not '
+            + 'one of the allowed values (test)')
+      }
+    ]
+  },
+  {
+    label: 'Simple required string variable with regex validation',
+    schema: {
+      type: 'string',
+      required: true,
+      regex: /^\w+@\w+\.\w+$/
+    },
+    data: {
+      undef: undefined,
+      string: 'oldString'
+    },
+    newData: {
+      undef: undefined,
+      empty: '',
+      string: 'newString',
+      validString: 'bob@bob.com'
+    },
+    options: [{}],
+    results: [
+      {
+        label: 'should throw a value required error',
+        input: ['undef', 'undef', false],
+        throws: new errors.DataRequiredError('Value required')
+      },
+      {
+        label: 'should return original string as orginal string not validated',
+        input: ['string', 'undef', false],
+        result: 'oldString'
+      },
+      {
+        label: 'should return valid new string',
+        input: [false, 'validString', false],
+        result: 'bob@bob.com'
+      },
+      {
+        label: 'should throw as string is invalid',
+        input: [false, 'empty', false],
+        throws: new errors.DataInvalidError('Value of \'\' does not meet the '
+            + 'required pattern of /^\\w+@\\w+\\.\\w+$/')
+      },
+      {
+        label: 'should throw as string is invalid',
+        input: [false, 'string', false],
+        throws: new errors.DataInvalidError('Value of \'newString\' does not '
+            + 'meet the required pattern of /^\\w+@\\w+\\.\\w+$/')
+      }
+    ]
+  }
 ];
 
 buildTests('String type tests', suites);

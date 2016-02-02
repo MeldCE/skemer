@@ -61,48 +61,13 @@ NOTE: Existing data WILL NOT be validated
 
 **Parameters**
 
--   `options` **Object** An object containing options
-    -   `options.schema` **Object** An Object containing a valid schema
-               should containi
--   `newData` **...Any** Data to validate and merge into data
--   `schema` **Object** `Schema` to use for the validation
-    -   `schema.doc`  A String giving information on the parameter
-    -   `schema.type`  The value type of the parameter expected
-    -   `schema.types`  An Array or Object of Objects containing the details
-               of the values expected
-    -   `schema.values` **[Any]** Specifies the possible values for strings,
-               numbers and dates
-    -   `schema.multiple` **[boolean]** Whether or not multiple values (stored
-               in an array) are allowed. Can be a boolean, or a number (the number
-               of values that the parameter must have, or an array containing the
-               minimum number of values and teh maximum number of values.
-    -   `schema.object` **[boolean]** If multiple is true object is true, will
-               force values to be stored in an object - appending will not work. If
-               multiple is true and object is false, the key will be ignored and
-               the values will be stored in an array
-    -   `schema.regex` **[RegExp]** A regular expression to validate a String
-               value
-    -   `schema.max` **[number]** The maximum number, string length or number of
-               Array elements allowed
-    -   `schema.replace` **[boolean]** Whether a new value should completely
-               replace an old value
-    -   `schema.required`  Either true/false or a function returning
-               true/false to whether the parameter is required
-    -   `schema.default` **[Any]** Default value for parameter
-    -   `schema.validation` **[Function]** Function to validate the value of the
-               parameter. Will be given the value as the parameter. The function
-               must return true if valid, false if not, or null if no value
-    -   `schema.min` **[number]** The minimum number, string length or number of
-               Array elements required
--   `baseSchema`  Schema to be used for recursive schemas
--   `replace`  A boolean to specify whether to globally replace all
-           existing values for arrays and objects, or an object of
-           variable/boolean pairs used to specify what variables (their name
-           given as the key) should have their value replaced by default (a
-           boolean value of true
+-   `options` **Object** An object containing the validation
+           `options`, including the
+           `schema`
 -   `data` **Any** Data to validate and return. If no data is given,
-              data containing any default values will be returned. If newData
-              is given, newData will be validated and merged into data.
+           data containing any default values will be returned. If newData
+           is given, newData will be validated and merged into data.
+-   `newData` **...Any** Data to validate and merge into data
 
 Returns **Any** Validated and merged data
 
@@ -112,9 +77,9 @@ Add new data to data based on the stored schema.
 
 **Parameters**
 
--   `options` **Object** An object containing options
-    -   `options.schema` **Object** An Object containing a valid schema
-               should contain
+-   `options` **Object** An object containing the validation
+           `options`, including the
+           `schema`
 -   `newData` **...Any** Data to validate and merge into data
 
 Returns **Any** Validated and merged data
@@ -125,7 +90,9 @@ Skemer prototype to enable simple reuse of a schema
 
 **Parameters**
 
--   `options` **Object** An object containing options
+-   `options` **Object** An object containing the validation
+           `options`, including the
+           `schema`
 
 ### validateAdd
 
@@ -150,6 +117,60 @@ Add new data to data based on the stored schema.
 -   `newData` **...Any** Data to validate and merge into data
 
 Returns **Any** Validated and merged data
+
+
+# Validate Function Parameters
+
+## options
+
+Options to pass to skemer
+
+**Properties**
+
+-   `schema` **Object** `Schema` to use for the validation
+-   `baseSchema`  Schema to be used for recursive schemas. If none
+           given, the given schema will be used
+-   `replace`  A boolean to specify whether to globally replace all
+           existing values for arrays and objects, or an object of
+           variable/boolean pairs used to specify what variables (their name
+           given as the key) should have their value replaced by default (a
+           boolean value of true
+
+## schema
+
+Schema detailing the requirements for Skemer Schema
+
+**Properties**
+
+-   `doc`  A String giving information on the parameter
+-   `noDocDig` **[boolean]** If set and the variable is an object,
+           buildJsDoc will not document the parameters of the object
+-   `type`  The value type of the parameter expected
+-   `types`  An Array or Object of Objects containing the details of the
+           values expected
+-   `values` **[Any]** Specifies the possible values for strings, numbers and
+           dates
+-   `multiple` **[boolean]** Whether or not multiple values (stored in an
+           array) are allowed. Can be a boolean, or a number (the number of
+           values that the parameter must have, or an array containing the
+           minimum number of values and teh maximum number of values.
+-   `object` **[boolean]** If multiple is true object is true, will force
+           values to be stored in an object - appending will not work. If
+           multiple is true and object is false, the key will be ignored and
+           the values will be stored in an array
+-   `regex` **[RegExp]** A regular expression to validate a String value
+-   `min` **[number]** The minimum number, string length or number of Array
+           elements required
+-   `max` **[number]** The maximum number, string length or number of Array
+           elements allowed
+-   `replace` **[boolean]** Whether a new value should completely replace an
+           old value
+-   `required`  Either true/false or a function returning true/false to
+           whether the parameter is required
+-   `default` **[Any]** Default value for parameter
+-   `validation` **[Function]** Function to validate the value of the
+           parameter. Will be given the value as the parameter. The function
+           must return true if valid, false if not, or null if no value
 
 
 # Skemer Errors

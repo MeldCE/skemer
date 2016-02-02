@@ -133,17 +133,26 @@ function setValueToType(context) {
 						if (context.newData !== undefined) {
 							if (typeof context.newData === context.schema.type) {
 								var parts = [];
+                
+                // Validate string against regex if we have one
+                if (context.schema.type === 'string' && context.schema.regex
+                    && !context.schema.regex.test(context.newData)) {
+                  throw new errors.DataInvalidError('Value of \''
+                      + context.newData + '\'' + (context.parameterName ?
+                      ' for ' + context.parameterName : '') + ' does not meet '
+                      + 'the required pattern of '
+                      + context.schema.regex.toString(), context);
+                }
                 // Validate new value against values if have them
                 if ((context.schema.type === 'number'
                     || context.schema.type === 'string')
-                    && context.schema.values) {
-                  if (context.schema.values.indexOf(context.newData) === -1) {
-                    throw new errors.DataInvalidError('Value of \''
-                        + context.newData + '\'' + (context.parameterName ?
-                        ' for ' + context.parameterName : '') + ' is not one '
-                        + 'of the allowed values ('
-                        + context.schema.values.join(', ') + ')', context);
-                  }
+                    && context.schema.values
+                    && context.schema.values.indexOf(context.newData) === -1) {
+                  throw new errors.DataInvalidError('Value of \''
+                      + context.newData + '\'' + (context.parameterName ?
+                      ' for ' + context.parameterName : '') + ' is not one '
+                      + 'of the allowed values ('
+                      + context.schema.values.join(', ') + ')', context);
                 }
 
                 // Check number range or string length if have min/max
@@ -622,9 +631,9 @@ module.exports = {
 	/**
 	 * Add new data to data based on the stored schema.
 	 *
-	 * @param {Object} options An object containing options
-	 * @param {Object} options.schema An Object containing a valid schema
-	 *        should contain
+	 * @param {Object} options An object containing the validation
+   *        [`options`]{@link #options}, including the
+   *        [`schema`]{@link #schema}
 	 * @param {...*} newData Data to validate and merge into data
 	 *
 	 * @returns {*} Validated and merged data
@@ -644,13 +653,12 @@ module.exports = {
 	 * Add data to an object based on a schema from the data given.
 	 * NOTE: Existing data WILL NOT be validated
 	 *
-	 * @param {Object} options An object containing options
-	 * @param {Object} options.schema An Object containing a valid schema
-	 *        should containi
-   %%options%%
+	 * @param {Object} options An object containing the validation
+   *        [`options`]{@link #options}, including the
+   *        [`schema`]{@link #schema}
 	 * @param {*} data Data to validate and return. If no data is given,
-	 *           data containing any default values will be returned. If newData
-	 *           is given, newData will be validated and merged into data.
+	 *        data containing any default values will be returned. If newData
+	 *        is given, newData will be validated and merged into data.
 	 * @param {...*} newData Data to validate and merge into data
 	 *
 	 * @returns {*} Validated and merged data
@@ -750,7 +758,9 @@ module.exports = {
 /**
  * Skemer prototype to enable simple reuse of a schema
  *
- * @param {Object} options An object containing options
+ * @param {Object} options An object containing the validation
+ *        [`options`]{@link #options}, including the
+ *        [`schema`]{@link #schema}
  *
  * @class
  */

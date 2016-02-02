@@ -31,6 +31,10 @@ a JSDoc comment from the schema and its `doc` parameters.
 
 <!--=include ../build/skemer.js.md -->
 
+# Validate Function Parameters
+
+<!--=include ../build/schema.js.md -->
+
 # Skemer Errors
 
 The Skemer library will throw the following Errors if any errors in the Schema
