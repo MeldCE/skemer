@@ -36,7 +36,7 @@ Add data to an object based on a schema from the data given.
 **Parameters**
 
 -   `schema` **Object** An Object containing a valid
-           `schema`
+           [schema](#schema)
 -   `options` **Object** An object containing options
            should contain
     -   `options.name` **[string]** Name of the object documenting (will be
@@ -62,8 +62,7 @@ NOTE: Existing data WILL NOT be validated
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           `options`, including the
-           `schema`
+           [options](#options), including the [schema](#schema)
 -   `data` **Any** Data to validate and return. If no data is given,
            data containing any default values will be returned. If newData
            is given, newData will be validated and merged into data.
@@ -78,8 +77,7 @@ Add new data to data based on the stored schema.
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           `options`, including the
-           `schema`
+           [options](#options), including the [schema](#schema)
 -   `newData` **...Any** Data to validate and merge into data
 
 Returns **Any** Validated and merged data
@@ -91,8 +89,7 @@ Skemer prototype to enable simple reuse of a schema
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           `options`, including the
-           `schema`
+           [options](#options), including the [schema](#schema)
 
 ### validateAdd
 
@@ -119,16 +116,16 @@ Add new data to data based on the stored schema.
 Returns **Any** Validated and merged data
 
 
-# Validate Function Parameters
+# Schema and Validate Options
 
 ## options
 
 Options to pass to skemer
 
-**Properties**
+**Parameters**
 
--   `schema` **Object** `Schema` to use for the validation
--   `baseSchema`  Schema to be used for recursive schemas. If none
+-   `schema` **Object** [Schema](#schema) to use for the validation
+-   `baseSchema` **Object**  [Schema](#schema) to be used for recursive schemas. If none
            given, the given schema will be used
 -   `replace`  A boolean to specify whether to globally replace all
            existing values for arrays and objects, or an object of
@@ -140,7 +137,7 @@ Options to pass to skemer
 
 Schema detailing the requirements for Skemer Schema
 
-**Properties**
+**Parameters**
 
 -   `doc`  A String giving information on the parameter
 -   `noDocDig` **[boolean]** If set and the variable is an object,

@@ -31,7 +31,7 @@ a JSDoc comment from the schema and its `doc` parameters.
 
 <!--=include ../build/skemer.js.md -->
 
-# Validate Function Parameters
+# Schema and Validate Options
 
 <!--=include ../build/schema.js.md -->
 

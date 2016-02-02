@@ -632,8 +632,7 @@ module.exports = {
 	 * Add new data to data based on the stored schema.
 	 *
 	 * @param {Object} options An object containing the validation
-   *        [`options`]{@link #options}, including the
-   *        [`schema`]{@link #schema}
+   *        [options]{@link #options}, including the [schema]{@link #schema}
 	 * @param {...*} newData Data to validate and merge into data
 	 *
 	 * @returns {*} Validated and merged data
@@ -654,8 +653,7 @@ module.exports = {
 	 * NOTE: Existing data WILL NOT be validated
 	 *
 	 * @param {Object} options An object containing the validation
-   *        [`options`]{@link #options}, including the
-   *        [`schema`]{@link #schema}
+   *        [options]{@link #options}, including the [schema]{@link #schema}
 	 * @param {*} data Data to validate and return. If no data is given,
 	 *        data containing any default values will be returned. If newData
 	 *        is given, newData will be validated and merged into data.
@@ -759,8 +757,7 @@ module.exports = {
  * Skemer prototype to enable simple reuse of a schema
  *
  * @param {Object} options An object containing the validation
- *        [`options`]{@link #options}, including the
- *        [`schema`]{@link #schema}
+ *        [options]{@link #options}, including the [schema]{@link #schema}
  *
  * @class
  */
