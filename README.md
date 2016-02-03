@@ -37,7 +37,7 @@ Add data to an object based on a schema from the data given.
 **Parameters**
 
 -   `schema` **Object** An Object containing a valid
-           [schema](#schema)
+           `schema`
 -   `options` **Object** An object containing options
            should contain
     -   `options.name` **[string]** Name of the object documenting (will be
@@ -63,7 +63,7 @@ NOTE: Existing data WILL NOT be validated
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           [options](#options), including the [schema](#schema)
+           `options`, including the `schema`
 -   `data` **Any** Data to validate and return. If no data is given,
            data containing any default values will be returned. If newData
            is given, newData will be validated and merged into data.
@@ -78,7 +78,7 @@ Add new data to data based on the stored schema.
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           [options](#options), including the [schema](#schema)
+           `options`, including the `schema`
 -   `newData` **...Any** Data to validate and merge into data
 
 Returns **Any** Validated and merged data
@@ -90,7 +90,7 @@ Skemer prototype to enable simple reuse of a schema
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           [options](#options), including the [schema](#schema)
+           `options`, including the `schema`
 
 ### validateAdd
 
@@ -122,8 +122,8 @@ Returns **Any** Validated and merged data
 ## options
 
 Options to that must be passed to the one off
-[validate](#validateAdd) [functions](#validateNew) and
-on creating a [`Skemer`](#Skemer)
+`validate` `functions](@link #validateNew} and
+on creating a [`Skemer``
 
 **Parameters**
 
@@ -159,10 +159,10 @@ Schema detailing the requirements for Skemer Schema
            multiple is true and object is false, the key will be ignored and
            the values will be stored in an array
 -   `regex` **[RegExp]** A regular expression to validate a String value
--   `min` **[number]** The minimum number, string length or number of Array
-           elements required
--   `max` **[number]** The maximum number, string length or number of Array
-           elements allowed
+-   `min`  The minimum number, string length or number of Array elements
+           required
+-   `max`  The maximum number, string length or number of Array elements
+           allowed
 -   `replace` **[boolean]** Whether a new value should completely replace an
            old value
 -   `required`  Either true/false or a function returning true/false to

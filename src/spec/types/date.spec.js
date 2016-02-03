@@ -133,7 +133,7 @@ var suites = [
             + minDate.toString() + ' and before ' + maxDate.toString())
       },
       {
-        label: 'should return new date'
+        label: 'should return new date',
         input: [false, 'during', false],
         result: new Date('2015-12-31')
       },
