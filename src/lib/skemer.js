@@ -55,7 +55,7 @@ function shouldReplace(context) {
  *          new value or a default value. Otherwise, the new value
  */
 function setValueToType(context) {
-	var t, value;
+	var t, value, parts;
 	//console.log('\nsetValueToType', util.inspect(context, {depth: null}));
 	if (context.schema.types) {
 		//console.log('have types, checking for value', context.schema, context.newData);
@@ -123,16 +123,19 @@ function setValueToType(context) {
 							context.data = context.newData;
 						}
 						break;
+					case 'Number':
+					case 'String':
+					case 'Boolean':
 					case 'Function':
 						// Change Function (prototype) to function (typeof)
-						context.schema.type = 'function';
+						context.schema.type = context.schema.type.toLowerCase();
 					case 'function':
 					case 'number':
 					case 'string':
 					case 'boolean':
 						if (context.newData !== undefined) {
 							if (typeof context.newData === context.schema.type) {
-								var parts = [];
+								parts = [];
                 
                 // Validate string against regex if we have one
                 if (context.schema.type === 'string' && context.schema.regex
@@ -202,6 +205,39 @@ function setValueToType(context) {
 							}
 						}
 						break;
+          case 'Date':
+						context.schema.type = 'date';
+          case 'date':
+						if (context.newData !== undefined) {
+                if (context.newData instanceof Date) {
+								parts = [];
+
+                if ((context.schema.min !== undefined
+                    && context.newData < context.schema.min)
+                    || (context.schema.max !== undefined
+                    && context.newData >= context.schema.max)) {
+                  if (context.schema.min !== undefined) {
+                    parts.push('at or after '
+                        + context.schema.min);
+                  }
+                  if (context.schema.max !== undefined) {
+                    parts.push('before ' + context.schema.max);
+                  }
+                  throw new errors.DataRangeError('Value'
+                  + (context.parameterName ? ' for ' + context.parameterName
+                  : '') + ' must be '
+                      + parts.join(' and '), context);
+                }
+
+								context.data = context.newData;
+							} else {
+								throw new errors.DataTypeError('Value'
+										+ (context.parameterName ? ' for ' + context.parameterName
+										: '') + ' must be a '
+										+ context.schema.type);
+							}
+						}
+            break;
 					case 'Null':
 						context.schema.type = 'null';
 					case 'null':
@@ -474,7 +510,7 @@ function validateOptions(options) {
 	} catch (err) {
 		// @TODO Add test to see if it was a schema problem rather than options
 		//console.log(err);
-		if (err.extra.parameterName.startsWith('options.schema')) {
+		if (err.extra && err.extra.parameterName.startsWith('options.schema')) {
 			throw new errors.SchemaError(err.message, err.extra);
 		}
 		throw new errors.OptionsError(err.message, err.extra);

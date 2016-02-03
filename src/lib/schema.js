@@ -131,12 +131,26 @@ var schema = {
     min: {
       doc: "The minimum number, string length or number of Array elements "
           + "required",
-      type: 'number'
+      types: [
+        {
+          type: 'number'
+        },
+        {
+          type: 'date'
+        }
+      ]
     },
     max: {
       doc: "The maximum number, string length or number of Array elements "
           + "allowed",
-      type: 'number'
+      types: [
+        {
+          type: 'number'
+        },
+        {
+          type: 'date'
+        }
+      ]
     },
     replace: {
       doc: 'Whether a new value should completely replace an old value',
