@@ -46,14 +46,17 @@ var suites = [
     options: clone(options),
     results: [
       {
+        label: 'should return an undefined value',
         input: ['undef', 'undef', false],
         result: undefined
       },
       {
+        label: 'should return the original array',
         input: ['single', 'undef', false],
         result: ['test']
       },
       {
+        label: 'should throw on a non-array-of-strings value',
         input: [
           ['undef', 'invalid', 'empty'],
           ['empty', 'invalid', 'empty'],
@@ -63,10 +66,12 @@ var suites = [
         throws: new errors.DataTypeError('Value must be an array of values (string given)')
       },
       {
+        label: 'should throw if the original value is not an array',
         input: ['invalid', false, false],
         throws: new errors.DataTypeError('Existing data is not an array as it should be')
       },
       {
+        label: 'should replace the original array with the given empty array',
         input: [
           ['undef', 'empty', 'global'],
           ['empty', 'empty', 'global'],
@@ -80,26 +85,33 @@ var suites = [
         result: []
       },
       {
+        label: 'should return an array with the new value',
         input: [['undef', 'single', false], ['empty', 'single', false]],
         result: ['newString']
       },
       {
+        label: 'should return an empty array',
         input: [['empty', 'undef', false], ['empty', 'empty', false]],
         result: []
       },
       {
+        label: 'should return an array with the original value',
         input: ['single', 'empty', 'empty'],
         result: ['test']
       },
       {
+        label: 'should return a merged array',
         input: ['single', 'single', 'empty'],
         result: ['test', 'newString']
       },
       {
+        label: 'should return a merged array',
         input: ['double', 'single', 'empty'],
         result: ['test1', 'test2', 'newString']
       },
       {
+        label: 'should replace the original array with an array with the new '
+            + 'value',
         input: [['single', 'single', 'global'], ['single', 'single', 'specific'], ['double', 'single', 'global'], ['double', 'single', 'specific']],
         result: ['newString']
       }
@@ -126,10 +138,12 @@ var suites = [
     options: clone(options),
     results: [
       {
+        label: 'should throw a value required error',
         input: ['undef', 'undef', false],
         throws: new errors.DataRequiredError('Value required')
       },
       {
+        label: 'should return the original array',
         input: [
           ['single', 'undef', false],
           ['single', 'empty', 'empty'],
@@ -138,6 +152,7 @@ var suites = [
         result: ['test']
       },
       {
+        label: 'should return an empty array',
         input: [
           [false, 'empty', 'global'],
           [false, 'empty', 'specific']
@@ -145,22 +160,27 @@ var suites = [
         result: []
       },
       {
+        label: 'should return an array with the new value',
         input: [['undef', 'single', false], ['empty', 'single', false]],
         result: ['newString']
       },
       {
+        label: 'should return an empty array',
         input: [['empty', 'undef', false], ['empty', 'empty', false]],
         result: []
       },
       {
+        label: 'should return an array with the original value',
         input: ['single', 'empty', 'empty'],
         result: ['test']
       },
       {
+        label: 'should replace the original array with an empty array',
         input: [['single', 'empty', 'global'], ['single', 'empty', 'specific'], ['double', 'empty', 'global'], ['double', 'empty', 'specific']],
         result: []
       },
       {
+        label: 'should return a merged array',
         input: [
           ['single', 'single', 'empty'],
           ['single', 'single', 'dont']
@@ -168,6 +188,7 @@ var suites = [
         result: ['test', 'newString']
       },
       {
+        label: 'should return a merged array',
         input: [
           ['double', 'single', 'empty'],
           ['double', 'single', 'dont']
@@ -175,6 +196,8 @@ var suites = [
         result: ['test1', 'test2', 'newString']
       },
       {
+        label: 'should place the original array with an array with the new '
+            + 'value',
         input: [['single', 'single', 'global'], ['single', 'single', 'specific'], ['double', 'single', 'global'], ['double', 'single', 'specific']],
         result: ['newString']
       }
@@ -203,14 +226,17 @@ var suites = [
     options: clone(options),
     results: [
       {
+        label: 'should return the default array',
         input: ['undef', 'undef', false],
         result: ['default']
       },
       {
+        label: 'should return the original array',
         input: ['single', 'undef', false],
         result: ['test']
       },
       {
+        label: 'should throw on a non-array-of-strings value',
         input: [
           ['undef', 'invalid', 'empty'],
           ['empty', 'invalid', 'empty'],
@@ -220,6 +246,7 @@ var suites = [
         throws: new errors.DataTypeError('Value must be an array of values (string given)')
       },
       {
+        label: 'should throw if the original value is not an array',
         input: [
           ['invalid', 'undef', 'empty'],
           ['invalid', 'empty', 'empty'],
@@ -228,6 +255,7 @@ var suites = [
         throws: new errors.DataTypeError('Existing data is not an array as it should be')
       },
       {
+        label: 'should replace the original array with the given empty array',
         input: [
           ['undef', 'empty', 'global'],
           ['empty', 'empty', 'global'],
@@ -241,26 +269,33 @@ var suites = [
         result: []
       },
       {
+        label: 'should return an array with the new value',
         input: [['undef', 'single', false], ['empty', 'single', false]],
         result: ['newString']
       },
       {
+        label: 'should return an empty array',
         input: [['empty', 'undef', false], ['empty', 'empty', false]],
         result: []
       },
       {
+        label: 'should return the original array',
         input: ['single', 'empty', 'empty'],
         result: ['test']
       },
       {
+        label: 'should return a merged array',
         input: ['single', 'single', 'empty'],
         result: ['test', 'newString']
       },
       {
+        label: 'should return a merged array',
         input: ['double', 'single', 'empty'],
         result: ['test1', 'test2', 'newString']
       },
       {
+        label: 'should the replace original array with an array with the new '
+            + 'value',
         input: [['single', 'single', 'global'], ['single', 'single', 'specific'], ['double', 'single', 'global'], ['double', 'single', 'specific']],
         result: ['newString']
       }
@@ -287,14 +322,17 @@ var suites = [
     options: clone(options),
     results: [
       {
+        label: 'should throw a value required error',
         input: ['undef', 'undef', false],
         throws: new errors.DataRequiredError('Value required')
       },
       {
+        label: 'should return the original array',
         input: ['single', 'undef', false],
         result: ['test']
       },
       {
+        label: 'should throw a minimum number of values error',
         input: [
           [false, 'empty', 'global'],
           [false, 'empty', 'specific']
@@ -302,6 +340,7 @@ var suites = [
         throws: new errors.DataItemsError('Must have exactly 1 item(s)')
       },
       {
+        label: 'should return the new array',
         input: [
           ['undef', 'single', false],
           ['empty', 'single', false]
@@ -309,18 +348,26 @@ var suites = [
         result: ['newString']
       },
       {
+        label: 'should return the original, empty array as original should '
+            + 'should not be validated',
         input: ['empty', 'undef', false],
         result: []
       },
       {
+        label: 'should throw a minimum number of values error',
         input: ['empty', 'empty', false],
         throws: new errors.DataItemsError('Must have exactly 1 item(s)')
       },
       {
+        label: 'should return the original array',
         input: ['single', 'empty', 'empty'],
         result: ['test']
       },
       {
+        label: [
+          'should replace existing array with empty array',
+          'should throw a minimum number of values error'
+        ],
         input: [
           ['single', 'empty', 'global'],
           ['single', 'empty', 'specific']
@@ -328,6 +375,10 @@ var suites = [
         throws: new errors.DataItemsError('Must have exactly 1 item(s)')
       },
       {
+        label: [
+          'should merge the arrays',
+          'should throw a maximum number of values error'
+        ],
         input: [
           ['single', 'single', 'empty'],
           ['single', 'double', 'empty']
@@ -335,6 +386,10 @@ var suites = [
         throws: new errors.DataItemsError('Must have exactly 1 item(s)')
       },
       {
+        label: [
+          'should replace existing array',
+          'should return an array containing the new value'
+        ],
         input: [
           ['single', 'single', 'global'],
           ['single', 'single', 'specific']
@@ -342,6 +397,7 @@ var suites = [
         result: ['newString']
       },
       {
+        label: 'should throw a maximum number of values error',
         input: [false, 'double', false],
         throws: new errors.DataItemsError('Must have exactly 1 item(s)')
       }
@@ -368,14 +424,17 @@ var suites = [
     options: clone(options),
     results: [
       {
+        label: 'should throw a value required error',
         input: ['undef', 'undef', false],
         throws: new errors.DataRequiredError('Value required')
       },
       {
+        label: 'should return the original array',
         input: ['single', 'undef', false],
         result: ['test']
       },
       {
+        label: 'should throw a minimum number of values error',
         input: [
           [false, 'empty', 'global'],
           [false, 'empty', 'specific']
@@ -383,6 +442,7 @@ var suites = [
         throws: new errors.DataItemsError('Must have between 1 and 2 item(s)')
       },
       {
+        label: 'should return an array with the new value in it',
         input: [
           ['undef', 'single', false],
           ['empty', 'single', false]
@@ -390,19 +450,26 @@ var suites = [
         result: ['newString']
       },
       {
-        label: 'Will return empty array as don\'t check existing data',
+        label: 'should return the original, empty array as original array '
+            + 'should not be validated',
         input: ['empty', 'undef', false],
         result: []
       },
       {
+        label: 'should throw a minimum number of values error',
         input: ['empty', 'empty', false],
         throws: new errors.DataItemsError('Must have between 1 and 2 item(s)')
       },
       {
+        label: 'should return the original array',
         input: ['single', 'empty', 'empty'],
         result: ['test']
       },
       {
+        label: [
+          'should replace the existing array with the new empty array',
+          'should throw a minimum number of values error'
+        ],
         input: [
           ['single', 'empty', 'global'],
           ['single', 'empty', 'specific']
@@ -410,14 +477,20 @@ var suites = [
         throws: new errors.DataItemsError('Must have between 1 and 2 item(s)')
       },
       {
+        label: 'should return a merged array',
         input: ['single', 'single', 'empty'],
         result: ['test', 'newString']
       },
       {
+        label: [
+          'should merge the arrays',
+          'should throw a maximum number of values error'
+        ],
         input: ['single', 'double', 'empty'],
         throws: new errors.DataItemsError('Must have between 1 and 2 item(s)')
       },
       {
+        label: 'should return array with new value',
         input: [
           ['single', 'single', 'global'],
           ['single', 'single', 'specific']
@@ -425,6 +498,7 @@ var suites = [
         result: ['newString']
       },
       {
+        label: 'should return array with new values',
         input: [
           ['empty', 'double', 'empty'],
           ['empty', 'double', 'dont'],
@@ -456,14 +530,17 @@ var suites = [
     options: clone(options),
     results: [
       {
+        label: 'should throw a value required error',
         input: ['undef', 'undef', false],
         throws: new errors.DataRequiredError('Value required')
       },
       {
+        label: 'should return the original array',
         input: ['single', 'undef', false],
         result: ['test']
       },
       {
+        label: 'should throw a minimum number of values error',
         input: [
           [false, 'empty', 'global'],
           [false, 'empty', 'specific']
@@ -471,6 +548,7 @@ var suites = [
         throws: new errors.DataItemsError('Must have atleast 1 item(s)')
       },
       {
+        label: 'should return an array with the new value in it',
         input: [
           ['undef', 'single', false],
           ['empty', 'single', false]
@@ -478,19 +556,23 @@ var suites = [
         result: ['newString']
       },
       {
-        label: 'Will return empty array as don\'t check existing data',
+        label: 'should return the original, empty array as original array '
+          + 'should not be validated',
         input: ['empty', 'undef', false],
         result: []
       },
       {
+        label: 'should throw a minimum number of values error',
         input: ['empty', 'empty', false],
         throws: new errors.DataItemsError('Must have atleast 1 item(s)')
       },
       {
+        label: 'should return the orginal array',
         input: ['single', 'empty', 'empty'],
         result: ['test']
       },
       {
+        label: 'should throw a minimum number of values error',
         input: [
           ['single', 'empty', 'global'],
           ['single', 'empty', 'specific']
@@ -498,14 +580,17 @@ var suites = [
         throws: new errors.DataItemsError('Must have atleast 1 item(s)')
       },
       {
+        label: 'should return an array of merged values',
         input: ['single', 'double', 'empty'],
         result: ['test', 'test1', 'test2']
       },
       {
+        label: 'should return an array of merged values',
         input: ['single', 'single', 'empty'],
         result: ['test', 'newString']
       },
       {
+        label: 'should return array with new value',
         input: [
           ['single', 'single', 'global'],
           ['single', 'single', 'specific']
