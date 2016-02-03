@@ -82,21 +82,24 @@ var suites = [
         result: undefined
       },
       {
+        label: 'should return the original function',
         input: ['func', 'undef', false],
         result: oldFunc
       },
       {
+        label: 'should throw on a non-function value',
         input: [false, 'invalid', false],
         throws: new errors.DataTypeError('Value must be a function')
       },
       {
+        label: 'should return the new function',
         input: [false, 'func', false],
         result: newFunc
       }
     ]
   },
   {
-    label: 'Simple required number variable',
+    label: 'Simple required function variable',
     schema: {
       type: 'function',
       required: true
@@ -113,14 +116,17 @@ var suites = [
     options: [{}],
     results: [
       {
+        label: 'should throw a value required error',
         input: ['undef', 'undef', false],
         throws: new errors.DataRequiredError('Value required')
       },
       {
+        label: 'should return the original function',
         input: ['func', 'undef', false],
         result: oldFunc
       },
       {
+        label: 'should return the new function',
         input: [false, 'func', false],
         result: newFunc
       }
