@@ -104,7 +104,7 @@
         <div class='px2'>
 <div class='py1'><section class='py2 clearfix'>
   <h2 id='options' class='mt0'>
-    options<span class='gray'>(schema, baseSchema, replace)</span>
+    options<span class='gray'>(schema, [baseSchema])</span>
   </h2>
   <p>Options to that must be passed to the one off
 <a href="#validateAdd"><code>validate</code></a> <a href="@link%20#validateNew%7D%20and%0Aon%20creating%20a%20%5B%60Skemer%60%60%5D(#Skemer">&grave;functions</a></p>
@@ -118,22 +118,11 @@
 
           </div>
         </li>
-        <li> <strong>baseSchema</strong>
+        <li><code>[undefined]</code> <strong>baseSchema</strong>
           :
           <div class='force-inline'>
-            <p>Schema to be used for recursive schemas. If none
-given, the given schema will be used</p>
-
-          </div>
-        </li>
-        <li> <strong>replace</strong>
-          :
-          <div class='force-inline'>
-            <p>A boolean to specify whether to globally replace all
-existing values for arrays and objects, or an object of
-variable/boolean pairs used to specify what variables (their name
-given as the key) should have their value replaced by default (a
-boolean value of true</p>
+            <p>Schema to be used for recursive schemas. If
+none given, the given schema will be used</p>
 
           </div>
         </li>
@@ -141,13 +130,13 @@ boolean value of true</p>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
   <h2 id='schema' class='mt0'>
-    schema<span class='gray'>(doc, [noDocDig], type, types, [values], [multiple], [object], [regex], min, max, [replace], required, [default], [validation])</span>
+    schema<span class='gray'>([doc], [noDocDig], [values], [multiple], [object], [regex], [min], [max], [replace], [required], [default], [validation])</span>
   </h2>
   <p>Schema detailing the requirements for Skemer Schema</p>
 
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
-        <li> <strong>doc</strong>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> or <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code>]</code> <strong>doc</strong>
           :
           <div class='force-inline'>
             <p>A String giving information on the parameter</p>
@@ -162,26 +151,11 @@ buildJsDoc will not document the parameters of the object</p>
 
           </div>
         </li>
-        <li> <strong>type</strong>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code><Any>]</code> <strong>values</strong>
           :
           <div class='force-inline'>
-            <p>The value type of the parameter expected</p>
-
-          </div>
-        </li>
-        <li> <strong>types</strong>
-          :
-          <div class='force-inline'>
-            <p>An Array or Object of Objects containing the details of the
-values expected</p>
-
-          </div>
-        </li>
-        <li><code>[Any]</code> <strong>values</strong>
-          :
-          <div class='force-inline'>
-            <p>Specifies the possible values for strings, numbers and
-dates</p>
+            <p>Specifies the possible values for strings, numbers
+and dates</p>
 
           </div>
         </li>
@@ -212,19 +186,19 @@ the values will be stored in an array</p>
 
           </div>
         </li>
-        <li> <strong>min</strong>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code> or <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">date</a></code>]</code> <strong>min</strong>
           :
           <div class='force-inline'>
-            <p>The minimum number, string length or number of Array elements
-required</p>
+            <p>The minimum number, string length or number of
+Array elements required</p>
 
           </div>
         </li>
-        <li> <strong>max</strong>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code> or <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">date</a></code>]</code> <strong>max</strong>
           :
           <div class='force-inline'>
-            <p>The maximum number, string length or number of Array elements
-allowed</p>
+            <p>The maximum number, string length or number of
+Array elements allowed</p>
 
           </div>
         </li>
@@ -236,11 +210,11 @@ old value</p>
 
           </div>
         </li>
-        <li> <strong>required</strong>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> or <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">Function</a></code> or <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code> or <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code><<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>>]</code> <strong>required</strong>
           :
           <div class='force-inline'>
-            <p>Either true/false or a function returning true/false to
-whether the parameter is required</p>
+            <p>Either true/false or
+a function returning true/false to whether the parameter is required</p>
 
           </div>
         </li>

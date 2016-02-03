@@ -128,13 +128,8 @@ on creating a [`Skemer``
 **Parameters**
 
 -   `schema` **Object** `Schema` to use for the validation
--   `baseSchema`  Schema to be used for recursive schemas. If none
-           given, the given schema will be used
--   `replace`  A boolean to specify whether to globally replace all
-           existing values for arrays and objects, or an object of
-           variable/boolean pairs used to specify what variables (their name
-           given as the key) should have their value replaced by default (a
-           boolean value of true
+-   `baseSchema` **[undefined]** Schema to be used for recursive schemas. If
+           none given, the given schema will be used
 
 ## schema
 
@@ -142,14 +137,11 @@ Schema detailing the requirements for Skemer Schema
 
 **Parameters**
 
--   `doc`  A String giving information on the parameter
+-   `doc` **[string or Object]** A String giving information on the parameter
 -   `noDocDig` **[boolean]** If set and the variable is an object,
            buildJsDoc will not document the parameters of the object
--   `type`  The value type of the parameter expected
--   `types`  An Array or Object of Objects containing the details of the
-           values expected
--   `values` **[Any]** Specifies the possible values for strings, numbers and
-           dates
+-   `values` **[Array&lt;Any&gt;]** Specifies the possible values for strings, numbers
+           and dates
 -   `multiple` **[boolean]** Whether or not multiple values (stored in an
            array) are allowed. Can be a boolean, or a number (the number of
            values that the parameter must have, or an array containing the
@@ -159,14 +151,14 @@ Schema detailing the requirements for Skemer Schema
            multiple is true and object is false, the key will be ignored and
            the values will be stored in an array
 -   `regex` **[RegExp]** A regular expression to validate a String value
--   `min`  The minimum number, string length or number of Array elements
-           required
--   `max`  The maximum number, string length or number of Array elements
-           allowed
+-   `min` **[number or date]** The minimum number, string length or number of
+           Array elements required
+-   `max` **[number or date]** The maximum number, string length or number of
+           Array elements allowed
 -   `replace` **[boolean]** Whether a new value should completely replace an
            old value
--   `required`  Either true/false or a function returning true/false to
-           whether the parameter is required
+-   `required` **[boolean or Function or number or Array&lt;number&gt;]** Either true/false or
+           a function returning true/false to whether the parameter is required
 -   `default` **[Any]** Default value for parameter
 -   `validation` **[Function]** Function to validate the value of the
            parameter. Will be given the value as the parameter. The function

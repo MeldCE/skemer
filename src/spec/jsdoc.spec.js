@@ -36,10 +36,21 @@ var schema = {
       doc: 'a object with a default',
       type: 'object',
       default: {}
-    }
+    },
     //aFunction: {
     //  type: 'function',
     //  doc: 
+    types: {
+      doc: 'a string or a number',
+      types: [
+        {
+          type: 'string'
+        },
+        {
+          type: 'number'
+        }
+      ]
+    }
   }
 };
 
