@@ -54,22 +54,27 @@ var suites = [
     options: clone(options),
     results: [
       {
+        label: 'should return an undefined value',
         input: ['undef', 'undef', false],
         result: undefined
       },
       {
+        label: 'should throw in a non-object value',
         input: [false, 'invalid', 'empty'],
         throws: new errors.DataTypeError('Value must be an object (string given)')
       },
       {
+        label: 'should return the empty object',
         input: [[false, 'empty', 'global'], [false, 'empty', 'specific']],
         result: {}
       },
       {
+          label: 'should return an empty object',
         input: [['empty', 'undef', false], ['empty', 'empty', false]],
         result: {}
       },
       {
+        label: 'should return the original object',
         input: [
           ['value', 'undef', false],
           ['value', 'empty', 'empty'],
@@ -141,14 +146,17 @@ var suites = [
     options: clone(options),
     results: [
       {
+        label: 'should return an undefined value',
         input: ['undef', 'undef', false],
         result: undefined
       },
       {
+        label: 'should throw on a non-object value',
         input: [false, 'invalid', 'empty'],
         throws: new errors.DataTypeError('Value must be an object (string given)')
       },
       {
+        label: 'should return the given empty object',
         input: [
           [false, 'empty', 'empty'],
           [false, 'empty', 'global'],
@@ -157,10 +165,12 @@ var suites = [
         result: {}
       },
       {
+        label: 'should return an empty object',
         input: [['empty', 'undef', false], ['empty', 'empty', false]],
         result: {}
       },
       {
+        label: 'should return the original object',
         input: [
           ['value', 'undef', false],
           ['value', 'empty', 'dont']

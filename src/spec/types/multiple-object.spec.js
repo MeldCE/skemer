@@ -41,6 +41,9 @@ var suites = [
     newData: {
       undef: undefined,
       invalid: 'notinarray',
+      singleInvalid: {
+        one: 435
+      },
       empty: {},
       array: ['string'],
       double: {
@@ -51,16 +54,19 @@ var suites = [
     options: clone(options),
     results: [
       {
+        label: 'should return an undefined value',
         input: ['undef', 'undef', false],
         result: undefined
       },
       {
+        label: 'should return original object',
         input: ['single', 'undef', false],
         result: {
           one: 'test'
         }
       },
       {
+        label: 'should throw on a non-object value',
         input: [
           ['undef', 'invalid', 'empty'],
           ['empty', 'invalid', 'empty'],
@@ -70,6 +76,17 @@ var suites = [
         throws: new errors.DataTypeError('Value must be an object of values (string given)')
       },
       {
+        label: 'should throw on a non-object-of-strings value',
+        input: [
+          ['undef', 'singleInvalid', 'empty'],
+          ['empty', 'singleInvalid', 'empty'],
+          ['single', 'singleInvalid', 'empty'],
+          ['double', 'singleInvalid', 'empty']
+        ],
+        throws: new errors.DataTypeError('Value for one must be a string')
+      },
+      {
+        label: 'should throw if the original value is not an object',
         input: [
           ['invalid', 'undef', 'empty'],
           ['invalid', 'empty', 'empty'],
@@ -78,6 +95,7 @@ var suites = [
         throws: new errors.DataTypeError('Existing data is not an object as it should be')
       },
       {
+        label: 'should return the given empty object',
         input: [
           ['undef', 'empty', 'global'],
           ['empty', 'empty', 'global'],
@@ -98,10 +116,12 @@ var suites = [
         }
       },
       {
+        label: 'should return an empty object',
         input: [['empty', 'undef', false], ['empty', 'empty', false]],
         result: {}
       },
       {
+        label: 'should return the original object',
         input: [['single', 'undef', 'empty'], ['single', 'empty', 'empty'],['single', 'undef', 'dont'], ['single', 'empty', 'dont']],
         result: {
           one: 'test'
@@ -119,6 +139,7 @@ var suites = [
         }
       },
       {
+        label: 'should return a merged object',
         input: [
           ['double', 'double', 'empty'],
           ['double', 'double', 'dont']
@@ -175,16 +196,19 @@ var suites = [
     options: clone(options),
     results: [
       {
+        label: 'should throw a value required error',
         input: ['undef', 'undef', false],
         throws: new errors.DataRequiredError('Value required')
       },
       {
+        label: 'should return the original object',
         input: ['single', 'undef', false],
         result: {
           one: 'test'
         }
       },
       {
+        label: 'should throw on a non-object value',
         input: [
           ['undef', 'invalid', 'empty'],
           ['empty', 'invalid', 'empty'],
@@ -194,10 +218,15 @@ var suites = [
         throws: new errors.DataTypeError('Value must be an object of values (string given)')
       },
       {
+        label: 'should throw if the original value is not an object',
         input: ['invalid', false, false],
         throws: new errors.DataTypeError('Existing data is not an object as it should be')
       },
       {
+        label: [
+          'should replace any exisiting object',
+          'should return the given empty object'
+        ],
         input: [
           ['undef', 'empty', 'global'],
           ['empty', 'empty', 'global'],
@@ -218,10 +247,12 @@ var suites = [
         }
       },
       {
+        label: 'should return an empty object',
         input: [['empty', 'undef', false], ['empty', 'empty', false]],
         result: {}
       },
       {
+        label: 'should return the original object',
         input: [['single', 'undef', 'empty'], ['single', 'empty', 'empty'],['single', 'undef', 'dont'], ['single', 'empty', 'dont']],
         result: {
           one: 'test'
@@ -239,6 +270,7 @@ var suites = [
         }
       },
       {
+        label: 'should return a merged object',
         input: [
           ['double', 'double', 'empty'],
           ['double', 'double', 'dont']
@@ -296,16 +328,19 @@ var suites = [
     options: clone(options),
     results: [
       {
+        label: 'should return the default object',
         input: ['undef', 'undef', false],
         result: { default: 'string' }
       },
       {
+        label: 'should return the original object',
         input: ['single', 'undef', false],
         result: {
           one: 'test'
         }
       },
       {
+        label: 'should throw on a non-object value',
         input: [
           ['undef', 'invalid', 'empty'],
           ['empty', 'invalid', 'empty'],
@@ -315,10 +350,12 @@ var suites = [
         throws: new errors.DataTypeError('Value must be an object of values (string given)')
       },
       {
+        label: 'should throw if the original value is not an object',
         input: ['invalid', false, false],
         throws: new errors.DataTypeError('Existing data is not an object as it should be')
       },
       {
+        label: 'should return the given empty object',
         input: [
           ['undef', 'empty', 'global'],
           ['empty', 'empty', 'global'],
@@ -339,10 +376,12 @@ var suites = [
         }
       },
       {
+        label: 'should return the original empty object',
         input: [['empty', 'undef', false], ['empty', 'empty', false]],
         result: {}
       },
       {
+        label: 'should return the original object',
         input: [['single', 'undef', 'empty'], ['single', 'empty', 'empty'],['single', 'undef', 'dont'], ['single', 'empty', 'dont']],
         result: {
           one: 'test'
@@ -360,6 +399,7 @@ var suites = [
         }
       },
       {
+        label: 'should return a merged object',
         input: [
           ['double', 'double', 'empty'],
           ['double', 'double', 'dont']

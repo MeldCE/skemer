@@ -21,22 +21,27 @@ var suites = [
     options: [{}],
     results: [
       {
+        label: 'should return an undefined value',
         input: ['undef', 'undef', false],
         result: undefined
       },
       {
+        label: 'should return the original number',
         input: ['number', 'undef', false],
         result: 34
       },
       {
+        label: 'should throw on a non-numerical number',
         input: [false, 'invalid', false],
         throws: new errors.DataTypeError('Value must be a number')
       },
       {
+        label: 'should return 0',
         input: [false, 'zero', false],
         result: 0
       },
       {
+        label: 'should return the given number',
         input: [false, 'newNum', false],
         result: 453
       }
@@ -60,18 +65,22 @@ var suites = [
     options: [{}],
     results: [
       {
+        label: 'should throw a value required error',
         input: ['undef', 'undef', false],
         throws: new errors.DataRequiredError('Value required')
       },
       {
+        label: 'should return the original value',
         input: ['number', 'undef', false],
         result: 34
       },
       {
+        label: 'should return 0',
         input: [false, 'zero', false],
         result: 0
       },
       {
+        label: 'should return the given number',
         input: [false, 'newNum', false],
         result: 453
       }
@@ -87,7 +96,7 @@ var suites = [
     },
     data: {
       undef: undefined,
-      number: 5
+      number: 3
     },
     newData: {
       undef: undefined,
@@ -100,32 +109,42 @@ var suites = [
     options: [{}],
     results: [
       {
+        label: 'should throw on a non-numerical value',
         input: ['undef', 'undef', false],
         throws: new errors.DataRequiredError('Value required')
       },
       {
+        label: [
+          'should not validate original number',
+          'should return the original number'
+        ],
         input: ['number', 'undef', false],
-        result: 5
+        result: 3
       },
       {
+        label: 'should throw if number is below minimum',
         input: [false, 'zero', false],
         throws: new errors.DataRangeError('Value must be greater than or '
             + 'equal to 4 and less than 9')
       },
       {
+        label: 'should throw if number is below minimum',
         input: [false, 'smallNumber', false],
         throws: new errors.DataRangeError('Value must be greater than or '
             + 'equal to 4 and less than 9')
       },
       {
+        label: 'should return given number if within min/max',
         input: [false, 'number', false],
         result: 4
       },
       {
+        label: 'should return given number if within min/max',
         input: [false, 'bigNumber', false],
         result: 8
       },
       {
+        label: 'should throw if number is equal to or above maximum',
         input: [false, 'biggerNumber', false],
         throws: new errors.DataRangeError('Value must be greater than or '
             + 'equal to 4 and less than 9')

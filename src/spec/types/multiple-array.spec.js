@@ -40,6 +40,7 @@ var suites = [
     newData: {
       undef: undefined,
       invalid: 'notinarray',
+      singleInvalid: [435],
       empty: [],
       single: ['newString']
     },
@@ -56,7 +57,7 @@ var suites = [
         result: ['test']
       },
       {
-        label: 'should throw on a non-array-of-strings value',
+        label: 'should throw on a non-array value',
         input: [
           ['undef', 'invalid', 'empty'],
           ['empty', 'invalid', 'empty'],
@@ -64,6 +65,16 @@ var suites = [
           ['double', 'invalid', 'empty']
         ],
         throws: new errors.DataTypeError('Value must be an array of values (string given)')
+      },
+      {
+        label: 'should throw on a non-array-of-strings value',
+        input: [
+          ['undef', 'singleInvalid', 'empty'],
+          ['empty', 'singleInvalid', 'empty'],
+          ['single', 'singleInvalid', 'empty'],
+          ['double', 'singleInvalid', 'empty']
+        ],
+        throws: new errors.DataTypeError('Value for 0 must be a string')
       },
       {
         label: 'should throw if the original value is not an array',

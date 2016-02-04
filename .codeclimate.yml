@@ -1,17 +1,17 @@
 engines:
   eslint:
-	  enabled: true
-	duplication:
-	  enabled: true
-		config:
-		  languages:
-			- javascript
-	fixme:
-	  enabled: true
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+  fixme:
+    enabled: true
 ratings:
   paths:
-	  - lib/**
+    - lib/**
 exclude_paths:
   - spec/**
-	- src/spec/**
-	- doc/**
+  - src/spec/**
+  - doc/**

@@ -21,22 +21,27 @@ var suites = [
     options: [{}],
     results: [
       {
+        label: 'should return an undefined value',
         input: ['undef', 'undef', false],
         result: undefined
       },
       {
+        label: 'should return the original string',
         input: ['string', 'undef', false],
         result: 'test'
       },
       {
+        label: 'should throw on a non-string value',
         input: [false, 'invalid', false],
         throws: new errors.DataTypeError('Value must be a string')
       },
       {
+        label: 'should return the given empty string',
         input: [false, 'empty', false],
         result: ''
       },
       {
+        label: 'should return the given string',
         input: [false, 'string', false],
         result: 'newString'
       }
@@ -60,18 +65,22 @@ var suites = [
     options: [{}],
     results: [
       {
+        label: 'should throw a value required error',
         input: ['undef', 'undef', false],
         throws: new errors.DataRequiredError('Value required')
       },
       {
+        label: 'should return the original string',
         input: ['string', 'undef', false],
         result: 'test'
       },
       {
+        label: 'should return the given empty string',
         input: [false, 'empty', false],
         result: ''
       },
       {
+        label: 'should return the given string',
         input: [false, 'string', false],
         result: 'newString'
       }
@@ -96,18 +105,22 @@ var suites = [
     options: [{}],
     results: [
       {
+        label: 'should return the default value',
         input: ['undef', 'undef', false],
         result: 'default'
       },
       {
+        label: 'should return the original string',
         input: ['string', 'undef', false],
         result: 'test'
       },
       {
+        label: 'should return the given empty string',
         input: [false, 'empty', false],
         result: ''
       },
       {
+        label: 'should return the given string',
         input: [false, 'string', false],
         result: 'newString'
       }
@@ -136,32 +149,39 @@ var suites = [
     options: [{}],
     results: [
       {
+        label: 'should throw a value required error',
         input: ['undef', 'undef', false],
         throws: new errors.DataRequiredError('Value required')
       },
       {
+        label: 'should return the original string',
         input: ['string', 'undef', false],
         result: 'test'
       },
       {
+        label: 'should throw a minimum length required error',
         input: [false, 'empty', false],
         throws: new errors.DataRangeError('Value must be atleast 4 '
             + 'characters and no more than 9 characters')
       },
       {
+        label: 'should throw a minimum length required error',
         input: [false, 'shortString', false],
         throws: new errors.DataRangeError('Value must be atleast 4 '
             + 'characters and no more than 9 characters')
       },
       {
+        label: 'should return the given string',
         input: [false, 'string', false],
         result: 'more'
       },
       {
+        label: 'should return the given string',
         input: [false, 'longString', false],
         result: 'newString'
       },
       {
+        label: 'should throw a maximum length error',
         input: [false, 'longerString', false],
         throws: new errors.DataRangeError('Value must be atleast 4 '
             + 'characters and no more than 9 characters')
