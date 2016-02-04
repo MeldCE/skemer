@@ -119,7 +119,7 @@ var suites = [
       {
         label: 'should return the original date',
         input: ['date', 'undef', false],
-        result: new Date('2015-12-1')
+        result: new Date('2015-12-01')
       },
       {
         label: 'should throw on a non-date value',
