@@ -28,6 +28,12 @@ a JSDoc comment from the schema and its `doc` parameters.
 - Validating static data during testing
 - Validating dynamic data during runtime
 
+# [Example](https://tonicdev.com/npm/skemer)
+
+```javascript
+<!--=include ../example.js -->
+```
+
 # Skemer API
 
 <!--=include ../build/skemer.js.md -->
@@ -43,8 +49,3 @@ or the variables are found
 
 <!--=include ../build/errors.js.md -->
 
-# [Example](https://tonicdev.com/npm/skemer)
-
-```javascript
-<!--=include ../example.js -->
-```

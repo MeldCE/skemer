@@ -28,6 +28,61 @@ a JSDoc comment from the schema and its `doc` parameters.
 - Validating static data during testing
 - Validating dynamic data during runtime
 
+# [Example](https://tonicdev.com/npm/skemer)
+
+```javascript
+var skemer = require('skemer');
+
+
+var schema = {
+	type: {
+		value: {
+			type: 'string'
+		},
+		figure: {
+			type: 'number',
+			min: 20,
+			max: 50
+		}
+	}
+};
+
+var valid = {
+	value: 'a string',
+	figure: 30
+};
+
+var valid1 = {
+	figure: 35
+};
+
+var valid2 = {
+	value: 'a different string'
+};
+
+var invalid = false;
+
+var stringSchema = {
+	type: 'string'
+};
+
+var aString = 'string';
+
+
+skemer.validateNew({ schema: stringSchema }, aString);
+
+var Schema, data;
+
+Schema = new skemer.Skemer({ schema: schema });
+
+console.log(data = Schema.validateNew(valid));
+
+console.log(data = Schema.validateAdd(data, valid1));
+
+Schema.validateAdd(data, valid2, invalid);
+
+```
+
 # Skemer API
 
 ## buildJsDocs
@@ -37,7 +92,7 @@ Add data to an object based on a schema from the data given.
 **Parameters**
 
 -   `schema` **Object** An Object containing a valid
-           `schema`
+           [`schema`](#schema)
 -   `options` **Object** An object containing options
            should contain
     -   `options.name` **[string]** Name of the object documenting (will be
@@ -63,7 +118,7 @@ NOTE: Existing data WILL NOT be validated
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           `options`, including the `schema`
+           [`options`](#options), including the [`schema`](#schema)
 -   `data` **Any** Data to validate and return. If no data is given,
            data containing any default values will be returned. If newData
            is given, newData will be validated and merged into data.
@@ -78,7 +133,7 @@ Add new data to data based on the stored schema.
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           `options`, including the `schema`
+           [`options`](#options), including the [`schema`](#schema)
 -   `newData` **...Any** Data to validate and merge into data
 
 Returns **Any** Validated and merged data
@@ -90,7 +145,7 @@ Skemer prototype to enable simple reuse of a schema
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           `options`, including the `schema`
+           [`options`](#options), including the [`schema`](#schema)
 
 ### validateAdd
 
@@ -127,8 +182,8 @@ on creating a [`Skemer``
 
 **Parameters**
 
--   `schema` **Object** `Schema` to use for the validation
--   `baseSchema` **[undefined]** Schema to be used for recursive schemas. If
+-   `schema` **Object** [`schema`](#schema) to use for the validation
+-   `baseSchema` **[undefined]** [`schema`](#scehma) to be used for recursive schemas. If
            none given, the given schema will be used
 
 ## schema
@@ -234,57 +289,3 @@ Thrown if the parameter value is out of the given range
 -   `extra` **Any** Extra information
 
 
-# [Example](https://tonicdev.com/npm/skemer)
-
-```javascript
-var skemer = require('skemer');
-
-
-var schema = {
-	type: {
-		value: {
-			type: 'string'
-		},
-		figure: {
-			type: 'number',
-			min: 20,
-			max: 50
-		}
-	}
-};
-
-var valid = {
-	value: 'a string',
-	figure: 30
-};
-
-var valid1 = {
-	figure: 35
-};
-
-var valid2 = {
-	value: 'a different string'
-};
-
-var invalid = false;
-
-var stringSchema = {
-	type: 'string'
-};
-
-var aString = 'string';
-
-
-skemer.validateNew({ schema: stringSchema }, aString);
-
-var Schema, data;
-
-Schema = new skemer.Skemer({ schema: schema });
-
-console.log(data = Schema.validateNew(valid));
-
-console.log(data = Schema.validateAdd(data, valid1));
-
-Schema.validateAdd(data, valid2, invalid);
-
-```
