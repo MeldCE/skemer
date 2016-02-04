@@ -9,7 +9,7 @@ var util = require('util');
  * @class
  */
 function SchemaError(message, extra) {
-	Error.captureStackTrace(this, this.constructor);
+  Error.captureStackTrace(this, this.constructor);
   //this.name = this.constructor.name;
   this.name = 'SchemaError';
   this.message = message;
@@ -26,7 +26,7 @@ util.inherits(SchemaError, Error);
  * @class
  */
 function DataItemsError(message, extra) {
-	Error.captureStackTrace(this, this.constructor);
+  Error.captureStackTrace(this, this.constructor);
   //this.name = this.constructor.name;
   this.name = this.constructor.name;
   this.message = message;
@@ -43,7 +43,7 @@ util.inherits(DataItemsError, Error);
  * @class
  */
 function OptionsError(message, extra) {
-	Error.captureStackTrace(this, this.constructor);
+  Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
   this.extra = extra;
@@ -59,7 +59,7 @@ util.inherits(OptionsError, Error);
  * @class
  */
 function DataTypeError(message, extra) {
-	Error.captureStackTrace(this, this.constructor);
+  Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
   this.extra = extra;
@@ -75,7 +75,7 @@ util.inherits(DataTypeError, Error);
  * @class
  */
 function DataRequiredError(message, extra) {
-	Error.captureStackTrace(this, this.constructor);
+  Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
   this.extra = extra;
@@ -91,7 +91,7 @@ util.inherits(DataRequiredError, Error);
  * @class
  */
 function DataRangeError(message, extra) {
-	Error.captureStackTrace(this, this.constructor);
+  Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
   this.extra = extra;
@@ -107,7 +107,7 @@ util.inherits(DataRangeError, Error);
  * @class
  */
 function DataInvalidError(message, extra) {
-	Error.captureStackTrace(this, this.constructor);
+  Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
   this.extra = extra;
@@ -115,11 +115,11 @@ function DataInvalidError(message, extra) {
 util.inherits(DataInvalidError, Error);
 
 module.exports = {
-	SchemaError: SchemaError,
-	DataItemsError: DataItemsError,
-	OptionsError: OptionsError,
-	DataTypeError: DataTypeError,
-	DataRequiredError: DataRequiredError,
-	DataRangeError: DataRangeError,
-	DataInvalidError: DataInvalidError
+  SchemaError: SchemaError,
+  DataItemsError: DataItemsError,
+  OptionsError: OptionsError,
+  DataTypeError: DataTypeError,
+  DataRequiredError: DataRequiredError,
+  DataRangeError: DataRangeError,
+  DataInvalidError: DataInvalidError
 };
