@@ -574,18 +574,28 @@ function validateAdd(options, data, newData) {
  * Converts the schema type value into a JSDoc type string WITHOUT the curly
  * braces.
  *
- * @param {*} type Schema type value
+ * @param {*} schema Schema to return type value of
  *
  * @returns {String} JSDoc string of type
  */
-function typeToJsDocString(type) {
-  if (typeof type === 'string') {
-    if (type === 'any') {
-      return '*';
-    } else {
-      return type;
+function typeToJsDocString(schema) {
+  if (typeof schema.type === 'string') {
+    switch (schema.type) {
+      /* TODO Implement as @callback
+      case 'Function':
+      case 'function':
+        if (schema.doc && schema.doc.parameters) {
+          return 'function'; // + (Object.keys(schema.doc.parameters)).join(', ')
+          //    + ')';
+        } else {
+          return 'function';
+        }*/
+      case 'any':
+        return '*';
+      default:
+        return schema.type;
     }
-  } else if (type instanceof Object) {
+  } else if (schema.type instanceof Object) {
     return 'Object';
   }
 }
@@ -621,7 +631,7 @@ function buildLines(schema, options, parameter, name) {
     var t, tType;
 
     for (t in schema.types) {
-      tType = typeToJsDocString(schema.types[t].type);
+      tType = typeToJsDocString(schema.types[t]);
 
       if (schema.types[t].multiple) {
         if (schema.types[t].object) {
@@ -634,7 +644,7 @@ function buildLines(schema, options, parameter, name) {
     }
     type = '{(' + type.join('|') + ')}';
   } else {
-    type = typeToJsDocString(schema.type);
+    type = typeToJsDocString(schema);
 
     if (schema.multiple) {
       if (schema.object) {

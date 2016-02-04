@@ -41,7 +41,7 @@ var schema = {
       types: [
         {
           type: 'string'
-        },
+        }/*,
         {
           type: {
             doc: {
@@ -77,7 +77,7 @@ var schema = {
               }
             }
           }
-        }
+        }*/
       ]
     },
     noDocDig: {

@@ -137,7 +137,7 @@ Schema detailing the requirements for Skemer Schema
 
 **Parameters**
 
--   `doc` **[string or Object]** A String giving information on the parameter
+-   `doc` **[string]** A String giving information on the parameter
 -   `noDocDig` **[boolean]** If set and the variable is an object,
            buildJsDoc will not document the parameters of the object
 -   `values` **[Array&lt;Any&gt;]** Specifies the possible values for strings, numbers
