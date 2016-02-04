@@ -7,7 +7,7 @@
 
 [![Development Hours](https://img.shields.io/badge/development%20hours%20%28since%205a3e25f%29-30-lightgrey.svg)](https://github.com/MeldCE/skemer/commit/5a3e25fac0b992033799f9f295d98a4101a39077)
 [![Bountysource](https://img.shields.io/bountysource/team/meldce/activity.svg)](https://www.bountysource.com/teams/meldce/issues?tracker_ids=27337966)
-[![Donate](https://img.shields.io/badge/donate%20via%20Paypal.me -%20%E2%9D%A4%20-blue.svg)](https://www.paypal.me/MeldCE)
+[![Donate](https://img.shields.io/badge/donate%20via%20Paypal.me-%20%E2%9D%A4%20-blue.svg)](https://www.paypal.me/MeldCE)
 
 <!--[![Gratipay Team](https://img.shields.io/gratipay/meldce/shields.svg)](https://gratipay.com/meldce)-->
 
