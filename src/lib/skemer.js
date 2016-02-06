@@ -107,7 +107,8 @@ function setValueToType(context) {
             && !(context.newData instanceof Object)) {
           throw new errors.DataTypeError('Value'
               + (context.parameterName ? ' for ' + context.parameterName : '')
-              + ' must be an object (' + typeof context.newData + ' given)');
+              + ' must be an object (' + typeof context.newData + ' given)',
+              context);
         }
 
         //console.log('\nstart', context);
@@ -238,7 +239,7 @@ function setValueToType(context) {
                 throw new errors.DataTypeError('Value'
                     + (context.parameterName ? ' for ' + context.parameterName
                     : '') + ' must be a '
-                    + context.schema.type);
+                    + context.schema.type, context);
               }
             }
             break;
@@ -271,7 +272,7 @@ function setValueToType(context) {
                 throw new errors.DataTypeError('Value'
                     + (context.parameterName ? ' for ' + context.parameterName
                     : '') + ' must be a '
-                    + context.schema.type);
+                    + context.schema.type, context);
               }
             }
             break;
@@ -285,7 +286,7 @@ function setValueToType(context) {
                 throw new errors.DataTypeError('Value'
                     + (context.parameterName ? ' for ' + context.parameterName
                     : '') + ' must be a '
-                    + context.schema.type);
+                    + context.schema.type, context);
               }
             }
             break;
@@ -299,7 +300,7 @@ function setValueToType(context) {
                     + 'against'
                     + (context.parameterName ? ' for ' + context.parameterName
                     : '')
-                    + ': ' + error.toString());
+                    + ': ' + error.toString(), context);
               }
               if (context.newData instanceof type) {
                 context.data = context.newData;
@@ -307,7 +308,7 @@ function setValueToType(context) {
                 throw new errors.DataTypeError('Value'
                     + (context.parameterName ? ' for ' + context.parameterName
                     : '') + ' must be a '
-                    + context.schema.type);
+                    + context.schema.type, context);
               }
             }
             break;
@@ -361,13 +362,13 @@ function doValidateAdd(context, inMultiple) {
         if (!(context.data instanceof Object)) {
           throw new errors.DataTypeError('Existing data'
               + (context.parameterName ? ' for ' + context.parameterName 
-              : '') + ' is not an object as it should be');
+              : '') + ' is not an object as it should be', context);
         }
       } else {
         if (!(context.data instanceof Array)) {
           throw new errors.DataTypeError('Existing data'
               + (context.parameterName ? ' for ' + context.parameterName : '')
-              + ' is not an array as it should be');
+              + ' is not an array as it should be', context);
         }
       }
     }
@@ -381,7 +382,7 @@ function doValidateAdd(context, inMultiple) {
         if (context.schema.required) {
           throw new errors.DataRequiredError('Value' + (context.parameterName
               ? ' for ' + context.parameterName
-                    : '') + ' required');
+                    : '') + ' required', context);
         }
         return undefined;
       }
@@ -395,7 +396,7 @@ function doValidateAdd(context, inMultiple) {
           throw new errors.DataTypeError('Value'
               + (context.parameterName ? ' for ' + context.parameterName : '')
               + ' must be an object of values (' + typeof context.newData
-              + ' given)');
+              + ' given)', context);
         }
         var newData;
         if (context.data === undefined || shouldReplace(context)) {
@@ -430,7 +431,7 @@ function doValidateAdd(context, inMultiple) {
         throw new errors.DataTypeError('Value'
                   + (context.parameterName ? ' for ' + context.parameterName
                   : '') + ' must be an array of values (' 
-                  + typeof context.newData + ' given)');
+                  + typeof context.newData + ' given)', context);
       }
 
       //let newData;
@@ -468,18 +469,18 @@ function doValidateAdd(context, inMultiple) {
               throw new errors.DataItemsError('Must have exactly '
                   + context.schema.required[0] + ' item(s)'
                     + (context.parameterName ? ' for ' + context.parameterName
-                    : ''));
+                    : ''), context);
             } else {
               throw new errors.DataItemsError('Must have between '
                   + context.schema.required.join(' and ') + ' item(s)'
                     + (context.parameterName ? ' for ' + context.parameterName
-                    : ''));
+                    : ''), context);
             }
           } else {
             throw new errors.DataItemsError('Must have atleast '
                 + context.schema.required[0] + ' item(s)'
                   + (context.parameterName ? ' for ' + context.parameterName
-                  : ''));
+                  : ''), context);
           }
         }
 

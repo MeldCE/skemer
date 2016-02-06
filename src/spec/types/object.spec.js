@@ -206,7 +206,8 @@ var suites = [
     ]
   },
   {
-    label: 'Simple object containing string variables with require set to true',
+    label: 'Simple object containing string variables with require set to '
+        + 'true with a parameter with a default value',
     schema: {
       type: {
         test: {
@@ -294,6 +295,99 @@ var suites = [
         result: {
           test: 'string',
           value: 42,
+          flip: true
+        }
+      }
+    ]
+  },
+  {
+    label: 'Simple object containing string variables with require set to '
+        + 'true without parameters with default values',
+    schema: {
+      type: {
+        test: {
+          type: 'string'
+        },
+        value: {
+          type: 'number'
+        },
+        flip: {
+          type: 'boolean'
+        }
+      },
+      required: true
+    },
+    data: {
+      undef: undefined,
+      empty: {},
+      value: {
+        test: 'test',
+        value: 9
+      }
+    },
+    newData: {
+      undef: undefined,
+      invalid: 'notinarray',
+      empty: {},
+      value: {
+        test: 'string',
+        flip: true
+      }
+    },
+    options: clone(options),
+    results: [
+      {
+        label: 'should return an undefined value',
+        input: ['undef', 'undef', false],
+        result: {}
+      },
+      {
+        label: 'should throw in a non-object value',
+        input: [false, 'invalid', 'empty'],
+        throws: new errors.DataTypeError('Value must be an object (string given)')
+      },
+      {
+        label: 'should return the empty object',
+        input: [[false, 'empty', 'global'], [false, 'empty', 'specific']],
+        result: {}
+      },
+      {
+          label: 'should return an empty object',
+        input: [['empty', 'undef', false], ['empty', 'empty', false]],
+        result: {}
+      },
+      {
+        label: 'should return the original object',
+        input: [
+          ['value', 'undef', false],
+          ['value', 'empty', 'empty'],
+          ['value', 'empty', 'dont']
+        ],
+        result: {
+          test: 'test',
+          value: 9
+        }
+      },
+      {
+        label: 'should merge values',
+        input: [
+          ['value', 'value', 'empty'],
+          ['value', 'value', 'dont']
+        ],
+        result: {
+          test: 'string',
+          value: 9,
+          flip: true
+        }
+      },
+      {
+        label: 'should replace existing object',
+        input: [
+          ['value', 'value', 'global'],
+          ['value', 'value', 'specific']
+        ],
+        result: {
+          test: 'string',
           flip: true
         }
       }
