@@ -101,7 +101,44 @@ function setValueToType(context) {
       }
     }
   } else {
-    if (context.newData !== undefined) {
+    if (context.schema.type instanceof Object) {
+      if (context.newData !== undefined || context.schema.required) {
+        if (!(context.schema.required && context.newData === undefined)
+            && !(context.newData instanceof Object)) {
+          throw new errors.DataTypeError('Value'
+              + (context.parameterName ? ' for ' + context.parameterName : '')
+              + ' must be an object (' + typeof context.newData + ' given)');
+        }
+
+        //console.log('\nstart', context);
+
+        var newData;
+        if (context.data === undefined
+            || (shouldReplace(context) && context.newData !== undefined)) {
+          newData = {};
+        } else {
+          newData = context.data;
+        }
+
+        var newValue;
+        for (t in context.schema.type) {
+          //console.log('checking newData value of ' + t);
+          if ((newValue = doValidateAdd(merge({}, context, {
+            schema:context.schema.type[t],
+            newData: (context.newData ? context.newData[t] : undefined),
+            data: newData[t],
+            parameterName: (context.parameterName ? context.parameterName + '.'
+                : '') + t
+          }))) !== undefined) {
+            newData[t] = newValue;
+          }
+        }
+
+        if (Object.keys(newData).length || context.newData !== undefined) {
+          context.data = newData;
+        }
+      }
+    } else if (context.newData !== undefined) {
       // If type is null start again the original schema for the value
       if (context.schema.type === null) { // magical value to represent the schema (schema within the schema)
         // Restart with base schema
@@ -274,40 +311,6 @@ function setValueToType(context) {
               }
             }
             break;
-        }
-      } else if (context.schema.type instanceof Object) {
-        if (context.newData !== undefined) {
-          if (!(context.newData instanceof Object)) {
-            throw new errors.DataTypeError('Value'
-                + (context.parameterName ? ' for ' + context.parameterName : '')
-                + ' must be an object (' + typeof context.newData + ' given)');
-          }
-
-
-          var newData;
-          if (context.data === undefined || shouldReplace(context)) {
-            newData = {};
-          } else {
-            newData = context.data;
-          }
-
-          var newValue;
-          for (t in context.schema.type) {
-            //console.log('checking newData value of ' + t);
-            if ((newValue = doValidateAdd(merge({}, context, {
-              schema:context.schema.type[t],
-              newData: context.newData[t],
-              data: newData[t],
-              parameterName: (context.parameterName ? context.parameterName + '.'
-                  : '') + t
-            }))) !== undefined) {
-              newData[t] = newValue;
-            }
-          }
-
-          if (Object.keys(newData).length || context.newData !== undefined) {
-            context.data = newData;
-          }
         }
       }
     }
