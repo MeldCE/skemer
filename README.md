@@ -1,4 +1,4 @@
-# skemer 0.8.5
+# skemer 0.8.5-r22
 <!--[![NPM version](http://img.shields.io/npm/v/convict.svg)](https://www.npmjs.org/package/convict)-->
 [![Build status](https://api.travis-ci.org/MeldCE/skemer.svg?branch=master)](https://travis-ci.org/MeldCE/skemer/branches)
 [![Dependency Status](https://david-dm.org/MeldCE/skemer.svg)](https://david-dm.org/MeldCE/skemer)
@@ -92,7 +92,7 @@ Add data to an object based on a schema from the data given.
 **Parameters**
 
 -   `schema` **Object** An Object containing a valid
-           [`schema`](#schema)
+           `schema`
 -   `options` **Object** An object containing options
            should contain
     -   `options.name` **[string]** Name of the object documenting (will be
@@ -118,7 +118,7 @@ NOTE: Existing data WILL NOT be validated
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           [`options`](#options), including the [`schema`](#schema)
+           `options`, including the `schema`
 -   `data` **Any** Data to validate and return. If no data is given,
            data containing any default values will be returned. If newData
            is given, newData will be validated and merged into data.
@@ -133,7 +133,7 @@ Add new data to data based on the stored schema.
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           [`options`](#options), including the [`schema`](#schema)
+           `options`, including the `schema`
 -   `newData` **...Any** Data to validate and merge into data
 
 Returns **Any** Validated and merged data
@@ -145,7 +145,7 @@ Skemer prototype to enable simple reuse of a schema
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           [`options`](#options), including the [`schema`](#schema)
+           `options`, including the `schema`
 
 ### validateAdd
 
@@ -182,8 +182,8 @@ on creating a [`Skemer``
 
 **Parameters**
 
--   `schema` **Object** [`schema`](#schema) to use for the validation
--   `baseSchema` **[undefined]** [`schema`](#scehma) to be used for recursive schemas. If
+-   `schema` **Object** `Schema` to use for the validation
+-   `baseSchema` **[undefined]** Schema to be used for recursive schemas. If
            none given, the given schema will be used
 
 ## schema
