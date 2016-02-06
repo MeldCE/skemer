@@ -19,7 +19,7 @@ var rename = require('gulp-rename');
 var include = require('gulp-include');
 var coolReporter = require('jasmine2-reporter').Jasmine2Reporter;
 var complexity = require('gulp-complexity');
-
+var toc = require('gulp-doctoc');
 
 var paths = {
 	dist: './',
@@ -242,6 +242,7 @@ gulp.task('readme', ['mddocs'], function() {
 				}
 			}))
 			.pipe(include())
+      .pipe(toc())
 			.pipe(gulp.dest('./'));
 });
 

@@ -24,11 +24,15 @@ prototype for doing multiple validations / merges against the same schema,
 and a [`buildJsDoc`](#buildJsDoc) function for creating
 a JSDoc comment from the schema and its `doc` parameters.
 
+<!-- START doctoc -->
+<!-- END doctoc -->
+
 ## Uses
 - Validating static data during testing
 - Validating dynamic data during runtime
 
-# [Example](https://tonicdev.com/npm/skemer)
+# Example
+[Try on Tonic](https://tonicdev.com/npm/skemer)
 
 ```javascript
 <!--=include ../example.js -->

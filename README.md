@@ -24,11 +24,39 @@ prototype for doing multiple validations / merges against the same schema,
 and a [`buildJsDoc`](#buildJsDoc) function for creating
 a JSDoc comment from the schema and its `doc` parameters.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+  - [Uses](#uses)
+- [Example](#example)
+- [Skemer API](#skemer-api)
+  - [buildJsDocs](#buildjsdocs)
+  - [validateAdd](#validateadd)
+  - [validateNew](#validatenew)
+  - [Skemer](#skemer)
+    - [validateAdd](#validateadd-1)
+    - [validateNew](#validatenew-1)
+- [Schema and Validate Options](#schema-and-validate-options)
+  - [options](#options)
+  - [schema](#schema)
+- [Skemer Errors](#skemer-errors)
+  - [DataInvalidError](#datainvaliderror)
+  - [DataItemsError](#dataitemserror)
+  - [DataRangeError](#datarangeerror)
+  - [DataRequiredError](#datarequirederror)
+  - [DataTypeError](#datatypeerror)
+  - [OptionsError](#optionserror)
+  - [SchemaError](#schemaerror)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Uses
 - Validating static data during testing
 - Validating dynamic data during runtime
 
-# [Example](https://tonicdev.com/npm/skemer)
+# Example
+[Try on Tonic](https://tonicdev.com/npm/skemer)
 
 ```javascript
 var skemer = require('skemer');
@@ -212,7 +240,7 @@ Schema detailing the requirements for Skemer Schema
            Array elements allowed
 -   `replace` **[boolean]** Whether a new value should completely replace an
            old value
--   `required` **[boolean or Function or number or Array&lt;number&gt;]** Either true/false or
+-   `required` **[boolean or function or number or Array&lt;number&gt;]** Either true/false or
            a function returning true/false to whether the parameter is required
 -   `default` **[Any]** Default value for parameter
 -   `validation` **[Function]** Function to validate the value of the
