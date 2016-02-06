@@ -28,15 +28,18 @@ a JSDoc comment from the schema and its `doc` parameters.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-  - [Uses](#uses)
+- [Uses](#uses)
 - [Example](#example)
 - [Skemer API](#skemer-api)
   - [buildJsDocs](#buildjsdocs)
-  - [validateAdd](#validateadd)
-  - [validateNew](#validatenew)
+  - [promiseBuildJsDocs](#promisebuildjsdocs)
+  - [promiseValidateAdd](#promisevalidateadd)
+  - [promiseValidateNew](#promisevalidatenew)
   - [Skemer](#skemer)
-    - [validateAdd](#validateadd-1)
-    - [validateNew](#validatenew-1)
+    - [validateAdd](#validateadd)
+    - [validateNew](#validatenew)
+  - [validateAdd](#validateadd-1)
+  - [validateNew](#validatenew-1)
 - [Schema and Validate Options](#schema-and-validate-options)
   - [options](#options)
   - [schema](#schema)
@@ -51,7 +54,7 @@ a JSDoc comment from the schema and its `doc` parameters.
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Uses
+# Uses
 - Validating static data during testing
 - Validating dynamic data during runtime
 
@@ -115,7 +118,7 @@ Schema.validateAdd(data, valid2, invalid);
 
 ## buildJsDocs
 
-Add data to an object based on a schema from the data given.
+Build a JSDoc for a variable using the given schema.
 
 **Parameters**
 
@@ -136,11 +139,38 @@ Add data to an object based on a schema from the data given.
     -   `options.wrap` **[number]** Number of characters to wrap the JSDoc lines
                at
 
-Returns **string** JSDoc Formatted string containing the parameters of the
+Returns **string** A string containing the JSDoc for the given schema
 
-## validateAdd
+## promiseBuildJsDocs
 
-Add data to an object based on a schema from the data given.
+Get a promise to build a JSDoc for a variable using the given schema.
+
+**Parameters**
+
+-   `schema` **Object** An Object containing a valid
+           `schema`
+-   `options` **Object** An object containing options
+           should contain
+    -   `options.name` **[string]** Name of the object documenting (will be
+               prepended to any parameter names
+    -   `options.type` **[string]** Specify what block tag should be used
+               for the variables (optional, default `'prop'`)
+    -   `options.tabWidth` **[number]** The width (number of characters) of a
+               tab (optional, default `8`)
+    -   `options.preLine` **[string]** String (normally indentation) to include
+               before each line
+    -   `options.lineup` **[boolean]** Whether to line up text in a JSDoc
+               (eg @param) with the end of the end of the command (optional, default `true`)
+    -   `options.wrap` **[number]** Number of characters to wrap the JSDoc lines
+               at
+
+Returns **Promise** A promise that will resolve to a string containing the
+         JSDoc for the given schema
+
+## promiseValidateAdd
+
+Get a promise to add data to an object based on a schema from the data
+given.
 NOTE: Existing data WILL NOT be validated
 
 **Parameters**
@@ -152,11 +182,12 @@ NOTE: Existing data WILL NOT be validated
            is given, newData will be validated and merged into data.
 -   `newData` **...Any** Data to validate and merge into data
 
-Returns **Any** Validated and merged data
+Returns **Promise** A Promise that will resolve to the validated and
+         merged data
 
-## validateNew
+## promiseValidateNew
 
-Add new data to data based on the stored schema.
+Get a promise to add new data to data based on the stored schema.
 
 **Parameters**
 
@@ -164,7 +195,8 @@ Add new data to data based on the stored schema.
            `options`, including the `schema`
 -   `newData` **...Any** Data to validate and merge into data
 
-Returns **Any** Validated and merged data
+Returns **Promise** A Promise that will resolve to the validated and
+         merged data
 
 ## Skemer
 
@@ -195,6 +227,34 @@ Add new data to data based on the stored schema.
 
 **Parameters**
 
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Any** Validated and merged data
+
+## validateAdd
+
+Add data to an object based on a schema from the data given.
+NOTE: Existing data WILL NOT be validated
+
+**Parameters**
+
+-   `options` **Object** An object containing the validation
+           `options`, including the `schema`
+-   `data` **Any** Data to validate and return. If no data is given,
+           data containing any default values will be returned. If newData
+           is given, newData will be validated and merged into data.
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Any** Validated and merged data
+
+## validateNew
+
+Add new data to data based on the stored schema.
+
+**Parameters**
+
+-   `options` **Object** An object containing the validation
+           `options`, including the `schema`
 -   `newData` **...Any** Data to validate and merge into data
 
 Returns **Any** Validated and merged data

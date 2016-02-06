@@ -27,7 +27,7 @@ a JSDoc comment from the schema and its `doc` parameters.
 <!-- START doctoc -->
 <!-- END doctoc -->
 
-## Uses
+# Uses
 - Validating static data during testing
 - Validating dynamic data during runtime
 

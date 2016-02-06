@@ -532,8 +532,8 @@ function validateOptions(options) {
  *
  * @returns {*} Validated and merged data
  */
-function validateAdd(options, data, newData) {
-  //console.log('validateAdd called with ', arguments.length, 'arguments\n', arguments);
+function validateData(options, data, newData) {
+  //console.log('validateData called with ', arguments.length, 'arguments\n', arguments);
 
   var context = merge({}, options);
 
@@ -564,7 +564,7 @@ function validateAdd(options, data, newData) {
     }
   }
 
-  //console.log('validateAdd complete', context, data);
+  //console.log('validateData complete', context, data);
 
   return data;
 }
@@ -714,130 +714,196 @@ function buildLines(schema, options, parameter, name) {
   return lines;
 }
 
-module.exports = {
-  /**
-   * Add new data to data based on the stored schema.
-   *
-   * @param {Object} options An object containing the validation
-   *        [options]{@link #options}, including the [schema]{@link #schema}
-   * @param {...*} newData Data to validate and merge into data
-   *
-   * @returns {*} Validated and merged data
-   */
-  validateNew: function (options) {
-    options = validateOptions(options);
+/**
+ * Add new data to data based on the stored schema.
+ *
+ * @param {Object} options An object containing the validation
+ *        [options]{@link #options}, including the [schema]{@link #schema}
+ * @param {...*} newData Data to validate and merge into data
+ *
+ * @returns {*} Validated and merged data
+ */
+function validateNew(options) {
+  options = validateOptions(options);
 
-    //console.log('options after validation', util.inspect(options, {depth: null}));
-    //return;
-    //console.log('skemer.validateAdd called', arguments);
+  //console.log('options after validation', util.inspect(options, {depth: null}));
+  //return;
+  //console.log('skemer.validateAdd called', arguments);
 
-    return validateAdd.apply(this, [options, 
-        undefined].concat(Array.prototype.slice.call(arguments, 1)));
-  },
+  return validateData.apply(this, [options, 
+      undefined].concat(Array.prototype.slice.call(arguments, 1)));
+};
 
-  /**
-   * Add data to an object based on a schema from the data given.
-   * NOTE: Existing data WILL NOT be validated
-   *
-   * @param {Object} options An object containing the validation
-   *        [options]{@link #options}, including the [schema]{@link #schema}
-   * @param {*} data Data to validate and return. If no data is given,
-   *        data containing any default values will be returned. If newData
-   *        is given, newData will be validated and merged into data.
-   * @param {...*} newData Data to validate and merge into data
-   *
-   * @returns {*} Validated and merged data
-   */
-  validateAdd: function(options) {
-    options = validateOptions(options);
+/**
+ * Get a promise to add new data to data based on the stored schema.
+ *
+ * @param {Object} options An object containing the validation
+ *        [options]{@link #options}, including the [schema]{@link #schema}
+ * @param {...*} newData Data to validate and merge into data
+ *
+ * @returns {Promise} A Promise that will resolve to the validated and
+ *          merged data
+ */
+function promiseValidateNew(options) {
+  var args = arguments;
+  return new Promise(function(resolve, reject) {
+    try {
+      resolve(validateNew.apply(this, args));
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
 
-    //console.log('options after validation', util.inspect(options, {depth: null}));
-    //return;
-    //console.log('skemer.validateAdd called', arguments);
+/**
+ * Add data to an object based on a schema from the data given.
+ * NOTE: Existing data WILL NOT be validated
+ *
+ * @param {Object} options An object containing the validation
+ *        [options]{@link #options}, including the [schema]{@link #schema}
+ * @param {*} data Data to validate and return. If no data is given,
+ *        data containing any default values will be returned. If newData
+ *        is given, newData will be validated and merged into data.
+ * @param {...*} newData Data to validate and merge into data
+ *
+ * @returns {*} Validated and merged data
+ */
+function validateAdd(options) {
+  options = validateOptions(options);
 
-    return validateAdd.apply(this,
-        [options].concat(Array.prototype.slice.call(arguments, 1)));
-  },
+  //console.log('options after validation', util.inspect(options, {depth: null}));
+  //return;
+  //console.log('skemer.validateAdd called', arguments);
 
-  /**
-   * Add data to an object based on a schema from the data given.
-   * @param {Object} schema An Object containing a valid
-   *        [schema]{@link #schema}
-   * @param {Object} options An object containing options
-   *        should contain
-   %%buildJsDocOptions%%
-   *
-   * @returns {string} JSDoc Formatted string containing the parameters of the
-   */
-  buildJsDocs: function(schema, options) {
-    //console.log('skemer.buildJsDocs called', util.inspect(arguments));
-    
-    // Validate schema
-    schema = validateAdd({
-      schema: schemas.schema
-    }, {}, schema);
+  return validateData.apply(this,
+      [options].concat(Array.prototype.slice.call(arguments, 1)));
+};
 
-    // Validate options
-    options = validateAdd({
-      schema: schemas.buildDocOptions
-    }, {}, {}, options);
+/**
+ * Get a promise to add data to an object based on a schema from the data
+ * given.
+ * NOTE: Existing data WILL NOT be validated
+ *
+ * @param {Object} options An object containing the validation
+ *        [options]{@link #options}, including the [schema]{@link #schema}
+ * @param {*} data Data to validate and return. If no data is given,
+ *        data containing any default values will be returned. If newData
+ *        is given, newData will be validated and merged into data.
+ * @param {...*} newData Data to validate and merge into data
+ *
+ * @returns {Promise} A Promise that will resolve to the validated and
+ *          merged data
+ */
+function promiseValidateAdd(options) {
+  var args = arguments;
+  return new Promise(function(resolve, reject) {
+    try {
+      resolve(validateAdd.apply(this, args));
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
 
-    //console.log('\n\noptions are', options);
+/**
+ * Build a JSDoc for a variable using the given schema.
+ * @param {Object} schema An Object containing a valid
+ *        [schema]{@link #schema}
+ * @param {Object} options An object containing options
+ *        should contain
+ %%buildJsDocOptions%%
+ *
+ * @returns {string} A string containing the JSDoc for the given schema
+ */
+function buildJsDocs(schema, options) {
+  //console.log('skemer.buildJsDocs called', util.inspect(arguments));
+  
+  // Validate schema
+  schema = validateData({
+    schema: schemas.schema
+  }, {}, schema);
 
-    var doc = '';
+  // Validate options
+  options = validateData({
+    schema: schemas.buildDocOptions
+  }, {}, {}, options);
 
-    var tw = options.tabWidth;
-    var c, s, w, line, l;
-    var lines = buildLines(schema, options, options.parameter);
-    var block;
+  //console.log('\n\noptions are', options);
 
-    if (options.wrap) {
-      for (l in lines) {
-        line = options.preLine + lines[l];
+  var doc = '';
 
-        c = 0;
-        s = 0;
-        w = 0;
+  var tw = options.tabWidth;
+  var c, s, w, line, l;
+  var lines = buildLines(schema, options, options.parameter);
+  var block;
 
-        // Find length of jsdoc tag
-        if (options.lineup) {
-          if ((block = line.match(/@\S+/))) {
-            block = Array(block[0].length + 1).join(' ');
-          } else {
-            block = Array(3).join(' ');
-          }
-        }
+  if (options.wrap) {
+    for (l in lines) {
+      line = options.preLine + lines[l];
 
-        while (c < line.length) {
-          if (line[c] === ' ') {
-            s = c;
-          } else if (line[c] === "\t") {
-            w += tw - 1;
-            s = c;
-          }
-          w++;
-          if (w > options.wrap) {
-            // @TODO test that s does not equal 0
-            doc += line.slice(0, s) + "\n";
-            line = options.preLine + (options.lineup ? block : '')
-                + line.slice(s);
-            c = 0;
-            s = 0;
-            w = 0;
-          } else {
-            c++;
-          }
-        }
-        if (line) {
-          doc += line + "\n";
+      c = 0;
+      s = 0;
+      w = 0;
+
+      // Find length of jsdoc tag
+      if (options.lineup) {
+        if ((block = line.match(/@\S+/))) {
+          block = Array(block[0].length + 1).join(' ');
+        } else {
+          block = Array(3).join(' ');
         }
       }
-    } else {
-      doc = lines.join("\n");
-    }
 
-    return doc;
+      while (c < line.length) {
+        if (line[c] === ' ') {
+          s = c;
+        } else if (line[c] === "\t") {
+          w += tw - 1;
+          s = c;
+        }
+        w++;
+        if (w > options.wrap) {
+          // @TODO test that s does not equal 0
+          doc += line.slice(0, s) + "\n";
+          line = options.preLine + (options.lineup ? block : '')
+              + line.slice(s);
+          c = 0;
+          s = 0;
+          w = 0;
+        } else {
+          c++;
+        }
+      }
+      if (line) {
+        doc += line + "\n";
+      }
+    }
+  } else {
+    doc = lines.join("\n");
   }
+
+  return doc;
+};
+
+/**
+ * Get a promise to build a JSDoc for a variable using the given schema.
+ * @param {Object} schema An Object containing a valid
+ *        [schema]{@link #schema}
+ * @param {Object} options An object containing options
+ *        should contain
+ %%buildJsDocOptions%%
+ *
+ * @returns {Promise} A promise that will resolve to a string containing the
+ *          JSDoc for the given schema
+ */
+function promiseBuildJsDocs(schema, options) {
+  return new Promise(function(resolve, reject) {
+    try {
+      resolve(buildJsDocs(schema, options));
+    } catch (err) {
+      reject(err);
+    }
+  });
 };
 
 /**
@@ -848,7 +914,7 @@ module.exports = {
  *
  * @class
  */
-var Skemer = module.exports.Skemer = function(options) {
+function Skemer(options) {
   // Validate options and schema
   options = validateOptions(options);
 
@@ -884,3 +950,15 @@ Skemer.prototype = {
         [this.options].concat(Array.prototype.slice.call(arguments)));
   }
 };
+
+module.exports = {
+  Skemer: Skemer,
+  validateNew: validateNew,
+  promiseValidateNew: promiseValidateNew,
+  validateAdd: validateAdd,
+  promiseValidateAdd: promiseValidateAdd,
+  buildJsDocs: buildJsDocs,
+  promiseBuildJsDocs: promiseBuildJsDocs
+};
+
+
