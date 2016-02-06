@@ -33,11 +33,13 @@ a JSDoc comment from the schema and its `doc` parameters.
 - [Skemer API](#skemer-api)
   - [buildJsDocs](#buildjsdocs)
   - [promiseBuildJsDocs](#promisebuildjsdocs)
-  - [promiseValidateAdd](#promisevalidateadd)
-  - [promiseValidateNew](#promisevalidatenew)
   - [Skemer](#skemer)
+    - [promiseValidateAdd](#promisevalidateadd)
+    - [promiseValidateNew](#promisevalidatenew)
     - [validateAdd](#validateadd)
     - [validateNew](#validatenew)
+  - [promiseValidateAdd](#promisevalidateadd-1)
+  - [promiseValidateNew](#promisevalidatenew-1)
   - [validateAdd](#validateadd-1)
   - [validateNew](#validatenew-1)
 - [Schema and Validate Options](#schema-and-validate-options)
@@ -167,6 +169,65 @@ Get a promise to build a JSDoc for a variable using the given schema.
 Returns **Promise** A promise that will resolve to a string containing the
          JSDoc for the given schema
 
+## Skemer
+
+Skemer prototype to enable simple reuse of a schema
+
+**Parameters**
+
+-   `options` **Object** An object containing the validation
+           `options`, including the `schema`
+
+### promiseValidateAdd
+
+Get a promise to add new data to data based on the stored schema.
+NOTE: Existing data WILL NOT be validated
+
+**Parameters**
+
+-   `data` **Any** Data to validate and return. If no data is given,
+              data containing any default values will be returned. If newData
+              is given, newData will be validated and merged into data.
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Promise** A promise that will resolve to the validated and
+         merged data
+
+### promiseValidateNew
+
+Get a promise to add new data to data based on the stored schema.
+
+**Parameters**
+
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Promise** A promise that will resolve to the validated and
+         merged data
+
+### validateAdd
+
+Add new data to data based on the stored schema.
+NOTE: Existing data WILL NOT be validated
+
+**Parameters**
+
+-   `data` **Any** Data to validate and return. If no data is given,
+              data containing any default values will be returned. If newData
+              is given, newData will be validated and merged into data.
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Any** Validated and merged data
+
+### validateNew
+
+Add new data to data based on the stored schema.
+
+**Parameters**
+
+-   `newData` **...Any** Data to validate and merge into data
+
+Returns **Any** Validated and merged data
+
 ## promiseValidateAdd
 
 Get a promise to add data to an object based on a schema from the data
@@ -197,39 +258,6 @@ Get a promise to add new data to data based on the stored schema.
 
 Returns **Promise** A Promise that will resolve to the validated and
          merged data
-
-## Skemer
-
-Skemer prototype to enable simple reuse of a schema
-
-**Parameters**
-
--   `options` **Object** An object containing the validation
-           `options`, including the `schema`
-
-### validateAdd
-
-Add new data to data based on the stored schema.
-NOTE: Existing data WILL NOT be validated
-
-**Parameters**
-
--   `data` **Any** Data to validate and return. If no data is given,
-              data containing any default values will be returned. If newData
-              is given, newData will be validated and merged into data.
--   `newData` **...Any** Data to validate and merge into data
-
-Returns **Any** Validated and merged data
-
-### validateNew
-
-Add new data to data based on the stored schema.
-
-**Parameters**
-
--   `newData` **...Any** Data to validate and merge into data
-
-Returns **Any** Validated and merged data
 
 ## validateAdd
 
@@ -300,7 +328,7 @@ Schema detailing the requirements for Skemer Schema
            Array elements allowed
 -   `replace` **[boolean]** Whether a new value should completely replace an
            old value
--   `required` **[boolean or function or number or Array&lt;number&gt;]** Either true/false or
+-   `required` **[boolean or Function or number or Array&lt;number&gt;]** Either true/false or
            a function returning true/false to whether the parameter is required
 -   `default` **[Any]** Default value for parameter
 -   `validation` **[Function]** Function to validate the value of the

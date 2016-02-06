@@ -732,7 +732,7 @@ function validateNew(options) {
 
   return validateData.apply(this, [options, 
       undefined].concat(Array.prototype.slice.call(arguments, 1)));
-};
+}
 
 /**
  * Get a promise to add new data to data based on the stored schema.
@@ -744,7 +744,7 @@ function validateNew(options) {
  * @returns {Promise} A Promise that will resolve to the validated and
  *          merged data
  */
-function promiseValidateNew(options) {
+function promiseValidateNew() {
   var args = arguments;
   return new Promise(function(resolve, reject) {
     try {
@@ -753,7 +753,7 @@ function promiseValidateNew(options) {
       reject(err);
     }
   });
-};
+}
 
 /**
  * Add data to an object based on a schema from the data given.
@@ -777,7 +777,7 @@ function validateAdd(options) {
 
   return validateData.apply(this,
       [options].concat(Array.prototype.slice.call(arguments, 1)));
-};
+}
 
 /**
  * Get a promise to add data to an object based on a schema from the data
@@ -794,7 +794,7 @@ function validateAdd(options) {
  * @returns {Promise} A Promise that will resolve to the validated and
  *          merged data
  */
-function promiseValidateAdd(options) {
+function promiseValidateAdd() {
   var args = arguments;
   return new Promise(function(resolve, reject) {
     try {
@@ -803,7 +803,7 @@ function promiseValidateAdd(options) {
       reject(err);
     }
   });
-};
+}
 
 /**
  * Build a JSDoc for a variable using the given schema.
@@ -883,7 +883,7 @@ function buildJsDocs(schema, options) {
   }
 
   return doc;
-};
+}
 
 /**
  * Get a promise to build a JSDoc for a variable using the given schema.
@@ -904,7 +904,7 @@ function promiseBuildJsDocs(schema, options) {
       reject(err);
     }
   });
-};
+}
 
 /**
  * Skemer prototype to enable simple reuse of a schema
@@ -919,7 +919,7 @@ function Skemer(options) {
   options = validateOptions(options);
 
   Object.defineProperty(this, 'options', { value: options });
-};
+}
 
 Skemer.prototype = {
   /**
@@ -930,8 +930,28 @@ Skemer.prototype = {
    * @returns {*} Validated and merged data
    */
   validateNew: function () {
-    return validateAdd.apply(this, [this.options,
+    return validateData.apply(this, [this.options,
         undefined].concat(Array.prototype.slice.call(arguments)));
+  },
+  
+  /**
+   * Get a promise to add new data to data based on the stored schema.
+   *
+   * @param {...*} newData Data to validate and merge into data
+   *
+   * @returns {Promise} A promise that will resolve to the validated and
+   *          merged data
+   */
+  promiseValidateNew: function () {
+    var args = arguments;
+    return new Promise(function(resolve, reject) {
+      try {
+        resolve(validateData.apply(this, [this.options,
+            undefined].concat(Array.prototype.slice.call(args))));
+      } catch(err) {
+        reject(err);
+      }
+    }.bind(this));
   },
   
   /**
@@ -946,8 +966,32 @@ Skemer.prototype = {
    * @returns {*} Validated and merged data
    */
   validateAdd: function () {
-    return validateAdd.apply(this, 
+    return validateData.apply(this, 
         [this.options].concat(Array.prototype.slice.call(arguments)));
+  },
+  
+  /**
+   * Get a promise to add new data to data based on the stored schema.
+   * NOTE: Existing data WILL NOT be validated
+   *
+   * @param {*} data Data to validate and return. If no data is given,
+   *           data containing any default values will be returned. If newData
+   *           is given, newData will be validated and merged into data.
+   * @param {...*} newData Data to validate and merge into data
+   *
+   * @returns {Promise} A promise that will resolve to the validated and
+   *          merged data
+   */
+  promiseValidateAdd: function () {
+    var args = arguments;
+    return new Promise(function(resolve, reject) {
+      try {
+        resolve(validateData.apply(this, 
+            [this.options].concat(Array.prototype.slice.call(args))));
+      } catch(err) {
+        reject(err);
+      }
+    }.bind(this));
   }
 };
 
