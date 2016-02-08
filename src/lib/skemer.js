@@ -537,7 +537,8 @@ function validateOptions(options) {
  * @returns {*} Validated and merged data
  */
 function validateData(options, data, newData) {
-  //console.log('validateData called with ', arguments.length, 'arguments\n', arguments);
+  //console.log('validateData called with ', arguments.length, 'arguments\n', 
+  //    util.inspect(arguments, {depth: null}));
 
   var context = merge({}, options);
 
@@ -583,6 +584,7 @@ function validateData(options, data, newData) {
  * @returns {String} JSDoc string of type
  */
 function typeToJsDocString(schema) {
+  //console.log(schema.type);
   if (typeof schema.type === 'string') {
     switch (schema.type) {
       /* TODO Implement as @callback
@@ -599,7 +601,7 @@ function typeToJsDocString(schema) {
       default:
         return schema.type;
     }
-  } else if (schema.type instanceof Object) {
+  } else if (schema.type instanceof Object || schema.type === null) {
     return 'Object';
   }
 }
@@ -810,7 +812,8 @@ function promiseValidateAdd() {
 }
 
 /**
- * Build a JSDoc for a variable using the given schema.
+ * Build a JSDoc for a variable using the given {@link schema}.
+ *
  * @param {Object} schema An Object containing a valid
  *        [schema]{@link #schema}
  * @param {Object} options An object containing options
@@ -824,7 +827,8 @@ function buildJsDocs(schema, options) {
   
   // Validate schema
   schema = validateData({
-    schema: schemas.schema
+    schema: schemas.schema,
+    keepNull: true
   }, {}, schema);
 
   // Validate options
@@ -890,7 +894,9 @@ function buildJsDocs(schema, options) {
 }
 
 /**
- * Get a promise to build a JSDoc for a variable using the given schema.
+ * Get a promise to build a JSDoc for a variable using the given
+ * {@link schema}.
+ *
  * @param {Object} schema An Object containing a valid
  *        [schema]{@link #schema}
  * @param {Object} options An object containing options

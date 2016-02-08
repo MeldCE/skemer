@@ -22,8 +22,8 @@ var buildDocOptions = {
       default: ''
     },
     lineup: {
-      doc: 'Whether to line up text in a JSDoc (eg @param) with the end of '
-          + 'the end of the command',
+      doc: 'Whether to line up text in a JSDoc block (eg `@param`) with the '
+          + 'end of the end of the block command',
       type: 'boolean',
       default: true
     },
@@ -92,6 +92,9 @@ var schema = {
           type: 'string'
         },
         {
+          type: 'null'
+        },
+        {
           type: null,
           multiple: true,
           object: true
@@ -114,13 +117,13 @@ var schema = {
       doc: "Whether or not multiple values (stored in an array) are "
           + "allowed. Can be a boolean, or a number (the number of values "
           + "that the parameter must have, or an array containing the "
-          + "minimum number of values and teh maximum number of values.",
+          + "minimum number of values and the maximum number of values.",
       type: 'boolean'
     },
     object: {
       doc: "If multiple is true object is true, will force values to be "
-          + "stored in an object - appending will not work. If multiple is "
-          + "true and object is false, the key will be ignored and the "
+          + "stored in an object. If multiple is true and object is false, "
+          + 'the key will be ignored and the '
           + "values will be stored in an array",
       type: 'boolean'
     },
@@ -157,8 +160,12 @@ var schema = {
       type: 'boolean'
     },
     required: {
-      doc: "Either true/false or a function returning true/false to whether the "
-          + "parameter is required",
+      doc: 'Either true/false or a function returning true/false '
+          + 'whether the parameter is required, or if the variable is a '
+          + 'multiple stored in an array an number given the number of '
+          + 'required elements, or an array of numbers, the first being the '
+          + 'minimum number of elements and the second being the maximum '
+          + 'number of elements (a maximum is not required)',
       types: [
         {
           type: 'boolean'
@@ -202,9 +209,10 @@ module.exports = {
    */
   schema: schema,
 
+  // TODO when doc fixed [validate]{@link validateAdd} [functions]{@link validateNew} and
   /**
    * Options to that must be passed to the one off
-   * [validate]{@link #validateAdd} [functions](@link #validateNew} and
+   * [validate](#validateAdd) [functions](#validateNew) and
    * on creating a [`Skemer`]{@link #Skemer}
    %%options%%
    */
