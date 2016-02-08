@@ -276,7 +276,7 @@ gulp.task('watch', function() {
 	gulp.watch('package.json', ['check:deps']);
 });
 
-defaultTasks = ['check:deps', 'jasmine', /*'complexity',*/ 'docs', 'readme'];
+defaultTasks = ['check:deps', 'compile:example', 'jasmine', /*'complexity',*/ 'docs', 'readme'];
 
 gulp.task('one', defaultTasks);
 
