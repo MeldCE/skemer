@@ -300,7 +300,7 @@ on creating a [`Skemer``
 **Parameters**
 
 -   `schema` **Object** `Schema` to use for the validation
--   `baseSchema` **[Object]** Schema to be used for recursive schemas. If
+-   `baseSchema` **[schema]** Schema to be used for recursive schemas. If
            none given, the given schema will be used
 -   `replace` **[boolean or Array&lt;boolean&gt;]** A boolean to specify whether to
            globally replace all existing values for arrays and objects, or an
@@ -317,9 +317,9 @@ Schema detailing the requirements for Skemer Schema
 -   `doc` **[string]** A String giving information on the parameter
 -   `noDocDig` **[boolean]** If set and the variable is an object,
            buildJsDoc will not document the parameters of the object
--   `type` **[string or  or Array&lt;Object&gt;]** The value type of the parameter
+-   `type` **[string or  or Array&lt;schema&gt;]** The value type of the parameter
            expected
--   `types` **[Array&lt;Object&gt;]** An Array or Object of Objects containing the
+-   `types` **[Array&lt;schema&gt;]** An Array or Object of Objects containing the
            details of the values expected
 -   `values` **[Array&lt;Any&gt;]** Specifies the possible values for strings, numbers
            and dates
