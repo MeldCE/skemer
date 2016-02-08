@@ -22,7 +22,7 @@ and merging all new data, the [`validateAdd`](#validataAdd) function for doing
 validating and merging new data into existing data, a [`Skemer`](#Skemer)
 prototype for doing multiple validations / merges against the same schema,
 and a [`buildJsDoc`](#buildJsDoc) function for creating
-a JSDoc comment from the schema and its `doc` parameters.
+a JSDoc comment from the [`schema`](#schema) and its `doc` parameters.
 
 <!-- START doctoc -->
 <!-- END doctoc -->

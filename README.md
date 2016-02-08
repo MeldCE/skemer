@@ -22,7 +22,7 @@ and merging all new data, the [`validateAdd`](#validataAdd) function for doing
 validating and merging new data into existing data, a [`Skemer`](#Skemer)
 prototype for doing multiple validations / merges against the same schema,
 and a [`buildJsDoc`](#buildJsDoc) function for creating
-a JSDoc comment from the schema and its `doc` parameters.
+a JSDoc comment from the [`schema`](#schema) and its `doc` parameters.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -120,7 +120,7 @@ Schema.validateAdd(data, valid2, invalid);
 
 ## buildJsDocs
 
-Build a JSDoc for a variable using the given schema.
+Build a JSDoc for a variable using the given `schema`.
 
 **Parameters**
 
@@ -137,7 +137,7 @@ Build a JSDoc for a variable using the given schema.
     -   `options.preLine` **[string]** String (normally indentation) to include
                before each line
     -   `options.lineup` **[boolean]** Whether to line up text in a JSDoc
-               (eg @param) with the end of the end of the command (optional, default `true`)
+               block (eg `@param`) with the end of the end of the block command (optional, default `true`)
     -   `options.wrap` **[number]** Number of characters to wrap the JSDoc lines
                at
 
@@ -145,7 +145,8 @@ Returns **string** A string containing the JSDoc for the given schema
 
 ## promiseBuildJsDocs
 
-Get a promise to build a JSDoc for a variable using the given schema.
+Get a promise to build a JSDoc for a variable using the given
+`schema`.
 
 **Parameters**
 
@@ -162,7 +163,7 @@ Get a promise to build a JSDoc for a variable using the given schema.
     -   `options.preLine` **[string]** String (normally indentation) to include
                before each line
     -   `options.lineup` **[boolean]** Whether to line up text in a JSDoc
-               (eg @param) with the end of the end of the command (optional, default `true`)
+               block (eg `@param`) with the end of the end of the block command (optional, default `true`)
     -   `options.wrap` **[number]** Number of characters to wrap the JSDoc lines
                at
 
@@ -293,14 +294,19 @@ Returns **Any** Validated and merged data
 ## options
 
 Options to that must be passed to the one off
-`validate` `functions](@link #validateNew} and
+`validate](#validateAdd) [functions](#validateNew) and
 on creating a [`Skemer``
 
 **Parameters**
 
 -   `schema` **Object** `Schema` to use for the validation
--   `baseSchema` **[undefined]** Schema to be used for recursive schemas. If
+-   `baseSchema` **[Object]** Schema to be used for recursive schemas. If
            none given, the given schema will be used
+-   `replace` **[boolean or Array&lt;boolean&gt;]** A boolean to specify whether to
+           globally replace all existing values for arrays and objects, or an
+           object of variable/boolean pairs used to specify what variables
+           (their name given as the key) should have their value replaced by
+           default (a boolean value of true
 
 ## schema
 
@@ -311,16 +317,20 @@ Schema detailing the requirements for Skemer Schema
 -   `doc` **[string]** A String giving information on the parameter
 -   `noDocDig` **[boolean]** If set and the variable is an object,
            buildJsDoc will not document the parameters of the object
+-   `type` **[string or  or Array&lt;Object&gt;]** The value type of the parameter
+           expected
+-   `types` **[Array&lt;Object&gt;]** An Array or Object of Objects containing the
+           details of the values expected
 -   `values` **[Array&lt;Any&gt;]** Specifies the possible values for strings, numbers
            and dates
 -   `multiple` **[boolean]** Whether or not multiple values (stored in an
            array) are allowed. Can be a boolean, or a number (the number of
            values that the parameter must have, or an array containing the
-           minimum number of values and teh maximum number of values.
+           minimum number of values and the maximum number of values.
 -   `object` **[boolean]** If multiple is true object is true, will force
-           values to be stored in an object - appending will not work. If
-           multiple is true and object is false, the key will be ignored and
-           the values will be stored in an array
+           values to be stored in an object. If multiple is true and object is
+           false, the key will be ignored and the values will be stored in an
+           array
 -   `regex` **[RegExp]** A regular expression to validate a String value
 -   `min` **[number or date]** The minimum number, string length or number of
            Array elements required
@@ -329,7 +339,11 @@ Schema detailing the requirements for Skemer Schema
 -   `replace` **[boolean]** Whether a new value should completely replace an
            old value
 -   `required` **[boolean or Function or number or Array&lt;number&gt;]** Either true/false or
-           a function returning true/false to whether the parameter is required
+           a function returning true/false whether the parameter is required,
+           or if the variable is a multiple stored in an array an number given
+           the number of required elements, or an array of numbers, the first
+           being the minimum number of elements and the second being the
+           maximum number of elements (a maximum is not required)
 -   `default` **[Any]** Default value for parameter
 -   `validation` **[Function]** Function to validate the value of the
            parameter. Will be given the value as the parameter. The function

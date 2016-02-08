@@ -130,10 +130,10 @@ function validateDoc(lines) {
   expect(lines[12]).toBe('\t * @param {string[]} [objectName.arr]');
   
   // Object of numbers
-  expect(lines[13]).toBe('\t * @param {number{}} [objectName.coord]');
+  expect(lines[13]).toBe('\t * @param {number[]} [objectName.coord]');
   
   // Either Array of strings or an object of numbers
-  expect(lines[14]).toBe('\t * @param {(string[]|number{})} '
+  expect(lines[14]).toBe('\t * @param {(string[]|number[])} '
       + '[objectName.arrcoord]');
 }
 

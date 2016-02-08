@@ -640,11 +640,12 @@ function buildLines(schema, options, parameter, name) {
       tType = typeToJsDocString(schema.types[t]);
 
       if (schema.types[t].multiple) {
-        if (schema.types[t].object) {
-          tType = tType + '{}';
-        } else {
+        // JsDoc can't handle {}
+        //if (schema.types[t].object) {
+        //  tType = tType + '{}';
+        //} else {
           tType = tType + '[]';
-        }
+        //}
       }
       type.push(tType);
     }
@@ -653,11 +654,12 @@ function buildLines(schema, options, parameter, name) {
     type = typeToJsDocString(schema);
 
     if (schema.multiple) {
-      if (schema.object) {
-        type = type + '{}';
-      } else {
+      // JsDoc can't handle {}
+      //if (schema.object) {
+      //  type = type + '{}';
+      //} else {
         type = type + '[]';
-      }
+      //}
     }
     
     type = '{' + type + '}';
