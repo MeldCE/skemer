@@ -337,9 +337,9 @@ var suites = [
     options: clone(options),
     results: [
       {
-        label: 'should return an undefined value',
+        label: 'should throw a value required error',
         input: ['undef', 'undef', false],
-        result: {}
+        throws: new errors.DataRequiredError('Value required')
       },
       {
         label: 'should throw in a non-object value',
