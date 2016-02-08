@@ -319,8 +319,8 @@ Schema detailing the requirements for Skemer Schema
            buildJsDoc will not document the parameters of the object
 -   `type` **[string or  or Array&lt;schema&gt;]** The value type of the parameter
            expected
--   `types` **[Array&lt;schema&gt;]** An Array or Object of Objects containing the
-           details of the values expected
+-   `types` **[Array&lt;schema&gt;]** An Array or Object of `schema` containing
+           different schemas of the values expected
 -   `values` **[Array&lt;Any&gt;]** Specifies the possible values for strings, numbers
            and dates
 -   `multiple` **[boolean]** Whether or not multiple values (stored in an

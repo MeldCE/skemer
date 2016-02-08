@@ -72,6 +72,10 @@ var schema = {
           object: true
         }
       }
+    },
+    recurse: {
+      doc: 'a recursive variable',
+      type: null
     }
   }
 };
@@ -89,7 +93,7 @@ var stringSchema = {
  * @returns {undefined} 
  */
 function validateDoc(lines) {
-  expect(lines.length).toBe(16);
+  expect(lines.length).toBe(17);
 
   // First line should be overall comment with preamble
   expect(lines[0]).toBe('\t * Test object comment');
@@ -135,6 +139,10 @@ function validateDoc(lines) {
   // Either Array of strings or an object of numbers
   expect(lines[14]).toBe('\t * @param {(string[]|number[])} '
       + '[objectName.arrcoord]');
+  
+  // Either Array of strings or an object of numbers
+  expect(lines[15]).toBe('\t * @param {schema} [objectName.recurse] a '
+      + 'recursive variable');
 }
 
 describe('JSDoc functionality', function() {
