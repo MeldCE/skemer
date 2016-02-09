@@ -76,6 +76,11 @@ var schema = {
     recurse: {
       doc: 'a recursive variable',
       type: null
+    },
+    forced: {
+      doc: 'Some string with a forced type',
+      docType: 'potatoes',
+      type: 'string'
     }
   }
 };
@@ -93,7 +98,7 @@ var stringSchema = {
  * @returns {undefined} 
  */
 function validateDoc(lines) {
-  expect(lines.length).toBe(17);
+  expect(lines.length).toBe(18);
 
   // First line should be overall comment with preamble
   expect(lines[0]).toBe('\t * Test object comment');
@@ -140,9 +145,13 @@ function validateDoc(lines) {
   expect(lines[14]).toBe('\t * @param {(string[]|number[])} '
       + '[objectName.arrcoord]');
   
-  // Either Array of strings or an object of numbers
+  // A recursive schema variable
   expect(lines[15]).toBe('\t * @param {schema} [objectName.recurse] a '
       + 'recursive variable');
+  
+  // Forced type
+  expect(lines[16]).toBe('\t * @param {potatoes} [objectName.forced] Some '
+      + 'string with a forced type');
 }
 
 describe('JSDoc functionality', function() {

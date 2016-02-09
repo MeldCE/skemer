@@ -23,7 +23,7 @@ var buildDocOptions = {
     },
     lineup: {
       doc: 'Whether to line up text in a JSDoc block (eg `@param`) with the '
-          + 'end of the end of the block command',
+          + 'end of the block command',
       type: 'boolean',
       default: true
     },
@@ -37,7 +37,7 @@ var buildDocOptions = {
 var schema = {
   type: {
     doc: {
-      doc: "A String giving information on the parameter",
+      doc: "A String giving information on the value expected",
       types: [
         {
           type: 'string'
@@ -80,8 +80,17 @@ var schema = {
         }*/
       ]
     },
+    docType: {
+      doc: "A string containing the type of the value expected that will be "
+          + "used instead of calculating the type of value expected",
+      types: [
+        {
+          type: 'string'
+        }
+      ]
+    },
     noDocDig: {
-      doc: 'If set and the variable is an object, buildJsDoc will not '
+      doc: 'If set and the value expected is an object, buildJsDoc will not '
           + 'document the parameters of the object',
       type: 'boolean'
     },
@@ -114,16 +123,17 @@ var schema = {
       multiple: true
     },
     multiple: {
-      doc: "Whether or not multiple values (stored in an array) are "
-          + "allowed. Can be a boolean, or a number (the number of values "
-          + "that the parameter must have, or an array containing the "
-          + "minimum number of values and the maximum number of values.",
+      doc: "Whether or not multiple values (stored in an Array, or if "
+          + "`object is set to `true` an Object) are allowed. Can be a "
+          + "boolean, a number (the number of values that the value expected "
+          + "must have), or an array containing the minimum number of values "
+          + "and, optionally, the maximum number of values.",
       type: 'boolean'
     },
     object: {
-      doc: "If multiple is true object is true, will force values to be "
-          + "stored in an object. If multiple is true and object is false, "
-          + 'the key will be ignored and the '
+      doc: "If `multiple` is true and `object` is true, the multiple values "
+          + "will be stored in an object. If multiple is true and object is "
+          + 'false, any keys will be ignored and the '
           + "values will be stored in an array",
       type: 'boolean'
     },
@@ -156,7 +166,8 @@ var schema = {
       ]
     },
     replace: {
-      doc: 'Whether a new value should completely replace an old value',
+      doc: 'Whether a new value should completely replace an old value when '
+          + 'the value expected is either an array or an object',
       type: 'boolean'
     },
     required: {
@@ -184,15 +195,15 @@ var schema = {
       ]
     },
     default: {
-      doc: "Default value for parameter",
+      doc: "Default value to use if no value is given",
       type: 'any'
-    },
-    validation: {
+    }/*,
+     @TODO validation: {
       doc: "Function to validate the value of the parameter. Will be given "
           + "the value as the parameter. The function must return true if "
           + "valid, false if not, or null if no value",
       type: 'Function'
-    }
+    }*/
   }
 };
 
@@ -204,22 +215,23 @@ module.exports = {
   buildDocOptions: buildDocOptions,
 
   /**
-   * Schema detailing the requirements for Skemer Schema
+   * Schema Object detailing the schema to be used for validating and merging
+   * data.
   %%schema%%
    */
   schema: schema,
 
-  // TODO when doc fixed [validate]{@link validateAdd} [functions]{@link validateNew} and
   /**
-   * Options to that must be passed to the one off
-   * [validate](#validateAdd) [functions](#validateNew) and
-   * on creating a [`Skemer`]{@link #Skemer}
+   * Options Object that must be passed to the one-off
+   * [validate]{@link #validateAdd} [functions]{@link #validateNew} and
+   * on creating an instance of a [`Skemer`]{@link #Skemer}
    %%options%%
    */
   options: {
     type: {
       schema: {
         doc: '[Schema]{@link #schema} to use for the validation',
+        docType: 'schema',
         noDocDig: true,
         required: true,
         type: schema.type
@@ -227,16 +239,16 @@ module.exports = {
       //baseSchema: schema,
       baseSchema: {
         doc: 'Schema to be used for recursive schemas. If none given, the '
-            + 'given schema will be used',
+            + 'given, the full schema given in `schema` will be used',
         noDocDig: true,
         type: null
       },
       replace: {
         doc: 'A boolean to specify whether to globally replace all existing '
             + 'values for arrays and objects, or an object of '
-            + 'variable/boolean pairs used to specify what variables (their '
-            + 'name given as the key) should have their value replaced by '
-            + 'default (a boolean value of true',
+            + 'string/boolean key/value pairs used to specify what variables'
+            + '(their name given as the key) should have their value replaced '
+            + 'by default (a boolean value of true)',
         types: [
           {
             type: 'boolean'

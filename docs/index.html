@@ -131,13 +131,13 @@
   <h2 id='options' class='mt0'>
     options<span class='gray'>(schema, [baseSchema], [replace])</span>
   </h2>
-  <p>Options to that must be passed to the one off
-<a href="#validateAdd">&grave;validate</a> <a href="#validateNew">functions</a> and
-on creating a <a href="#Skemer">&grave;Skemer<code></code></a></p>
+  <p>Options Object that must be passed to the one-off
+<a href="#validateAdd"><code>validate</code></a> <a href="#validateNew"><code>functions</code></a> and
+on creating an instance of a <a href="#Skemer"><code>Skemer</code></a></p>
 
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>schema</strong>
+        <li><code><a href="#schema">schema</a></code> <strong>schema</strong>
           :
           <div class='force-inline'>
             <p><a href="#schema"><code>Schema</code></a> to use for the validation</p>
@@ -148,7 +148,8 @@ on creating a <a href="#Skemer">&grave;Skemer<code></code></a></p>
           :
           <div class='force-inline'>
             <p>Schema to be used for recursive schemas. If
-none given, the given schema will be used</p>
+none given, the given, the full schema given in <code>schema</code> will be
+used</p>
 
           </div>
         </li>
@@ -157,9 +158,9 @@ none given, the given schema will be used</p>
           <div class='force-inline'>
             <p>A boolean to specify whether to
 globally replace all existing values for arrays and objects, or an
-object of variable/boolean pairs used to specify what variables
-(their name given as the key) should have their value replaced by
-default (a boolean value of true</p>
+object of string/boolean key/value pairs used to specify what
+variables(their name given as the key) should have their value
+replaced by default (a boolean value of true)</p>
 
           </div>
         </li>
@@ -167,23 +168,33 @@ default (a boolean value of true</p>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
   <h2 id='schema' class='mt0'>
-    schema<span class='gray'>([doc], [noDocDig], [type], [types], [values], [multiple], [object], [regex], [min], [max], [replace], [required], [default], [validation])</span>
+    schema<span class='gray'>([doc], [docType], [noDocDig], [type], [types], [values], [multiple], [object], [regex], [min], [max], [replace], [required], [default])</span>
   </h2>
-  <p>Schema detailing the requirements for Skemer Schema</p>
+  <p>Schema Object detailing the schema to be used for validating and merging
+data.</p>
 
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
         <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>]</code> <strong>doc</strong>
           :
           <div class='force-inline'>
-            <p>A String giving information on the parameter</p>
+            <p>A String giving information on the value expected</p>
+
+          </div>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>]</code> <strong>docType</strong>
+          :
+          <div class='force-inline'>
+            <p>A string containing the type of the value
+expected that will be used instead of calculating the type of value
+expected</p>
 
           </div>
         </li>
         <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>noDocDig</strong>
           :
           <div class='force-inline'>
-            <p>If set and the variable is an object,
+            <p>If set and the value expected is an object,
 buildJsDoc will not document the parameters of the object</p>
 
           </div>
@@ -216,19 +227,20 @@ and dates</p>
           :
           <div class='force-inline'>
             <p>Whether or not multiple values (stored in an
-array) are allowed. Can be a boolean, or a number (the number of
-values that the parameter must have, or an array containing the
-minimum number of values and the maximum number of values.</p>
+Array, or if <code>object is set to</code>true&grave; an Object) are allowed. Can be
+a boolean, a number (the number of values that the value expected
+must have), or an array containing the minimum number of values and,
+optionally, the maximum number of values.</p>
 
           </div>
         </li>
         <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> <strong>object</strong>
           :
           <div class='force-inline'>
-            <p>If multiple is true object is true, will force
-values to be stored in an object. If multiple is true and object is
-false, the key will be ignored and the values will be stored in an
-array</p>
+            <p>If <code>multiple</code> is true and <code>object</code> is true, the
+multiple values will be stored in an object. If multiple is true and
+object is false, any keys will be ignored and the values will be
+stored in an array</p>
 
           </div>
         </li>
@@ -259,7 +271,7 @@ Array elements allowed</p>
           :
           <div class='force-inline'>
             <p>Whether a new value should completely replace an
-old value</p>
+old value when the value expected is either an array or an object</p>
 
           </div>
         </li>
@@ -278,16 +290,7 @@ maximum number of elements (a maximum is not required)</p>
         <li><code>[Any]</code> <strong>default</strong>
           :
           <div class='force-inline'>
-            <p>Default value for parameter</p>
-
-          </div>
-        </li>
-        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">Function</a></code>]</code> <strong>validation</strong>
-          :
-          <div class='force-inline'>
-            <p>Function to validate the value of the
-parameter. Will be given the value as the parameter. The function
-must return true if valid, false if not, or null if no value</p>
+            <p>Default value to use if no value is given</p>
 
           </div>
         </li>
@@ -312,8 +315,7 @@ must return true if valid, false if not, or null if no value</p>
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
           :
           <div class='force-inline'>
-            <p>An object containing options
-should contain</p>
+            <p>An Object containing build options</p>
 
           </div>
             <ul>
@@ -338,7 +340,7 @@ before each line</p>
                 <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> options.lineup
                     (default <code>true</code>)
                   <p>Whether to line up text in a JSDoc
-block (eg <code>@param</code>) with the end of the end of the block command</p>
+block (eg <code>@param</code>) with the end of the block command</p>
 </li>
                 <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> options.wrap
                   <p>Number of characters to wrap the JSDoc lines
@@ -519,8 +521,7 @@ at</p>
         <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
           :
           <div class='force-inline'>
-            <p>An object containing options
-should contain</p>
+            <p>An Object containing build options</p>
 
           </div>
             <ul>
@@ -545,7 +546,7 @@ before each line</p>
                 <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> options.lineup
                     (default <code>true</code>)
                   <p>Whether to line up text in a JSDoc
-block (eg <code>@param</code>) with the end of the end of the block command</p>
+block (eg <code>@param</code>) with the end of the block command</p>
 </li>
                 <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> options.wrap
                   <p>Number of characters to wrap the JSDoc lines
@@ -567,9 +568,8 @@ JSDoc for the given schema</p>
   <h2 id='promiseValidateAdd' class='mt0'>
     promiseValidateAdd<span class='gray'>(options, data, newData)</span>
   </h2>
-  <p>Get a promise to add data to an object based on a schema from the data
-given.
-NOTE: Existing data WILL NOT be validated</p>
+  <p>Get a promise to validata and add new data to existing validated data based
+on the given schema. NOTE: Existing data WILL NOT be validated</p>
 
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
@@ -593,7 +593,7 @@ is given, newData will be validated and merged into data.</p>
         <li>...Any <strong>newData</strong>
           :
           <div class='force-inline'>
-            <p>Data to validate and merge into data</p>
+            <p>Data to validate and merge into <code>data</code></p>
 
           </div>
         </li>
@@ -631,8 +631,8 @@ merged data</p>
               #promiseValidateAdd<span class='gray'>(data, newData)</span>
             </code>
             <div class='force-inline'>
-              <p>Get a promise to add new data to data based on the stored schema.
-NOTE: Existing data WILL NOT be validated</p>
+              <p>Get a promise to add new data to exsiting validated data based on the
+stored schema. NOTE: Existing data WILL NOT be validated</p>
 
             </div>
           </a>
@@ -641,24 +641,22 @@ NOTE: Existing data WILL NOT be validated</p>
               <h2 id='Skemer.promiseValidateAdd' class='mt0'>
                 promiseValidateAdd<span class='gray'>(data, newData)</span>
               </h2>
-              <p>Get a promise to add new data to data based on the stored schema.
-            NOTE: Existing data WILL NOT be validated</p>
+              <p>Get a promise to add new data to exsiting validated data based on the
+            stored schema. NOTE: Existing data WILL NOT be validated</p>
             
                 <h4>Parameters</h4>
                 <ul class='suppress-p-margin'>
                     <li>Any <strong>data</strong>
                       :
                       <div class='force-inline'>
-                        <p>Data to validate and return. If no data is given,
-            data containing any default values will be returned. If newData
-            is given, newData will be validated and merged into data.</p>
+                        <p>Existing data to merge new data into.</p>
             
                       </div>
                     </li>
                     <li>...Any <strong>newData</strong>
                       :
                       <div class='force-inline'>
-                        <p>Data to validate and merge into data</p>
+                        <p>Data to validate and merge into the existing data.</p>
             
                       </div>
                     </li>
@@ -680,7 +678,8 @@ NOTE: Existing data WILL NOT be validated</p>
               #promiseValidateNew<span class='gray'>(newData)</span>
             </code>
             <div class='force-inline'>
-              <p>Get a promise to add new data to data based on the stored schema.</p>
+              <p>Get a promise to validate and merge new data based on the
+stored schema.</p>
 
             </div>
           </a>
@@ -689,14 +688,17 @@ NOTE: Existing data WILL NOT be validated</p>
               <h2 id='Skemer.promiseValidateNew' class='mt0'>
                 promiseValidateNew<span class='gray'>(newData)</span>
               </h2>
-              <p>Get a promise to add new data to data based on the stored schema.</p>
+              <p>Get a promise to validate and merge new data based on the
+            stored schema.</p>
             
                 <h4>Parameters</h4>
                 <ul class='suppress-p-margin'>
                     <li>...Any <strong>newData</strong>
                       :
                       <div class='force-inline'>
-                        <p>Data to validate and merge into data</p>
+                        <p>Data to validate, merge and return. If no data is
+            given, a variable containing any default values, if configured,
+            will be returned.</p>
             
                       </div>
                     </li>
@@ -718,7 +720,7 @@ NOTE: Existing data WILL NOT be validated</p>
               #validateAdd<span class='gray'>(data, newData)</span>
             </code>
             <div class='force-inline'>
-              <p>Add new data to data based on the stored schema.
+              <p>Add new data to existing validated data based on the stored schema.
 NOTE: Existing data WILL NOT be validated</p>
 
             </div>
@@ -728,7 +730,7 @@ NOTE: Existing data WILL NOT be validated</p>
               <h2 id='Skemer.validateAdd' class='mt0'>
                 validateAdd<span class='gray'>(data, newData)</span>
               </h2>
-              <p>Add new data to data based on the stored schema.
+              <p>Add new data to existing validated data based on the stored schema.
             NOTE: Existing data WILL NOT be validated</p>
             
                 <h4>Parameters</h4>
@@ -736,16 +738,14 @@ NOTE: Existing data WILL NOT be validated</p>
                     <li>Any <strong>data</strong>
                       :
                       <div class='force-inline'>
-                        <p>Data to validate and return. If no data is given,
-            data containing any default values will be returned. If newData
-            is given, newData will be validated and merged into data.</p>
+                        <p>Existing data to merge new data into.</p>
             
                       </div>
                     </li>
                     <li>...Any <strong>newData</strong>
                       :
                       <div class='force-inline'>
-                        <p>Data to validate and merge into data</p>
+                        <p>Data to validate and merge into the existing data.</p>
             
                       </div>
                     </li>
@@ -766,7 +766,7 @@ NOTE: Existing data WILL NOT be validated</p>
               #validateNew<span class='gray'>(newData)</span>
             </code>
             <div class='force-inline'>
-              <p>Add new data to data based on the stored schema.</p>
+              <p>Validate and merge new data based on the stored schema.</p>
 
             </div>
           </a>
@@ -775,14 +775,16 @@ NOTE: Existing data WILL NOT be validated</p>
               <h2 id='Skemer.validateNew' class='mt0'>
                 validateNew<span class='gray'>(newData)</span>
               </h2>
-              <p>Add new data to data based on the stored schema.</p>
+              <p>Validate and merge new data based on the stored schema.</p>
             
                 <h4>Parameters</h4>
                 <ul class='suppress-p-margin'>
                     <li>...Any <strong>newData</strong>
                       :
                       <div class='force-inline'>
-                        <p>Data to validate and merge into data</p>
+                        <p>Data to validate, merge and return. If no data is
+            given, a variable containing any default values, if configured,
+            will be returned.</p>
             
                       </div>
                     </li>
@@ -802,7 +804,7 @@ NOTE: Existing data WILL NOT be validated</p>
   <h2 id='promiseValidateNew' class='mt0'>
     promiseValidateNew<span class='gray'>(options, newData)</span>
   </h2>
-  <p>Get a promise to add new data to data based on the stored schema.</p>
+  <p>Get a promise to validate and merge new data base on the given schema.</p>
 
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
@@ -817,7 +819,7 @@ NOTE: Existing data WILL NOT be validated</p>
         <li>...Any <strong>newData</strong>
           :
           <div class='force-inline'>
-            <p>Data to validate and merge into data</p>
+            <p>Data to validate, merge and return</p>
 
           </div>
         </li>
@@ -859,8 +861,8 @@ merged data</p>
   <h2 id='validateAdd' class='mt0'>
     validateAdd<span class='gray'>(options, data, newData)</span>
   </h2>
-  <p>Add data to an object based on a schema from the data given.
-NOTE: Existing data WILL NOT be validated</p>
+  <p>Validata and add new data to existing validated data based on the given
+schema. NOTE: Existing data WILL NOT be validated</p>
 
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
@@ -884,7 +886,7 @@ is given, newData will be validated and merged into data.</p>
         <li>...Any <strong>newData</strong>
           :
           <div class='force-inline'>
-            <p>Data to validate and merge into data</p>
+            <p>Data to validate and merge into <code>data</code></p>
 
           </div>
         </li>
@@ -901,7 +903,7 @@ is given, newData will be validated and merged into data.</p>
   <h2 id='validateNew' class='mt0'>
     validateNew<span class='gray'>(options, newData)</span>
   </h2>
-  <p>Add new data to data based on the stored schema.</p>
+  <p>Validate and merge new data based on the given schema.</p>
 
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
@@ -916,7 +918,7 @@ is given, newData will be validated and merged into data.</p>
         <li>...Any <strong>newData</strong>
           :
           <div class='force-inline'>
-            <p>Data to validate and merge into data</p>
+            <p>Data to validate, merge and return</p>
 
           </div>
         </li>
