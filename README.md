@@ -303,7 +303,7 @@ Returns **Any** Validated and merged data
 ## options
 
 Options Object that must be passed to the one-off
-[`validate`](#validateAdd) [`functions`](#validateNew) and
+[validate](#validateAdd) [functions](#validateNew) and
 on creating an instance of a `Skemer`
 
 **Parameters**
