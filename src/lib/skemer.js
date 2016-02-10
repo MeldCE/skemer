@@ -748,7 +748,7 @@ function validateNew(options) {
       undefined].concat(Array.prototype.slice.call(arguments, 1)));
 }
 
-/**
+/** @private @deprecated
  * Get a promise to validate and merge new data base on the given schema.
  *
  * @param {Object} options An object containing the validation
@@ -759,6 +759,8 @@ function validateNew(options) {
  *          merged data
  */
 function promiseValidateNew() {
+  console.error('Skemer Promise functions are deprecated - they will be '
+      + 'removed from the next version as they are redundant');
   var args = arguments;
   return new Promise(function(resolve, reject) {
     try {
@@ -793,7 +795,7 @@ function validateAdd(options) {
       [options].concat(Array.prototype.slice.call(arguments, 1)));
 }
 
-/**
+/** @private @deprecated
  * Get a promise to validata and add new data to existing validated data based
  * on the given schema. NOTE: Existing data WILL NOT be validated
  *
@@ -808,6 +810,8 @@ function validateAdd(options) {
  *          merged data
  */
 function promiseValidateAdd() {
+  console.error('Skemer Promise functions are deprecated - they will be '
+      + 'removed from the next version as they are redundant');
   var args = arguments;
   return new Promise(function(resolve, reject) {
     try {
@@ -899,7 +903,7 @@ function buildJsDocs(schema, options) {
   return doc;
 }
 
-/**
+/** @private @deprecated
  * Get a promise to build a JSDoc for a variable using the given
  * {@link schema}.
  *
@@ -912,6 +916,8 @@ function buildJsDocs(schema, options) {
  *          JSDoc for the given schema
  */
 function promiseBuildJsDocs(schema, options) {
+  console.error('Skemer Promise functions are deprecated - they will be '
+      + 'removed from the next version as they are redundant');
   return new Promise(function(resolve, reject) {
     try {
       resolve(buildJsDocs(schema, options));
@@ -951,7 +957,7 @@ Skemer.prototype = {
         undefined].concat(Array.prototype.slice.call(arguments)));
   },
   
-  /**
+  /** @private @deprecated
    * Get a promise to validate and merge new data based on the
    * stored schema.
    *
@@ -963,6 +969,8 @@ Skemer.prototype = {
    *          merged data
    */
   promiseValidateNew: function () {
+    console.error('Skemer Promise functions are deprecated - they will be '
+        + 'removed from the next version as they are redundant');
     var args = arguments;
     return new Promise(function(resolve, reject) {
       try {
@@ -988,7 +996,7 @@ Skemer.prototype = {
         [this.options].concat(Array.prototype.slice.call(arguments)));
   },
   
-  /**
+  /** @private @deprecated
    * Get a promise to add new data to exsiting validated data based on the
    * stored schema. NOTE: Existing data WILL NOT be validated
    *
@@ -999,6 +1007,8 @@ Skemer.prototype = {
    *          merged data
    */
   promiseValidateAdd: function () {
+    console.error('Skemer Promise functions are deprecated - they will be '
+        + 'removed from the next version as they are redundant');
     var args = arguments;
     return new Promise(function(resolve, reject) {
       try {

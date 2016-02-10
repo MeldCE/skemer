@@ -23,7 +23,6 @@ validating and merging new data into existing data, a [`Skemer`](#Skemer)
 prototype for doing multiple validations / merges against the same schema,
 and a [`buildJsDocs`](#buildJsDocs) function for creating
 a JSDoc comment string from the [`schema`](#schema) and its `doc` parameters.
-It also contains versions of each of the functions that return a Promise.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -33,14 +32,9 @@ It also contains versions of each of the functions that return a Promise.
 - [Example](#example)
 - [Skemer API](#skemer-api)
   - [buildJsDocs](#buildjsdocs)
-  - [promiseBuildJsDocs](#promisebuildjsdocs)
   - [Skemer](#skemer)
-    - [promiseValidateAdd](#promisevalidateadd)
-    - [promiseValidateNew](#promisevalidatenew)
     - [validateAdd](#validateadd)
     - [validateNew](#validatenew)
-  - [promiseValidateAdd](#promisevalidateadd-1)
-  - [promiseValidateNew](#promisevalidatenew-1)
   - [validateAdd](#validateadd-1)
   - [validateNew](#validatenew-1)
 - [Schema and Validate Options](#schema-and-validate-options)
@@ -153,32 +147,6 @@ Build a JSDoc for a variable using the given [`schema`](#schema).
 Returns **string** A string containing the JSDoc for the given
 [`schema`](#schema)
 
-## promiseBuildJsDocs
-
-Get a promise to build a JSDoc for a variable using the given
-[`schema`](#schema).
-
-**Parameters**
-
--   `schema` **Object** An Object containing a valid
-           [`schema`](#schema)
--   `options` **Object** An Object containing build options
-    -   `options.name` **[string]** Name of the object documenting (will be
-               prepended to any parameter names
-    -   `options.type` **[string]** Specify what block tag should be used
-               for the variables (optional, default `'prop'`)
-    -   `options.tabWidth` **[number]** The width (number of characters) of a
-               tab (optional, default `8`)
-    -   `options.preLine` **[string]** String (normally indentation) to include
-               before each line
-    -   `options.lineup` **[boolean]** Whether to line up text in a JSDoc
-               block (eg `@param`) with the end of the block command (optional, default `true`)
-    -   `options.wrap` **[number]** Number of characters to wrap the JSDoc lines
-               at
-
-Returns **Promise** A promise that will resolve to a string containing the
-         JSDoc for the given [`schema`](#schema)
-
 ## Skemer
 
 Skemer prototype to enable simple reuse of a schema
@@ -187,33 +155,6 @@ Skemer prototype to enable simple reuse of a schema
 
 -   `options` **Object** An object containing the validation
            [`options`](#options), including the [`schema`](#schema)
-
-### promiseValidateAdd
-
-Get a promise to add new data to exsiting validated data based on the
-stored schema. NOTE: Existing data WILL NOT be validated
-
-**Parameters**
-
--   `data` **Any** Existing data to merge new data into.
--   `newData` **...Any** Data to validate and merge into the existing data.
-
-Returns **Promise** A promise that will resolve to the validated and
-         merged data
-
-### promiseValidateNew
-
-Get a promise to validate and merge new data based on the
-stored schema.
-
-**Parameters**
-
--   `newData` **...Any** Data to validate, merge and return. If no data is
-           given, a variable containing any default values, if configured,
-           will be returned.
-
-Returns **Promise** A promise that will resolve to the validated and
-         merged data
 
 ### validateAdd
 
@@ -238,36 +179,6 @@ Validate and merge new data based on the stored schema.
            will be returned.
 
 Returns **Any** Validated and merged data
-
-## promiseValidateAdd
-
-Get a promise to validata and add new data to existing validated data based
-on the given schema. NOTE: Existing data WILL NOT be validated
-
-**Parameters**
-
--   `options` **Object** An object containing the validation
-           [`options`](#options), including the [`schema`](#schema)
--   `data` **Any** Data to validate and return. If no data is given,
-           data containing any default values will be returned. If newData
-           is given, newData will be validated and merged into data.
--   `newData` **...Any** Data to validate and merge into `data`
-
-Returns **Promise** A Promise that will resolve to the validated and
-         merged data
-
-## promiseValidateNew
-
-Get a promise to validate and merge new data base on the given schema.
-
-**Parameters**
-
--   `options` **Object** An object containing the validation
-           [`options`](#options), including the [`schema`](#schema)
--   `newData` **...Any** Data to validate, merge and return
-
-Returns **Promise** A Promise that will resolve to the validated and
-         merged data
 
 ## validateAdd
 
