@@ -114,6 +114,22 @@ function DataInvalidError(message, extra) {
 }
 util.inherits(DataInvalidError, Error);
 
+/**
+ * Thrown if the path given to the set function does not lead to a value
+ *
+ * @param {string} message Error message
+ * @param {*} extra Extra information
+ *
+ * @class
+ */
+function DataPathError(message, extra) {
+  Error.captureStackTrace(this, this.constructor);
+  this.name = this.constructor.name;
+  this.message = message;
+  this.extra = extra;
+}
+util.inherits(DataPathError, Error);
+
 module.exports = {
   SchemaError: SchemaError,
   DataItemsError: DataItemsError,

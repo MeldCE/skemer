@@ -1008,7 +1008,60 @@ Skemer.prototype = {
         reject(err);
       }
     }.bind(this));
-  }
+  },
+
+  /**
+   * Validate and set a specific variable given by the string path in
+   * the given validated data
+   *
+   * @param {*} data Data to add the given value to
+   * @param {String} path Path to variable to set. Dots should be used to
+   *        separate parts of the path
+   * @param {*) newData Value to set the specified variable to
+   */
+  set: function set(data, path, newData) {
+    if (typeof path !== 'string') {
+      throw new errors.DataPathError('Path must be a string');
+    }
+
+    if (!path) {
+      return this.validateAdd(data, newData);
+    } else {
+      var pathParts = path.split('.');
+
+      // Try digging into schema and data
+      var treeSchema = this.options.schema, treeData = data, p;
+
+      while (p < pathParts.length) {
+        // Check if the schema allows for a path
+        if (treeSchema.type instanceof Object || treeSchema.multiple) {
+          // Check if this is the end of the path
+          if (p === pathParts.length - 1) {
+            // Run validate on data
+            if ((value = validateData({
+              parameterName: path,
+              schema: treeSchema,
+              data: data[pathParts],
+              newData: newData
+            })) !== undefined) {
+              data[pathParts] = value;
+            }
+            break;
+          } else {
+            // Check for array
+            if (treeSchema.multiple && !treeSchema.object) {
+              // Check for existing data
+              if (data) {
+
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return data;
+  },
 };
 
 module.exports = {
