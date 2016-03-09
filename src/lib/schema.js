@@ -36,6 +36,50 @@ var buildDocOptions = {
 
 var schema = {
   type: {
+    description: {
+      doc: "A String giving information on the value expected",
+      types: [
+        {
+          type: 'string'
+        }/*,
+        {
+          type: {
+            doc: {
+              type: 'string'
+            },
+            parameters: {
+              type: {
+                doc: {
+                  type: 'string',
+                  required: true
+                },
+                type: {
+                  type: 'string',
+                  required: true
+                },
+                required: {
+                  type: 'boolean'
+                }
+              },
+              multiple: true,
+              object: true
+            },
+            returns: {
+              type: {
+                doc: {
+                  type: 'string',
+                  required: true
+                },
+                type: {
+                  type: 'string',
+                  required: true
+                }
+              }
+            }
+          }
+        }*/
+      ]
+    },
     doc: {
       doc: "A String giving information on the value expected",
       types: [

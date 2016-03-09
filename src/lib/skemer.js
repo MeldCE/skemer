@@ -594,6 +594,7 @@ function typeToJsDocString(schema) {
       /* TODO Implement as @callback
       case 'Function':
       case 'function':
+        if (schema.description && schema.description.parameters) {
         if (schema.doc && schema.doc.parameters) {
           return 'function'; // + (Object.keys(schema.doc.parameters)).join(', ')
           //    + ')';
@@ -700,13 +701,18 @@ function buildLines(schema, options, parameter, name) {
       }
     }
     
-    if (schema.doc) {
+    if (schema.description) {
+      line += ' ' + schema.description;
+    } else if (schema.doc) {
       line += ' ' + schema.doc;
     }
 
     lines.push(line);
   } else {
-    if (schema.doc) {
+    if (schema.description) {
+      lines.push(schema.description);
+      lines.push('');
+    } else if (schema.doc) {
       lines.push(schema.doc);
       lines.push('');
     }
