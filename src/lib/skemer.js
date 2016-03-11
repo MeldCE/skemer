@@ -589,7 +589,8 @@ function validateOptions(options) {
   } catch (err) {
     // @TODO Add test to see if it was a schema problem rather than options
     //console.log(err);
-    if (err.extra && err.extra.parameterName.startsWith('options.schema')) {
+    if (err.extra && err.extra.parameterName
+        && err.extra.parameterName.startsWith('options.schema')) {
       throw new errors.SchemaError(err.message, err.extra);
     }
     throw new errors.OptionsError(err.message, err.extra);
@@ -865,7 +866,7 @@ function validateAdd(options) {
  */
 function buildJsDocs(schema, options) {
   //console.log('skemer.buildJsDocs called', util.inspect(arguments));
-  
+
   // Validate schema
   schema = validateData({
     schema: schemas.schema,
