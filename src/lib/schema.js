@@ -241,7 +241,7 @@ module.exports = {
         doc: 'Schema to be used for recursive schemas. If none given, the '
             + 'given, the full schema given in `schema` will be used',
         noDocDig: true,
-        type: null
+        type: schema.type
       },
       replace: {
         doc: 'A boolean to specify whether to globally replace all existing '

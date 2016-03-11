@@ -48,6 +48,11 @@
                 DataItemsError
               </a>
               <a
+                href='#DataPathError'
+                class='block bold'>
+                DataPathError
+              </a>
+              <a
                 href='#DataRangeError'
                 class='block bold'>
                 DataRangeError
@@ -68,14 +73,14 @@
                 OptionsError
               </a>
               <a
-                href='#promiseBuildJsDocs'
+                href='#ReferenceError'
                 class='block bold'>
-                promiseBuildJsDocs
+                ReferenceError
               </a>
               <a
-                href='#promiseValidateAdd'
+                href='#SchemaError'
                 class='block bold'>
-                promiseValidateAdd
+                SchemaError
               </a>
               <a
                 href='#Skemer'
@@ -83,14 +88,9 @@
                 Skemer
               </a>
                 <a
-                  href='#Skemer.promiseValidateAdd'
+                  href='#Skemer.set'
                   class='regular block'>
-                  #promiseValidateAdd
-                </a>
-                <a
-                  href='#Skemer.promiseValidateNew'
-                  class='regular block'>
-                  #promiseValidateNew
+                  #set
                 </a>
                 <a
                   href='#Skemer.validateAdd'
@@ -102,16 +102,6 @@
                   class='regular block'>
                   #validateNew
                 </a>
-              <a
-                href='#promiseValidateNew'
-                class='block bold'>
-                promiseValidateNew
-              </a>
-              <a
-                href='#SchemaError'
-                class='block bold'>
-                SchemaError
-              </a>
               <a
                 href='#validateAdd'
                 class='block bold'>
@@ -144,7 +134,7 @@ on creating an instance of a <a href="#Skemer"><code>Skemer</code></a></p>
 
           </div>
         </li>
-        <li><code>[<code><a href="#schema">schema</a></code>]</code> <strong>baseSchema</strong>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code>]</code> <strong>baseSchema</strong>
           :
           <div class='force-inline'>
             <p>Schema to be used for recursive schemas. If
@@ -406,6 +396,30 @@ at</p>
     </ul>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='DataPathError' class='mt0'>
+    DataPathError<span class='gray'>(message, extra)</span>
+  </h2>
+  <p>Thrown if the path given to the set function does not lead to a value</p>
+
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
+          :
+          <div class='force-inline'>
+            <p>Error message</p>
+
+          </div>
+        </li>
+        <li>Any <strong>extra</strong>
+          :
+          <div class='force-inline'>
+            <p>Extra information</p>
+
+          </div>
+        </li>
+    </ul>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
   <h2 id='DataRangeError' class='mt0'>
     DataRangeError<span class='gray'>(message, extra)</span>
   </h2>
@@ -502,110 +516,52 @@ at</p>
     </ul>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='promiseBuildJsDocs' class='mt0'>
-    promiseBuildJsDocs<span class='gray'>(schema, options)</span>
+  <h2 id='ReferenceError' class='mt0'>
+    ReferenceError<span class='gray'>(message, extra)</span>
   </h2>
-  <p>Get a promise to build a JSDoc for a variable using the given
-<a href="schema"><code>schema</code></a>.</p>
+  <p>Thrown if a reference is invalid or can not be resolved</p>
 
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>schema</strong>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
           :
           <div class='force-inline'>
-            <p>An Object containing a valid
-<a href="#schema"><code>schema</code></a></p>
+            <p>Error message</p>
 
           </div>
         </li>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
+        <li>Any <strong>extra</strong>
           :
           <div class='force-inline'>
-            <p>An Object containing build options</p>
+            <p>Extra information</p>
 
           </div>
-            <ul>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>]</code> options.name
-                  <p>Name of the object documenting (will be
-prepended to any parameter names</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>]</code> options.type
-                    (default <code>&#x27;prop&#x27;</code>)
-                  <p>Specify what block tag should be used
-for the variables</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> options.tabWidth
-                    (default <code>8</code>)
-                  <p>The width (number of characters) of a
-tab</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>]</code> options.preLine
-                  <p>String (normally indentation) to include
-before each line</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>]</code> options.lineup
-                    (default <code>true</code>)
-                  <p>Whether to line up text in a JSDoc
-block (eg <code>@param</code>) with the end of the block command</p>
-</li>
-                <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> options.wrap
-                  <p>Number of characters to wrap the JSDoc lines
-at</p>
-</li>
-            </ul>
         </li>
     </ul>
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code></code>
-      :
-      <div class='force-inline'>
-        <p>A promise that will resolve to a string containing the
-JSDoc for the given schema</p>
-
-      </div>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='promiseValidateAdd' class='mt0'>
-    promiseValidateAdd<span class='gray'>(options, data, newData)</span>
+  <h2 id='SchemaError' class='mt0'>
+    SchemaError<span class='gray'>(message, extra)</span>
   </h2>
-  <p>Get a promise to validata and add new data to existing validated data based
-on the given schema. NOTE: Existing data WILL NOT be validated</p>
+  <p>Thrown if the parameter value is out of the given range</p>
 
     <h4>Parameters</h4>
     <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
           :
           <div class='force-inline'>
-            <p>An object containing the validation
-<a href="#options"><code>options</code></a>, including the <a href="#schema"><code>schema</code></a></p>
+            <p>Error message</p>
 
           </div>
         </li>
-        <li>Any <strong>data</strong>
+        <li>Any <strong>extra</strong>
           :
           <div class='force-inline'>
-            <p>Data to validate and return. If no data is given,
-data containing any default values will be returned. If newData
-is given, newData will be validated and merged into data.</p>
-
-          </div>
-        </li>
-        <li>...Any <strong>newData</strong>
-          :
-          <div class='force-inline'>
-            <p>Data to validate and merge into <code>data</code></p>
+            <p>Extra information</p>
 
           </div>
         </li>
     </ul>
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code></code>
-      :
-      <div class='force-inline'>
-        <p>A Promise that will resolve to the validated and
-merged data</p>
-
-      </div>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
   <h2 id='Skemer' class='mt0'>
@@ -625,91 +581,55 @@ merged data</p>
         </li>
     </ul>
       <h4>Instance members</h4>
-        <div class='collapsible' id='Skemer.promiseValidateAdd'>
-          <a href='#Skemer.promiseValidateAdd'>
+        <div class='collapsible' id='Skemer.set'>
+          <a href='#Skemer.set'>
             <code>
-              #promiseValidateAdd<span class='gray'>(data, newData)</span>
+              #set<span class='gray'>(data, path, newData)</span>
             </code>
             <div class='force-inline'>
-              <p>Get a promise to add new data to exsiting validated data based on the
-stored schema. NOTE: Existing data WILL NOT be validated</p>
+              <p>Validate and set a specific variable given by the string path in
+the given validated data</p>
 
             </div>
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
-              <h2 id='Skemer.promiseValidateAdd' class='mt0'>
-                promiseValidateAdd<span class='gray'>(data, newData)</span>
+              <h2 id='Skemer.set' class='mt0'>
+                set<span class='gray'>(data, path, newData)</span>
               </h2>
-              <p>Get a promise to add new data to exsiting validated data based on the
-            stored schema. NOTE: Existing data WILL NOT be validated</p>
+              <p>Validate and set a specific variable given by the string path in
+            the given validated data</p>
             
                 <h4>Parameters</h4>
                 <ul class='suppress-p-margin'>
                     <li>Any <strong>data</strong>
                       :
                       <div class='force-inline'>
-                        <p>Existing data to merge new data into.</p>
+                        <p>Data to add the given value to</p>
             
                       </div>
                     </li>
-                    <li>...Any <strong>newData</strong>
+                    <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code> <strong>path</strong>
                       :
                       <div class='force-inline'>
-                        <p>Data to validate and merge into the existing data.</p>
+                        <p>Path to variable to set. Dots should be used to
+            separate parts of the path</p>
+            
+                      </div>
+                    </li>
+                    <li>Any <strong>newData</strong>
+                      :
+                      <div class='force-inline'>
+                        <p>Value to set the specified variable to</p>
             
                       </div>
                     </li>
                 </ul>
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code></code>
-                  :
+                  <code>undefined</code>
+                  
                   <div class='force-inline'>
-                    <p>A promise that will resolve to the validated and
-            merged data</p>
-            
-                  </div>
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='Skemer.promiseValidateNew'>
-          <a href='#Skemer.promiseValidateNew'>
-            <code>
-              #promiseValidateNew<span class='gray'>(newData)</span>
-            </code>
-            <div class='force-inline'>
-              <p>Get a promise to validate and merge new data based on the
-stored schema.</p>
-
-            </div>
-          </a>
-          <div class='collapser border px2'>
-            <section class='py2 clearfix'>
-              <h2 id='Skemer.promiseValidateNew' class='mt0'>
-                promiseValidateNew<span class='gray'>(newData)</span>
-              </h2>
-              <p>Get a promise to validate and merge new data based on the
-            stored schema.</p>
-            
-                <h4>Parameters</h4>
-                <ul class='suppress-p-margin'>
-                    <li>...Any <strong>newData</strong>
-                      :
-                      <div class='force-inline'>
-                        <p>Data to validate, merge and return. If no data is
-            given, a variable containing any default values, if configured,
-            will be returned.</p>
-            
-                      </div>
-                    </li>
-                </ul>
-                  <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code></code>
-                  :
-                  <div class='force-inline'>
-                    <p>A promise that will resolve to the validated and
-            merged data</p>
-            
+                    
                   </div>
             </section>
           </div>
@@ -799,63 +719,6 @@ NOTE: Existing data WILL NOT be validated</p>
             </section>
           </div>
         </div>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='promiseValidateNew' class='mt0'>
-    promiseValidateNew<span class='gray'>(options, newData)</span>
-  </h2>
-  <p>Get a promise to validate and merge new data base on the given schema.</p>
-
-    <h4>Parameters</h4>
-    <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
-          :
-          <div class='force-inline'>
-            <p>An object containing the validation
-<a href="#options"><code>options</code></a>, including the <a href="#schema"><code>schema</code></a></p>
-
-          </div>
-        </li>
-        <li>...Any <strong>newData</strong>
-          :
-          <div class='force-inline'>
-            <p>Data to validate, merge and return</p>
-
-          </div>
-        </li>
-    </ul>
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code></code>
-      :
-      <div class='force-inline'>
-        <p>A Promise that will resolve to the validated and
-merged data</p>
-
-      </div>
-</section>
-</div><div class='py1'><section class='py2 clearfix'>
-  <h2 id='SchemaError' class='mt0'>
-    SchemaError<span class='gray'>(message, extra)</span>
-  </h2>
-  <p>Thrown if the parameter value is out of the given range</p>
-
-    <h4>Parameters</h4>
-    <ul class='suppress-p-margin'>
-        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>message</strong>
-          :
-          <div class='force-inline'>
-            <p>Error message</p>
-
-          </div>
-        </li>
-        <li>Any <strong>extra</strong>
-          :
-          <div class='force-inline'>
-            <p>Extra information</p>
-
-          </div>
-        </li>
-    </ul>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
   <h2 id='validateAdd' class='mt0'>

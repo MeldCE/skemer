@@ -130,6 +130,22 @@ function DataPathError(message, extra) {
 }
 util.inherits(DataPathError, Error);
 
+/**
+ * Thrown if a reference is invalid or can not be resolved
+ *
+ * @param {string} message Error message
+ * @param {*} extra Extra information
+ *
+ * @class
+ */
+function ReferenceError(message, extra) {
+  Error.captureStackTrace(this, this.constructor);
+  this.name = this.constructor.name;
+  this.message = message;
+  this.extra = extra;
+}
+util.inherits(ReferenceError, Error);
+
 module.exports = {
   SchemaError: SchemaError,
   DataItemsError: DataItemsError,
@@ -137,5 +153,7 @@ module.exports = {
   DataTypeError: DataTypeError,
   DataRequiredError: DataRequiredError,
   DataRangeError: DataRangeError,
-  DataInvalidError: DataInvalidError
+  DataInvalidError: DataInvalidError,
+  DataPathEror: DataPathError,
+  ReferenceError: ReferenceError
 };

@@ -33,14 +33,10 @@ It also contains versions of each of the functions that return a Promise.
 - [Example](#example)
 - [Skemer API](#skemer-api)
   - [buildJsDocs](#buildjsdocs)
-  - [promiseBuildJsDocs](#promisebuildjsdocs)
   - [Skemer](#skemer)
-    - [promiseValidateAdd](#promisevalidateadd)
-    - [promiseValidateNew](#promisevalidatenew)
+    - [set](#set)
     - [validateAdd](#validateadd)
     - [validateNew](#validatenew)
-  - [promiseValidateAdd](#promisevalidateadd-1)
-  - [promiseValidateNew](#promisevalidatenew-1)
   - [validateAdd](#validateadd-1)
   - [validateNew](#validatenew-1)
 - [Schema and Validate Options](#schema-and-validate-options)
@@ -49,10 +45,12 @@ It also contains versions of each of the functions that return a Promise.
 - [Skemer Errors](#skemer-errors)
   - [DataInvalidError](#datainvaliderror)
   - [DataItemsError](#dataitemserror)
+  - [DataPathError](#datapatherror)
   - [DataRangeError](#datarangeerror)
   - [DataRequiredError](#datarequirederror)
   - [DataTypeError](#datatypeerror)
   - [OptionsError](#optionserror)
+  - [ReferenceError](#referenceerror)
   - [SchemaError](#schemaerror)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -130,12 +128,12 @@ Schema.validateAdd(data, valid2, invalid);
 
 ## buildJsDocs
 
-Build a JSDoc for a variable using the given [`schema`](#schema).
+Build a JSDoc for a variable using the given `schema`.
 
 **Parameters**
 
 -   `schema` **Object** An Object containing a valid
-           [`schema`](#schema)
+           `schema`
 -   `options` **Object** An Object containing build options
     -   `options.name` **[string]** Name of the object documenting (will be
                prepended to any parameter names
@@ -150,34 +148,7 @@ Build a JSDoc for a variable using the given [`schema`](#schema).
     -   `options.wrap` **[number]** Number of characters to wrap the JSDoc lines
                at
 
-Returns **string** A string containing the JSDoc for the given
-[`schema`](#schema)
-
-## promiseBuildJsDocs
-
-Get a promise to build a JSDoc for a variable using the given
-[`schema`](#schema).
-
-**Parameters**
-
--   `schema` **Object** An Object containing a valid
-           [`schema`](#schema)
--   `options` **Object** An Object containing build options
-    -   `options.name` **[string]** Name of the object documenting (will be
-               prepended to any parameter names
-    -   `options.type` **[string]** Specify what block tag should be used
-               for the variables (optional, default `'prop'`)
-    -   `options.tabWidth` **[number]** The width (number of characters) of a
-               tab (optional, default `8`)
-    -   `options.preLine` **[string]** String (normally indentation) to include
-               before each line
-    -   `options.lineup` **[boolean]** Whether to line up text in a JSDoc
-               block (eg `@param`) with the end of the block command (optional, default `true`)
-    -   `options.wrap` **[number]** Number of characters to wrap the JSDoc lines
-               at
-
-Returns **Promise** A promise that will resolve to a string containing the
-         JSDoc for the given [`schema`](#schema)
+Returns **string** A string containing the JSDoc for the given schema
 
 ## Skemer
 
@@ -186,34 +157,21 @@ Skemer prototype to enable simple reuse of a schema
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           [`options`](#options), including the [`schema`](#schema)
+           `options`, including the `schema`
 
-### promiseValidateAdd
+### set
 
-Get a promise to add new data to exsiting validated data based on the
-stored schema. NOTE: Existing data WILL NOT be validated
-
-**Parameters**
-
--   `data` **Any** Existing data to merge new data into.
--   `newData` **...Any** Data to validate and merge into the existing data.
-
-Returns **Promise** A promise that will resolve to the validated and
-         merged data
-
-### promiseValidateNew
-
-Get a promise to validate and merge new data based on the
-stored schema.
+Validate and set a specific variable given by the string path in
+the given validated data
 
 **Parameters**
 
--   `newData` **...Any** Data to validate, merge and return. If no data is
-           given, a variable containing any default values, if configured,
-           will be returned.
+-   `data` **Any** Data to add the given value to
+-   `path` **String** Path to variable to set. Dots should be used to
+           separate parts of the path
+-   `newData` **Any** Value to set the specified variable to
 
-Returns **Promise** A promise that will resolve to the validated and
-         merged data
+Returns **undefined** 
 
 ### validateAdd
 
@@ -239,36 +197,6 @@ Validate and merge new data based on the stored schema.
 
 Returns **Any** Validated and merged data
 
-## promiseValidateAdd
-
-Get a promise to validata and add new data to existing validated data based
-on the given schema. NOTE: Existing data WILL NOT be validated
-
-**Parameters**
-
--   `options` **Object** An object containing the validation
-           [`options`](#options), including the [`schema`](#schema)
--   `data` **Any** Data to validate and return. If no data is given,
-           data containing any default values will be returned. If newData
-           is given, newData will be validated and merged into data.
--   `newData` **...Any** Data to validate and merge into `data`
-
-Returns **Promise** A Promise that will resolve to the validated and
-         merged data
-
-## promiseValidateNew
-
-Get a promise to validate and merge new data base on the given schema.
-
-**Parameters**
-
--   `options` **Object** An object containing the validation
-           [`options`](#options), including the [`schema`](#schema)
--   `newData` **...Any** Data to validate, merge and return
-
-Returns **Promise** A Promise that will resolve to the validated and
-         merged data
-
 ## validateAdd
 
 Validata and add new data to existing validated data based on the given
@@ -277,7 +205,7 @@ schema. NOTE: Existing data WILL NOT be validated
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           [`options`](#options), including the [`schema`](#schema)
+           `options`, including the `schema`
 -   `data` **Any** Data to validate and return. If no data is given,
            data containing any default values will be returned. If newData
            is given, newData will be validated and merged into data.
@@ -292,7 +220,7 @@ Validate and merge new data based on the given schema.
 **Parameters**
 
 -   `options` **Object** An object containing the validation
-           [`options`](#options), including the [`schema`](#schema)
+           `options`, including the `schema`
 -   `newData` **...Any** Data to validate, merge and return
 
 Returns **Any** Validated and merged data
@@ -303,15 +231,15 @@ Returns **Any** Validated and merged data
 ## options
 
 Options Object that must be passed to the one-off
-[validate](#validateAdd) [functions](#validateNew) and
+`validate` `functions` and
 on creating an instance of a `Skemer`
 
 **Parameters**
 
--   `schema` **schema** [`schema`](#schema) to use for the validation
--   `baseSchema` **[schema]** [`schema`](#schema) to be used for recursive
-           schemas. If none given, the given, the full schema given in 
-           `schema` will be used
+-   `schema` **schema** `Schema` to use for the validation
+-   `baseSchema` **[Object]** Schema to be used for recursive schemas. If
+           none given, the given, the full schema given in `schema` will be
+           used
 -   `replace` **[boolean or Array&lt;boolean&gt;]** A boolean to specify whether to
            globally replace all existing values for arrays and objects, or an
            object of string/boolean key/value pairs used to specify what
@@ -385,6 +313,15 @@ Thrown if the parameter value is out of the given range
 -   `message` **string** Error message
 -   `extra` **Any** Extra information
 
+## DataPathError
+
+Thrown if the path given to the set function does not lead to a value
+
+**Parameters**
+
+-   `message` **string** Error message
+-   `extra` **Any** Extra information
+
 ## DataRangeError
 
 Thrown if the parameter value is out of the given range
@@ -415,6 +352,15 @@ Thrown if the type of value for a parameter in the schema is incorrect,
 ## OptionsError
 
 Thrown if the parameter value is out of the given range
+
+**Parameters**
+
+-   `message` **string** Error message
+-   `extra` **Any** Extra information
+
+## ReferenceError
+
+Thrown if a reference is invalid or can not be resolved
 
 **Parameters**
 

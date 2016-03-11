@@ -495,7 +495,8 @@ function doValidateAdd(context, inMultiple) {
 
 /** @private
  *
- * Validates the given options Object
+ * Validates the given options Object and also dereferences any references in
+ * the schema
  *
  * @param {Object} options Options Object to validate
  *
@@ -505,12 +506,86 @@ function validateOptions(options) {
   // Validate the schema
   try {
     //console.log(schemas.options);
-    return doValidateAdd({
+    options = doValidateAdd({
       parameterName: 'options',
       schema: schemas.options,
       newData: options,
-      baseSchema: schemas.schema
+      baseSchema: schemas.schema,
+      warnDeprecated: (options.warnDeprecated === false ? false : true)
     });
+
+    // Expand refs
+    var stack = [],
+        ref,
+        pointer,
+        i = 0, j,
+        curr = options.schema,
+        keys = Object.keys(curr);
+    
+    while (keys && i < keys.length) {
+      if (curr[keys[i]] === null) {
+        if (options.warnDeprecated !== false) {
+          console.log('Use of null and baseSchema is now deprecated - '
+              + 'use $ref');
+        }
+        i++;
+      } else if (curr[keys[i]] instanceof Object) {
+        // Check if it is a reference
+        //console.log('checking', keys[i], curr[keys[i]]);
+        if (typeof curr[keys[i]]['$ref'] === 'string') {
+          //console.log('got reference ' + curr[keys[i]] + ' for ' + keys[i]);
+          // Resolve reference
+          ref = curr[keys[i]]['$ref'];
+          // Remove leading #
+          if (ref.startsWith('#')) {
+            ref = ref.slice(1);
+          }
+          ref = ref.split(/\/+/);
+          //console.log('parts are', ref);
+          pointer = options.schema;
+
+          // Walk down URI to find object
+          for (j in ref) {
+            if (pointer instanceof Object) {
+              pointer = pointer[ref[j]];
+            } else {
+              throw new errors.ReferenceError('Reference `'
+                  + curr[keys[i]]['$ref'] + ' could not be resolved',
+                  options);
+            }
+          }
+
+          // Replace with resolved value
+          curr[keys[i]]['$ref'] = pointer;
+
+          i++;
+        } else if (Object.keys(curr[keys[i]]).length) {
+          // Go into object
+          stack.push({
+            curr: curr,
+            i: i + 1,
+            keys: keys
+          });
+          curr = curr[keys[i]];
+          keys = Object.keys(curr);
+          i = 0;
+        } else {
+          i++;
+        }
+      } else {
+        i++;
+      }
+
+      // Check if finished at level and move back up stack
+      if (i >= keys.length && stack.length) {
+        curr = stack.pop();
+        i = curr.i;
+        keys = curr.keys;
+        curr = curr.curr;
+      }
+    }
+
+    return options;
   } catch (err) {
     // @TODO Add test to see if it was a schema problem rather than options
     //console.log(err);
@@ -749,27 +824,6 @@ function validateNew(options) {
 }
 
 /**
- * Get a promise to validate and merge new data base on the given schema.
- *
- * @param {Object} options An object containing the validation
- *        [`options`]{@link #options}, including the [`schema`]{@link #schema}
- * @param {...*} newData Data to validate, merge and return
- *
- * @returns {Promise} A Promise that will resolve to the validated and
- *          merged data
- */
-function promiseValidateNew() {
-  var args = arguments;
-  return new Promise(function(resolve, reject) {
-    try {
-      resolve(validateNew.apply(this, args));
-    } catch (err) {
-      reject(err);
-    }
-  });
-}
-
-/**
  * Validata and add new data to existing validated data based on the given
  * schema. NOTE: Existing data WILL NOT be validated
  *
@@ -791,31 +845,6 @@ function validateAdd(options) {
 
   return validateData.apply(this,
       [options].concat(Array.prototype.slice.call(arguments, 1)));
-}
-
-/**
- * Get a promise to validata and add new data to existing validated data based
- * on the given schema. NOTE: Existing data WILL NOT be validated
- *
- * @param {Object} options An object containing the validation
- *        [`options`]{@link #options}, including the [`schema`]{@link #schema}
- * @param {*} data Data to validate and return. If no data is given,
- *        data containing any default values will be returned. If newData
- *        is given, newData will be validated and merged into data.
- * @param {...*} newData Data to validate and merge into `data`
- *
- * @returns {Promise} A Promise that will resolve to the validated and
- *          merged data
- */
-function promiseValidateAdd() {
-  var args = arguments;
-  return new Promise(function(resolve, reject) {
-    try {
-      resolve(validateAdd.apply(this, args));
-    } catch (err) {
-      reject(err);
-    }
-  });
 }
 
 /**
@@ -900,28 +929,6 @@ function buildJsDocs(schema, options) {
 }
 
 /**
- * Get a promise to build a JSDoc for a variable using the given
- * {@link schema}.
- *
- * @param {Object} schema An Object containing a valid
- *        [schema]{@link #schema}
- * @param {Object} options An Object containing build options
- %%buildJsDocOptions%%
- *
- * @returns {Promise} A promise that will resolve to a string containing the
- *          JSDoc for the given schema
- */
-function promiseBuildJsDocs(schema, options) {
-  return new Promise(function(resolve, reject) {
-    try {
-      resolve(buildJsDocs(schema, options));
-    } catch (err) {
-      reject(err);
-    }
-  });
-}
-
-/**
  * Skemer prototype to enable simple reuse of a schema
  *
  * @param {Object} options An object containing the validation
@@ -952,29 +959,6 @@ Skemer.prototype = {
   },
   
   /**
-   * Get a promise to validate and merge new data based on the
-   * stored schema.
-   *
-   * @param {...*} newData Data to validate, merge and return. If no data is
-   *        given, a variable containing any default values, if configured,
-   *        will be returned.
-   *
-   * @returns {Promise} A promise that will resolve to the validated and
-   *          merged data
-   */
-  promiseValidateNew: function () {
-    var args = arguments;
-    return new Promise(function(resolve, reject) {
-      try {
-        resolve(validateData.apply(this, [this.options,
-            undefined].concat(Array.prototype.slice.call(args))));
-      } catch(err) {
-        reject(err);
-      }
-    }.bind(this));
-  },
-  
-  /**
    * Add new data to existing validated data based on the stored schema.
    * NOTE: Existing data WILL NOT be validated
    *
@@ -987,28 +971,6 @@ Skemer.prototype = {
     return validateData.apply(this, 
         [this.options].concat(Array.prototype.slice.call(arguments)));
   },
-  
-  /**
-   * Get a promise to add new data to exsiting validated data based on the
-   * stored schema. NOTE: Existing data WILL NOT be validated
-   *
-   * @param {*} data Existing data to merge new data into.
-   * @param {...*} newData Data to validate and merge into the existing data.
-   *
-   * @returns {Promise} A promise that will resolve to the validated and
-   *          merged data
-   */
-  promiseValidateAdd: function () {
-    var args = arguments;
-    return new Promise(function(resolve, reject) {
-      try {
-        resolve(validateData.apply(this, 
-            [this.options].concat(Array.prototype.slice.call(args))));
-      } catch(err) {
-        reject(err);
-      }
-    }.bind(this));
-  },
 
   /**
    * Validate and set a specific variable given by the string path in
@@ -1017,7 +979,9 @@ Skemer.prototype = {
    * @param {*} data Data to add the given value to
    * @param {String} path Path to variable to set. Dots should be used to
    *        separate parts of the path
-   * @param {*) newData Value to set the specified variable to
+   * @param {*} newData Value to set the specified variable to
+   *
+   * @returns {undefined}
    */
   set: function set(data, path, newData) {
     if (typeof path !== 'string') {
@@ -1031,6 +995,7 @@ Skemer.prototype = {
 
       // Try digging into schema and data
       var treeSchema = this.options.schema, treeData = data, p;
+      var value;
 
       while (p < pathParts.length) {
         // Check if the schema allows for a path
@@ -1061,17 +1026,14 @@ Skemer.prototype = {
     }
 
     return data;
-  },
+  }
 };
 
 module.exports = {
   Skemer: Skemer,
   validateNew: validateNew,
-  promiseValidateNew: promiseValidateNew,
   validateAdd: validateAdd,
-  promiseValidateAdd: promiseValidateAdd,
-  buildJsDocs: buildJsDocs,
-  promiseBuildJsDocs: promiseBuildJsDocs
+  buildJsDocs: buildJsDocs
 };
 
 
