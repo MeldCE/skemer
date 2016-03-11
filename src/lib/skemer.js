@@ -546,7 +546,8 @@ function validateOptions(options) {
 
           // Walk down URI to find object
           for (j in ref) {
-            if (pointer instanceof Object) {
+            if (ref[j] === '') {
+            } else if (pointer instanceof Object) {
               pointer = pointer[ref[j]];
             } else {
               throw new errors.ReferenceError('Reference `'
@@ -556,7 +557,7 @@ function validateOptions(options) {
           }
 
           // Replace with resolved value
-          curr[keys[i]]['$ref'] = pointer;
+          curr[keys[i]] = pointer;
 
           i++;
         } else if (Object.keys(curr[keys[i]]).length) {
