@@ -1,4 +1,4 @@
-# skemer 0.8.6
+# skemer 0.8.6-r1
 <!--[![NPM version](http://img.shields.io/npm/v/convict.svg)](https://www.npmjs.org/package/convict)-->
 [![Build status](https://api.travis-ci.org/MeldCE/skemer.svg?branch=master)](https://travis-ci.org/MeldCE/skemer/branches)
 [![Dependency Status](https://david-dm.org/MeldCE/skemer.svg)](https://david-dm.org/MeldCE/skemer)
@@ -253,6 +253,8 @@ data.
 
 **Parameters**
 
+-   `description` **[string]** A String giving information on the value
+           expected
 -   `doc` **[string]** A String giving information on the value expected
 -   `docType` **[string]** A string containing the type of the value
            expected that will be used instead of calculating the type of value
