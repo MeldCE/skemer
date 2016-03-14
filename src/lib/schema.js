@@ -82,6 +82,7 @@ var schema = {
             }*/
           ]
         },
+        // TODO doc: { '$ref': '/types/type/type/description' },
         doc: {
           doc: "A String giving information on the value expected",
           types: [

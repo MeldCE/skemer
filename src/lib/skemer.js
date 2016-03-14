@@ -354,6 +354,24 @@ function setValueToType(context) {
 function doValidateAdd(context, inMultiple) {
   //console.log('doValidateAdd', util.inspect(context, {depth: null}), inMultiple);
 
+  // Check for a reference
+  if (context.newData instanceof Object && context.newData['$ref']
+      && typeof context.newData['$ref'] === 'string') {
+    console.log('found a reference on', context.parameterName, context.newData['$ref']);
+    // Deference reference and set noDescend
+    try {
+      context.newData = getReference(context.baseNewData,
+          context.newData['$ref']);
+    } catch(err) {
+      console.log('didn\'t find data');
+      if (context.baseData) {
+        context.newData = getReference(context.baseData,
+            context.newData['$ref']);
+      }
+    }
+    context.noDescend = true;
+  }
+
   if (!inMultiple && context.schema.multiple) {
     //console.log('should have multiple values');
 
@@ -495,6 +513,90 @@ function doValidateAdd(context, inMultiple) {
 
 /** @private
  *
+ * Gets an item from a reference
+ *
+ * @param {Object} object Object to retrieve reference from
+ * @param {string} reference Reference string
+ *
+ * @returns{*} Referenced item
+ */
+function getReference(object, reference) {
+  console.log('getReference called', arguments);
+  var j;
+  // Remove leading #
+  if (reference.startsWith('#')) {
+    reference = reference.slice(1);
+  }
+  reference = reference.split(/\/+/);
+
+  // Walk down URI to find object
+  for (j in reference) {
+    if (reference[j] === '') {
+    } else if (object instanceof Object) {
+      object = object[reference[j]];
+    } else {
+      throw new errors.ReferenceError('Reference `'
+          + reference + ' could not be resolved', object);
+    }
+  }
+
+  return object;
+}
+
+/** @private
+ *
+ * Goes through and deferences any $refs
+ *
+ * @param {Object} schema Schema Object to dereference
+ *
+ * @returns {undefined}
+ */
+function dereference(schema) {
+  var stack = [],
+      ref,
+      pointer,
+      i = 0, j,
+      curr = schema,
+      keys = Object.keys(curr);
+  
+  while (keys && i < keys.length) {
+    if (curr[keys[i]] instanceof Object) {
+      // Check if it is a reference
+      //console.log('checking', keys[i], curr[keys[i]]);
+      if (typeof curr[keys[i]]['$ref'] === 'string') {
+        // Replace with resolved value
+        curr[keys[i]] = getReference(schema, curr[keys[i]]['$ref']);
+
+        i++;
+      } else if (Object.keys(curr[keys[i]]).length) {
+        // Go into object
+        stack.push({
+          curr: curr,
+          i: i + 1,
+          keys: keys
+        });
+        curr = curr[keys[i]];
+        keys = Object.keys(curr);
+        i = 0;
+      } else {
+        i++;
+      }
+    } else {
+      i++;
+    }
+
+    // Check if finished at level and move back up stack
+    if (i >= keys.length && stack.length) {
+      curr = stack.pop();
+      i = curr.i;
+      keys = curr.keys;
+      curr = curr.curr;
+    }
+  }
+}
+
+/** @private
+ *
  * Validates the given options Object and also dereferences any references in
  * the schema
  *
@@ -505,86 +607,18 @@ function doValidateAdd(context, inMultiple) {
 function validateOptions(options) {
   // Validate the schema
   try {
+    // TODO Need to extract the schema and baseSchema from the options so we
+    // can test it nicely
+
     //console.log(schemas.options);
     options = doValidateAdd({
       parameterName: 'options',
       schema: schemas.options,
+      baseNewData: options.schema,
       newData: options,
       baseSchema: schemas.schema,
       warnDeprecated: (options.warnDeprecated === false ? false : true)
     });
-
-    // Expand refs
-    var stack = [],
-        ref,
-        pointer,
-        i = 0, j,
-        curr = options.schema,
-        keys = Object.keys(curr);
-    
-    while (keys && i < keys.length) {
-      if (curr[keys[i]] === null) {
-        if (options.warnDeprecated !== false) {
-          console.log('Use of null and baseSchema is now deprecated - '
-              + 'use $ref');
-        }
-        i++;
-      } else if (curr[keys[i]] instanceof Object) {
-        // Check if it is a reference
-        //console.log('checking', keys[i], curr[keys[i]]);
-        if (typeof curr[keys[i]]['$ref'] === 'string') {
-          //console.log('got reference ' + curr[keys[i]] + ' for ' + keys[i]);
-          // Resolve reference
-          ref = curr[keys[i]]['$ref'];
-          // Remove leading #
-          if (ref.startsWith('#')) {
-            ref = ref.slice(1);
-          }
-          ref = ref.split(/\/+/);
-          //console.log('parts are', ref);
-          pointer = options.schema;
-
-          // Walk down URI to find object
-          for (j in ref) {
-            if (ref[j] === '') {
-            } else if (pointer instanceof Object) {
-              pointer = pointer[ref[j]];
-            } else {
-              throw new errors.ReferenceError('Reference `'
-                  + curr[keys[i]]['$ref'] + ' could not be resolved',
-                  options);
-            }
-          }
-
-          // Replace with resolved value
-          curr[keys[i]] = pointer;
-
-          i++;
-        } else if (Object.keys(curr[keys[i]]).length) {
-          // Go into object
-          stack.push({
-            curr: curr,
-            i: i + 1,
-            keys: keys
-          });
-          curr = curr[keys[i]];
-          keys = Object.keys(curr);
-          i = 0;
-        } else {
-          i++;
-        }
-      } else {
-        i++;
-      }
-
-      // Check if finished at level and move back up stack
-      if (i >= keys.length && stack.length) {
-        curr = stack.pop();
-        i = curr.i;
-        keys = curr.keys;
-        curr = curr.curr;
-      }
-    }
 
     return options;
   } catch (err) {
@@ -626,6 +660,8 @@ function validateData(options, data, newData) {
   //if (newData !== undefined) {
     context.newData = newData;
     context.data = data;
+    context.baseNewData = newData;
+    context.baseData = data;
   //} else {
   //  context.newData = data;
   //}
@@ -1015,7 +1051,9 @@ Skemer.prototype = {
               parameterName: path,
               schema: treeSchema,
               data: data[pathParts],
-              newData: newData
+              newData: newData,
+              baseNewData: newData,
+              baseData: data[pathParts]
             })) !== undefined) {
               data[pathParts] = value;
             }
