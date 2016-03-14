@@ -56,7 +56,7 @@ function shouldReplace(context) {
  */
 function setValueToType(context) {
   var t, value, parts;
-  //console.log('\nsetValueToType', util.inspect(context, {depth: null}));
+  //console.log('\nsetValueToType', context.parameterName) ;//, util.inspect(context, {depth: null}));
   if (context.schema.types) {
     //console.log('have types, checking for value', context.schema, context.newData);
     // Return default value if we don't have a value
@@ -68,7 +68,7 @@ function setValueToType(context) {
       // Go through possible types and return first one that returns a value
       var thrown;
       for (t in context.schema.types) {
-        thrown = false;
+        thrown = [];
         //console.log('checking type ' + t + ' for ' + context.parameterName, context.schema.types[t]);
         try {
           if ((value = doValidateAdd(merge({}, context, {
@@ -86,7 +86,7 @@ function setValueToType(context) {
             //console.log('error is not a DataTypeError - rethrowing');
             throw err;
           }
-          thrown = err;
+          thrown.push(err);
           //console.log('Caught a type error - not that type');
         }
       }
@@ -95,9 +95,8 @@ function setValueToType(context) {
         //console.log('throwing error', util.inspect(context, {depth: null}));
         //console.log(context);
         throw new errors.DataTypeError(typeof context.newData + ' value is '
-            + 'not allowed' + (thrown.extra && thrown.extra.parameterName ?
-            ' for ' + thrown.extra.parameterName : (context.parameterName ? 
-            ' for ' + context.parameterName : '')), context);
+            + 'not allowed' + (context.parameterName ? 
+            ' for ' + context.parameterName : ''), thrown, context);
       }
     }
   } else {
@@ -352,24 +351,15 @@ function setValueToType(context) {
  * @returns {boolean} True if any data was added to the object
  */
 function doValidateAdd(context, inMultiple) {
-  //console.log('doValidateAdd', util.inspect(context, {depth: null}), inMultiple);
+  //console.log('doValidateAdd', context.parameterName, inMultiple); //util.inspect(context, {depth: null}), inMultiple);
 
-  // Check for a reference
-  if (context.newData instanceof Object && context.newData['$ref']
+  if (context.allowReferences && context.newData instanceof Object
       && typeof context.newData['$ref'] === 'string') {
-    console.log('found a reference on', context.parameterName, context.newData['$ref']);
-    // Deference reference and set noDescend
-    try {
-      context.newData = getReference(context.baseNewData,
-          context.newData['$ref']);
-    } catch(err) {
-      console.log('didn\'t find data');
-      if (context.baseData) {
-        context.newData = getReference(context.baseData,
-            context.newData['$ref']);
-      }
-    }
-    context.noDescend = true;
+    // Check for a valid reference
+    getReference(context.baseNewData, context.newData['$ref']);
+    // TODO check that schema for object matches schema for referenced object
+    context.data = context.newData;
+    return context.data;
   }
 
   if (!inMultiple && context.schema.multiple) {
@@ -521,22 +511,25 @@ function doValidateAdd(context, inMultiple) {
  * @returns{*} Referenced item
  */
 function getReference(object, reference) {
-  console.log('getReference called', arguments);
-  var j;
+  //console.log('getReference called', arguments);
+  var j, ref = reference;
   // Remove leading #
-  if (reference.startsWith('#')) {
-    reference = reference.slice(1);
+  if (ref.startsWith('#')) {
+    ref = ref.slice(1);
   }
-  reference = reference.split(/\/+/);
+  ref = ref.split(/\/+/);
 
+  //console.log('ref is', ref);
   // Walk down URI to find object
-  for (j in reference) {
-    if (reference[j] === '') {
-    } else if (object instanceof Object) {
-      object = object[reference[j]];
+  for (j in ref) {
+    if (ref[j] === '') {
+    } else if (object instanceof Object
+        && object[ref[j]] !== undefined) {
+      object = object[ref[j]];
     } else {
+      //console.log('throwing');
       throw new errors.ReferenceError('Reference `'
-          + reference + ' could not be resolved', object);
+          + reference + '` could not be resolved', object);
     }
   }
 
@@ -558,8 +551,25 @@ function dereference(schema) {
       i = 0, j,
       curr = schema,
       keys = Object.keys(curr);
-  
-  while (keys && i < keys.length) {
+
+  /** @private
+   *
+   * Pops the last object off the stack while dereferencing
+   *
+   * @returns {true} Always true
+   */
+  function dereferencePopStack() {
+    //console.log('popping from stack', stack.length - 1);
+    curr = stack.pop();
+    i = curr.i;
+    keys = curr.keys;
+    curr = curr.curr;
+
+    return true;
+  }
+
+  while ((keys && i < keys.length)
+      || (stack.length && dereferencePopStack())) {
     if (curr[keys[i]] instanceof Object) {
       // Check if it is a reference
       //console.log('checking', keys[i], curr[keys[i]]);
@@ -570,6 +580,7 @@ function dereference(schema) {
         i++;
       } else if (Object.keys(curr[keys[i]]).length) {
         // Go into object
+        //console.log('pushing to stack for', curr[keys[i]], stack.length);
         stack.push({
           curr: curr,
           i: i + 1,
@@ -583,14 +594,6 @@ function dereference(schema) {
       }
     } else {
       i++;
-    }
-
-    // Check if finished at level and move back up stack
-    if (i >= keys.length && stack.length) {
-      curr = stack.pop();
-      i = curr.i;
-      keys = curr.keys;
-      curr = curr.curr;
     }
   }
 }
@@ -617,16 +620,30 @@ function validateOptions(options) {
       baseNewData: options.schema,
       newData: options,
       baseSchema: schemas.schema,
+      allowReferences: true,
       warnDeprecated: (options.warnDeprecated === false ? false : true)
     });
+
+
+    //console.log('before dereference', util.inspect(options.schema, {
+    //  depth: null
+    //}));
+    // Dereference schema references
+    dereference(options.schema);
+
+    //console.log('after dereference', util.inspect(options.schema, {
+    //  depth: null
+    //}));
 
     return options;
   } catch (err) {
     // @TODO Add test to see if it was a schema problem rather than options
-    //console.log(err);
+    //console.log(err, err.stack, err.extra);
     if (err.extra && err.extra.parameterName
         && err.extra.parameterName.startsWith('options.schema')) {
       throw new errors.SchemaError(err.message, err.extra);
+    } else if (err.name === 'ReferenceError') {
+      throw err;
     }
     throw new errors.OptionsError(err.message, err.extra);
   }
