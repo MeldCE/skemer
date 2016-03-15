@@ -1,6 +1,6 @@
 {
   "name": "skemer",
-  "version": "0.8.6-r1",
+  "version": "0.9.0",
   "description": "A Javascript variable validation and merge tool.",
   "main": "lib/skemer.js",
   "scripts": {
@@ -46,7 +46,7 @@
     "gulp-foreach": "^0.1.0",
     "gulp-include": "^2.1.0",
     "gulp-istanbul": "^0.10.3",
-    "gulp-jasmine": "^2.2.1",
+    "gulp-jasmine": "^2.3.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-strip-debug": "^1.1.0",

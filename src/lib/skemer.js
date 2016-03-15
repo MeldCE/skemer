@@ -358,6 +358,7 @@ function doValidateAdd(context, inMultiple) {
     // Check for a valid reference
     getReference(context.baseNewData, context.newData['$ref']);
     // TODO check that schema for object matches schema for referenced object
+    console.log('comparing schemas', compareSchemas(context.schema, context.newData['$ref'], context.baseSchema));
     context.data = context.newData;
     return context.data;
   }
@@ -503,6 +504,92 @@ function doValidateAdd(context, inMultiple) {
 
 /** @private
  *
+ * Compares the schema of two parameters to check if their values are
+ * compatible
+ *
+ * @param {string|Object} schema1 First schema to compare
+ * @param {string|Object} schema2 Second schema to compare
+ * @param {Object} [schema] Schema to use for resolution of JSON Pointers
+ *
+ * @returns {boolean} Whether or not the schemas are compatible
+ */
+function compareSchemas(schema1, schema2, schema) {
+  console.log('second schema was', schema2, schema);
+  // Resolve schemas if given strings
+  if (typeof schema1 === 'string') {
+    schema1 = resolveSchemaPath(schema1, schema);
+  }
+  if (typeof schema2 === 'string') {
+    schema2 = resolveSchemaPath(schema2, schema);
+  }
+
+  console.log('comparing schemas', schema1, schema2);
+
+  // Check
+  if (schema1 === schema2) {
+    return true;
+  }
+
+  return false;
+}
+
+/** @private
+ *
+ * Resolves a JSON Pointer to a schema
+ *
+ * @param {string} path Path to resolve to a schema Object
+ * @param {Object} schema Schema to use for resolution
+ *
+ * @returns {Object} Resolved schema Object
+ */
+function resolveSchemaPath(path, schema) {
+  var parts = path, p = 0, pointer = schema;
+  // Remove starting # and /
+  if (parts.startsWith('#')) {
+    parts = parts.substring(1);
+  }
+  if (parts.startsWith('/')) {
+    parts = parts.substring(1);
+  }
+
+  parts = parts.split('/');
+
+  var skipped = false;
+
+  while (p < parts.length) {
+    if (!skipped && pointer.multiple) {
+      // skip
+      p++;
+      skipped = true;
+      continue;
+    }
+    if (pointer.type instanceof Object) {
+      if (pointer.type[parts[p]] !== undefined) {
+        pointer = pointer.type[parts[p]];
+        p++;
+      } else {
+        console.log('Reference `'
+            + path + '` could not be resolved');
+        return false;
+        throw new errors.ReferenceError('Reference `'
+            + path + '` could not be resolved');
+      }
+    } else {
+      console.log('uhoh');
+      if (p === parts.length - 1) {
+        console.log('big uhoh');
+      } else {
+
+      }
+      return pointer;
+    }
+  }
+
+  return pointer;
+}
+
+/** @private
+ *
  * Gets an item from a reference
  *
  * @param {Object} object Object to retrieve reference from
@@ -546,9 +633,7 @@ function getReference(object, reference) {
  */
 function dereference(schema) {
   var stack = [],
-      ref,
-      pointer,
-      i = 0, j,
+      i = 0,
       curr = schema,
       keys = Object.keys(curr);
 
