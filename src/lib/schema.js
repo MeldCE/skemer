@@ -136,6 +136,10 @@ var schema = {
             }
           ]
         },
+        deprecated: {
+          description: 'Whether or not parameter is deprecated',
+          type: 'boolean'
+        },
         noDocDig: {
           doc: 'If set and the value expected is an object, buildJsDoc will not '
               + 'document the parameters of the object',
@@ -309,7 +313,13 @@ module.exports = {
         doc: 'Schema to be used for recursive schemas. If none given, the '
             + 'given, the full schema given in `schema` will be used',
         noDocDig: true,
+        deprecated: true,
         type: schema.types.type.type
+      },
+      allowReferences: {
+        description: 'Whether or not to allow references (in the form of '
+            + 'JSON Pointers',
+        type: 'boolean'
       },
       replace: {
         doc: 'A boolean to specify whether to globally replace all existing '

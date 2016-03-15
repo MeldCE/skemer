@@ -85,6 +85,90 @@ var schema = {
   }
 };
 
+var descriptionSchema = {
+  description: 'Test object comment',
+  type: {
+    string: {
+      description: 'Some string',
+      type: 'string'
+    },
+    any: {
+      description: 'Some variable that can be anything',
+      type: 'any'
+    },
+    requiredNumber: {
+      description: 'Required number',
+      type: 'number',
+      required: true
+    },
+    defaultString: {
+      description: 'a string with a default and a really long description',
+      type: 'string',
+      default: 'string'
+    },
+    defaultNumber: {
+      description: 'a number with a default',
+      type: 'number',
+      default: 34
+    },
+    defaultBoolean: {
+      description: 'a boolean with a default',
+      type: 'boolean',
+      default: true
+    },
+    defaultObject: {
+      description: 'a object with a default',
+      type: 'object',
+      default: {}
+    },
+    //aFunction: {
+    //  type: 'function',
+    //  description: 
+    types: {
+      description: 'a string or a number',
+      types: [
+        {
+          type: 'string'
+        },
+        {
+          type: 'number'
+        }
+      ]
+    },
+    arr: {
+      type: 'string',
+      multiple: true
+    },
+    coord: {
+      type: 'number',
+      multiple: true,
+      object: true
+    },
+    arrcoord: {
+      types: {
+        arr: {
+          type: 'string',
+          multiple: true
+        },
+        coord: {
+          type: 'number',
+          multiple: true,
+          object: true
+        }
+      }
+    },
+    recurse: {
+      description: 'a recursive variable',
+      type: null
+    },
+    forced: {
+      description: 'Some string with a forced type',
+      docType: 'potatoes',
+      type: 'string'
+    }
+  }
+};
+
 var stringSchema = {
   doc: 'just a string',
   type: 'string'
@@ -169,41 +253,19 @@ describe('JSDoc functionality', function() {
 
     validateDoc(lines);
   });
-});
-
-describe('JSDoc Promise functionality' ,function() {
-  it('should reject on something bad', function(done) {
-    skemer.promiseBuildJsDocs(schema, {
-      lineup: true,
-      wrap: 'wrong',
-      preLine: '\t * ',
-      name: 'objectName',
-      type: 'param'
-    }).then(function(doc) {
-      fail('should reject');
-      done();
-    }, function(err) {
-      expect(err).toEqual(new errors.DataTypeError('Value for wrap '
-          + 'must be a number'));
-      done();
-    });
-  });
-
-  it('should eventually return documentation', function(done) {
-    skemer.promiseBuildJsDocs(schema, {
+  
+  it('should return documentation when using `description`', function() {
+    var doc;
+    var lines;
+    doc = skemer.buildJsDocs(descriptionSchema, {
       lineup: true,
       wrap: 80,
       preLine: '\t * ',
       name: 'objectName',
       type: 'param'
-    }).then(function(doc) {
-      var lines = doc.split('\n');
-
-      validateDoc(lines);
-      done();
-    }, function(err) {
-      fail(err);
-      done();
     });
+    lines = doc.split('\n');
+
+    validateDoc(lines);
   });
 });

@@ -121,13 +121,13 @@ gulp.task('pre-test', ['lint', 'lint:test'], function() {
     .pipe(gulp.dest('test-tmp/'));
 });
 
-gulp.task('jasmine', ['compile:tests', 'lint', 'lint:test', 'pre-test'], function() {
+gulp.task('jasmine', ['compile:tests', 'lint', 'lint:test'/*, 'pre-test'*/], function() {
 	return gulp.src(paths.srcTests)
-			.pipe(jasmine())
-			.pipe(istanbul.writeReports());
+			.pipe(jasmine());
+			/*.pipe(istanbul.writeReports());*/
 });
 
-gulp.task('jasmine:production', ['copy', 'jasmine'], function() {
+gulp.task('jasmine:production', ['copy', 'jasmine', 'pre-test'], function() {
 	return gulp.src(paths.tests)
 			.pipe(jasmine())
 			.pipe(istanbul.writeReports())
@@ -281,6 +281,8 @@ defaultTasks = ['check:deps', 'compile:example', 'jasmine', /*'complexity',*/ 'd
 gulp.task('one', defaultTasks);
 
 gulp.task('default', defaultTasks.concat(['watch']));
+
+gulp.task('development', defaultTasks.concat(['copy', 'watch']));
 
 gulp.task('production', defaultTasks.concat(['copy', 'jasmine:production']));
 

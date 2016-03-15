@@ -251,46 +251,6 @@ on creating an instance of a `Skemer`
 Schema Object detailing the schema to be used for validating and merging
 data.
 
-**Parameters**
-
--   `description` **[string]** A String giving information on the value
-           expected
--   `doc` **[string]** A String giving information on the value expected
--   `docType` **[string]** A string containing the type of the value
-           expected that will be used instead of calculating the type of value
-           expected
--   `noDocDig` **[boolean]** If set and the value expected is an object,
-           buildJsDoc will not document the parameters of the object
--   `type` **[string or  or Array&lt;schema&gt;]** The value type of the parameter
-           expected
--   `types` **[Array&lt;schema&gt;]** An Array or Object of `schema` containing
-           different schemas of the values expected
--   `values` **[Array&lt;Any&gt;]** Specifies the possible values for strings, numbers
-           and dates
--   `multiple` **[boolean]** Whether or not multiple values (stored in an
-           Array, or if `object is set to`true` an Object) are allowed. Can be
-           a boolean, a number (the number of values that the value expected
-           must have), or an array containing the minimum number of values and,
-           optionally, the maximum number of values.
--   `object` **[boolean]** If `multiple` is true and `object` is true, the
-           multiple values will be stored in an object. If multiple is true and
-           object is false, any keys will be ignored and the values will be
-           stored in an array
--   `regex` **[RegExp]** A regular expression to validate a String value
--   `min` **[number or date]** The minimum number, string length or number of
-           Array elements required
--   `max` **[number or date]** The maximum number, string length or number of
-           Array elements allowed
--   `replace` **[boolean]** Whether a new value should completely replace an
-           old value when the value expected is either an array or an object
--   `required` **[boolean or Function or number or Array&lt;number&gt;]** Either true/false or
-           a function returning true/false whether the parameter is required,
-           or if the variable is a multiple stored in an array an number given
-           the number of required elements, or an array of numbers, the first
-           being the minimum number of elements and the second being the
-           maximum number of elements (a maximum is not required)
--   `default` **[Any]** Default value to use if no value is given
-
 
 # Skemer Errors
 

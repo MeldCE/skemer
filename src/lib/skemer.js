@@ -699,6 +699,10 @@ function validateData(options, data, newData) {
     }
   }
 
+  if (options.allowReferences && !options.noDereference) {
+    dereference(data);
+  }
+
   //console.log('validateData complete', context, data);
 
   return data;
@@ -924,6 +928,8 @@ function buildJsDocs(schema, options) {
   // Validate schema
   schema = validateData({
     schema: schemas.schema,
+    allowReferences: true,
+    noDereference: true,
     keepNull: true
   }, {}, schema);
 

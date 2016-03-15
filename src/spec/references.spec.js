@@ -116,5 +116,45 @@ describe('Schema References', function() {
 
     expect(Skemer.options.schema.type.children).toBe(Skemer.options.schema);
   });
+
+  it('should allow references in data when allowReferences is set',
+      function() {
+    expect(skemer.validateNew({
+      schema: recursiveSchema,
+      allowReferences: true
+    }, [
+      {
+        name: 'root',
+        children: [
+          {
+            name: 'child1'
+          },
+          {
+            name: 'child2',
+            children: [
+              { '$ref': '/0/children/0' }
+            ]
+          }
+        ]
+      }
+    ])).toEqual([
+      {
+        name: 'root',
+        children: [
+          {
+            name: 'child1'
+          },
+          {
+            name: 'child2',
+            children: [
+              {
+                name: 'child1'
+              }
+            ]
+          }
+        ]
+      }
+    ]);
+  });
 });
 
