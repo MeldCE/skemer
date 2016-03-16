@@ -623,18 +623,19 @@ function getReference(object, reference) {
   return object;
 }
 
-/** @private
+/**
  *
- * Goes through and deferences any $refs
+ * Dereferences any $refs in an Object. Does the dereferencing on the passed
+ * Object itself
  *
- * @param {Object} schema Schema Object to dereference
+ * @param {Object} data Object to dereference
  *
  * @returns {undefined}
  */
-function dereference(schema) {
+function dereference(data) {
   var stack = [],
       i = 0,
-      curr = schema,
+      curr = data,
       keys = Object.keys(curr);
 
   /** @private
@@ -660,7 +661,7 @@ function dereference(schema) {
       //console.log('checking', keys[i], curr[keys[i]]);
       if (typeof curr[keys[i]]['$ref'] === 'string') {
         // Replace with resolved value
-        curr[keys[i]] = getReference(schema, curr[keys[i]]['$ref']);
+        curr[keys[i]] = getReference(data, curr[keys[i]]['$ref']);
 
         i++;
       } else if (Object.keys(curr[keys[i]]).length) {
@@ -1187,6 +1188,7 @@ module.exports = {
   Skemer: Skemer,
   validateNew: validateNew,
   validateAdd: validateAdd,
+  dereference: dereference,
   buildJsDocs: buildJsDocs
 };
 
