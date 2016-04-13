@@ -1093,6 +1093,10 @@ function Skemer(options) {
   // Validate options and schema
   options = validateOptions(options);
 
+  if (!options.baseSchema) {
+    options.baseSchema = options.schema;
+  }
+
   Object.defineProperty(this, 'options', { value: options });
 }
 
@@ -1153,12 +1157,21 @@ Skemer.prototype = {
       while (p < pathParts.length) {
         // Check if the schema allows for a path
         if (treeSchema.type instanceof Object || treeSchema.multiple) {
+          // Check have a number for an array
+          if (treeSchema.object && pathParts[p] !== ''
+              && isNaN(pathParts[p] = parseInt(pathParts[p]))) {
+            throw new errors.DataPathError('Had a non-numerical key ('
+                + pathParts[p] + ') for Array element '
+                + pathParts.slice(0, p).join('.'));
+          }
+
           // Check if this is the end of the path
           if (p === pathParts.length - 1) {
             // Run validate on data
             if ((value = validateData({
               parameterName: path,
               schema: treeSchema,
+              baseSchema: this.options.baseSchema,
               data: data[pathParts],
               newData: newData,
               baseNewData: newData,

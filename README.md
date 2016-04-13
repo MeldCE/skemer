@@ -1,4 +1,4 @@
-# skemer 0.8.6-r1
+# skemer 0.9.0
 <!--[![NPM version](http://img.shields.io/npm/v/convict.svg)](https://www.npmjs.org/package/convict)-->
 [![Build status](https://api.travis-ci.org/MeldCE/skemer.svg?branch=master)](https://travis-ci.org/MeldCE/skemer/branches)
 [![Dependency Status](https://david-dm.org/MeldCE/skemer.svg)](https://david-dm.org/MeldCE/skemer)
@@ -33,6 +33,7 @@ It also contains versions of each of the functions that return a Promise.
 - [Example](#example)
 - [Skemer API](#skemer-api)
   - [buildJsDocs](#buildjsdocs)
+  - [dereference](#dereference)
   - [Skemer](#skemer)
     - [set](#set)
     - [validateAdd](#validateadd)
@@ -150,6 +151,17 @@ Build a JSDoc for a variable using the given `schema`.
 
 Returns **string** A string containing the JSDoc for the given schema
 
+## dereference
+
+Dereferences any $refs in an Object. Does the dereferencing on the passed
+Object itself
+
+**Parameters**
+
+-   `data` **Object** Object to dereference
+
+Returns **undefined** 
+
 ## Skemer
 
 Skemer prototype to enable simple reuse of a schema
@@ -240,6 +252,11 @@ on creating an instance of a `Skemer`
 -   `baseSchema` **[Object]** Schema to be used for recursive schemas. If
            none given, the given, the full schema given in `schema` will be
            used
+-   `allowReferences` **[boolean]** Whether or not to allow references (in
+           the form of JSON Pointers
+-   `noDereference` **[boolean]** If true, will not dereferences references
+           within the data. This can be done later by calling
+           `skemer.dereference`
 -   `replace` **[boolean or Array&lt;boolean&gt;]** A boolean to specify whether to
            globally replace all existing values for arrays and objects, or an
            object of string/boolean key/value pairs used to specify what

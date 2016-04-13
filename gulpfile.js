@@ -123,7 +123,7 @@ gulp.task('pre-test', ['lint', 'lint:test'], function() {
 
 gulp.task('jasmine', ['compile:tests', 'lint', 'lint:test', 'pre-test'], function() {
   return gulp.src(paths.srcTests)
-      .pipe(jasmine());
+      .pipe(jasmine())
       .pipe(istanbul.writeReports());
 });
 
